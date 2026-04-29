@@ -413,7 +413,8 @@ for(sa in 1:2){
         ##-----------------------------
         yout<-combineDFs(yout,yout2)
       }
-      
+      # trim trajectories to save:
+      yout<-yout[abs(yout[,1] %% 0.05) < 1e-9, ]
       OutputMM<-yout
       OutputMM
     }
