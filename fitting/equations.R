@@ -88,6 +88,12 @@ derivs_MDA <- function(t,y,parameters,MDAon,t0,lg0,ls0,expMIN,expMAX,postMDA,fMD
     CGR_SGf<-1
   }
   
+  # for no SOR scenarios, ensure CSS,CSG are 1
+  if(CGR_GG==1){
+    CGR_SGf<-1
+    CGR_SSf<-1
+  }
+  
   if (t < p){
     lag1 <- Historyg(t-p)
     lag2 <- Historys(t-p)
@@ -273,6 +279,12 @@ derivs_MDA_noc <- function(t,y,parameters,MDAon,t0,lg0,ls0,expMIN,expMAX,postMDA
   }
   if(CGR_SGf>1){
     CGR_SGf<-1
+  }
+  
+  # for no SOR scenarios, ensure CSS,CSG are 1
+  if(CGR_GG==1){
+    CGR_SGf<-1
+    CGR_SSf<-1
   }
   
   if (t < p){
