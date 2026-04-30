@@ -230,9 +230,9 @@ single_GR <- function(PostParms,num_samples,filename,MDAf,NumberMDAs,ABR,MDAi,Db
   lg0<-0*t0+10
   ls0<-1*lg0
   # Not relevant for burn-in but set them anyway:
-  my_dom_c_SS<-1
-  my_dom_c_SG<-3
-  my_psiSOR<-my_psiGR*(10^0.5) 
+  my_dom_c_SS<-0
+  my_dom_c_SG<-0
+  my_psiSOR<-my_psiGR*0
   my_r<-0
   my_coverage<-rep(0.8, NumberMDAs)
   
@@ -261,8 +261,8 @@ single_GR <- function(PostParms,num_samples,filename,MDAf,NumberMDAs,ABR,MDAi,Db
   ) %dopar% {
     
     my_CGR_GG<-1
-    my_CGR_SS<-PostParms[j,2]
-    my_CGR_SG<-PostParms[j,3]
+    my_CGR_SS<-0
+    my_CGR_SG<-0
     
     # Run burnin
     parameters <- c(m=my_m, beta=my_beta, Omega=my_Omega,
@@ -295,11 +295,11 @@ single_GR <- function(PostParms,num_samples,filename,MDAf,NumberMDAs,ABR,MDAi,Db
   ) %dopar% {
     
     my_CGR_GG<-1
-    my_CGR_SS<-PostParms[j,2]
-    my_CGR_SG<-PostParms[j,3]
-    my_dom_c_SS<-PostParms[j,4]
-    my_dom_c_SG<-PostParms[j,5]
-    my_psiSOR<-my_psiGR*PostParms[j,6]
+    my_CGR_SS<-0
+    my_CGR_SG<-0
+    my_dom_c_SS<-0
+    my_dom_c_SG<-0
+    my_psiSOR<-my_psiGR*0
     my_r<-PostParms[j,7]
     
     youtb<-OutputB[[j]]
