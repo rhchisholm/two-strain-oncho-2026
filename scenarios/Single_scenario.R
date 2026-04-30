@@ -426,7 +426,8 @@ single_GR <- function(PostParms,num_samples,filename,MDAf,NumberMDAs,ABR,MDAi,Db
       ##-----------------------------
       yout<-combineDFs(yout,yout2)
     }
-    
+    # trim trajectories to save:
+    yout<-yout[abs(yout[,1] %% 0.05) < 1e-9, ]
     yout
     
   }
