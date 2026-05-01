@@ -24,3 +24,6 @@ Finally, run: create_figures.R
 This will load "processed_outputs.RData" and create figures 3-5 and their 
 corresponding versions from the sensitivity analysis, and save them in the 
 folder "figures"
+
+There is an additional script to run a single realisation of the model for a given 
+parameterisation, and produce some plots of the output.  This is: run_once.R
