@@ -1,0 +1,52 @@
+READ ME for folder "fitting"
+Author: Rebecca Chisholm, La Trobe University, 2026
+
+Code in this folder was developed to 
+- fit the variable response model to data from Asubende 
+- fit the GR-only model to data from Asubende 
+- run annual and biannual MDA scenarios
+- plot figures in manuscript
+
+Fitting_VR_model.R
+Run this to fit variable response model to annual MDAi data from Asubende
+
+Fitting_GR_only model.R
+Run this to fit GR only model to annual MDAi data from Asubende.
+Must be run after running Fitting_VR_model.R
+
+Run_biannual_MDA_vr_model.R 
+This runs annual and then biannual MDA for accepted posterior trajectories for the variable response model (with cumulative effect) for the original fitted model and the sensitivity analysis
+Outputs: Final_posterior_burnins_plusbiannualMDAs_cumu.Rdata,
+Final_posterior_burnins_plusbiannualMDAs_cumuSA.Rdata
+
+Run_biannual_MDA_gr_model.R 
+This runs annual and then biannual MDA for accepted posterior trajectories for the GR_only model (with cumulative effect)
+Outputs: GR_only_model_final_stats.Rdata, GR_only_model_full_trajectory.Rdata
+
+Figure_2.R
+Run this to create figure 2 in manuscript and associated sensitivity analysis plot in supplementary
+(Need to run all of the above scripts first if you don’t have the Rdata files generated from these scripts)
+
+Create_supp_figures_and_tables.R
+Run this to create Figures S1, S2, S3, S4, S6, S8 and matrices storing statistics for supp tables 2, 9
+
+Other scripts that are necessary to run these scripts are:
+
+fixed-parameters.R
+Lists the values of parameters that are fixed in fitting process.  
+
+equations.R
+This script included functions 
+- describing the equations of the model (with and without cumulative effect) 
+- that calculate lags in the delay differential equations
+- that calculate the mf prevalence from the mean mf load variables
+- calculate selective effect of MDA on phenotype inheritance parameters
+
+These are saved in "r_files" and are used in Fitting_VR_model.R 
+(their functions are described in this script):
+- Fitting_phenotype_parameters.R
+- Create_burnins_from_posterior_samples.R
+- Fitting_SOR_response_parameters_from_posterior_burnins.R
+- Process_output.R
+
+

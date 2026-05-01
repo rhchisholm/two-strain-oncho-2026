@@ -39,7 +39,7 @@ my_psiSOR<-my_psiGR*0
 
 
 # Specify unknown ivermectin effect parameter
-load("GR_only_model_LHS_simulations_annual_cumu.Rdata")
+load("data_files/GR_only_model_LHS_simulations_annual_cumu.Rdata")
 my_zeta<-0.3
 PrevFinalc<-l[[2]]
 y<-l[[3]]
@@ -387,5 +387,5 @@ tailyba<-tailyALL[,2:9]
 A<-c(tailybi,tailya,tailyba)
 GR_only_model<-matrix(A,nrow=3,byrow = TRUE)
 
-save(GR_only_model,file = "GR_only_model_final_stats.Rdata")
-save(yout_biannual,file = "GR_only_model_full_trajectory.Rdata")
+save(GR_only_model,file = "data_files/GR_only_model_final_stats.Rdata")
+save(yout_biannual,file = "data_files/GR_only_model_full_trajectory.Rdata")

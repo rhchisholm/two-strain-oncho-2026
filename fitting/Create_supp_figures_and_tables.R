@@ -88,17 +88,19 @@ c2 <- ggplot(Realdata2, aes(x = Year, y = Prevalence, color=Missing)) +
   theme(legend.position = "none",text = element_text(size = 14))
 
 dev.new()
-c2+c1+plot_annotation(tag_levels = 'A') 
+p<-c2+c1+plot_annotation(tag_levels = 'A') 
+
+ggsave("figures/SF1.png", plot = p, width = 15, height = 6, dpi=300)
 
 ##-----------------------------------------------
 ## Load annual MDAi data from fitting simulations
 ##-----------------------------------------------
 
 # Load burn ins and LHS simulation output
-load("burnin_157_ABR_65000_UU.Rdata")
+load("data_files/burnin_157_ABR_65000_UU.Rdata")
 preMDA <- vector("list", 157)
 
-load("fitting_burnin_65000_UU.Rdata")
+load("data_files/fitting_burnin_65000_UU.Rdata")
 indv2<-which(l[[2]][,1]-l[[2]][,3]>0 & l[[2]][,3]-l[[2]][,2]>0 & l[[1]][,1]< 0.15 & l[[1]][,1] > 0.05)
 num_samples<-length(indv2)
 
@@ -139,7 +141,7 @@ for(n in 1:num_samples){
 
 # Cumulative effect on
 # Load LHS simulation data
-load("fitting_MDA_ABR_65000_UU_from_posterior_samples_cumu.Rdata")
+load("data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_cumu.Rdata")
 postMDA <- ll
 
 # Calculate summary statistics for each LHS sample
@@ -191,7 +193,7 @@ names(dfc) <- columns
 
 # Cumulative effect off
 # Load LHS simulation data
-load("fitting_MDA_ABR_65000_UU_from_posterior_samples_no_cumu.Rdata")
+load("data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_no_cumu.Rdata")
 postMDA <- ll
 
 # Calculate summary statistics for each LHS sample
@@ -285,10 +287,10 @@ b5 <- ggplot(data, aes(x = Final_mf_prevalence,
   theme(legend.position = "none", text = element_text(size = 14)) 
 
 # GR-only model, panel B
-load("GR_only_model_LHS_simulations_annual_no_cumu.Rdata")
+load("data_files/GR_only_model_LHS_simulations_annual_no_cumu.Rdata")
 PrevFinalnc<-l[[2]]
 y<-l[[3]]
-load("GR_only_model_LHS_simulations_annual_cumu.Rdata")
+load("data_files/GR_only_model_LHS_simulations_annual_cumu.Rdata")
 PrevFinalc<-l[[2]]
 
 cumu<-(1:50)*0+1
@@ -318,8 +320,8 @@ b6 <- ggplot(dfallgr, aes(x = y,
            fill = "blue", alpha = 0.2, color = "blue", linetype = "solid") + theme_bw() + 
   theme(text = element_text(size = 14))
 
-dev.new()
-b5+b6+plot_annotation(tag_levels = 'A') 
+p<-b5+b6+plot_annotation(tag_levels = 'A') 
+ggsave("figures/SF2.png", plot = p, width = 15, height = 6, dpi=300)
 
 ##------------------------------------------------------------------
 ## Figure S3 and S6 : VR model posterior distributions of parameters
@@ -356,8 +358,9 @@ b2 <- ggplot(stack(data[c(5,6,7)]), aes(x = ind, y = values)) +
   ylim(0, 20) + theme_bw() + 
   theme(text = element_text(size = 14))
 
-dev.new()
-b1+b2+plot_annotation(tag_levels = 'A') 
+
+p<-b1+b2+plot_annotation(tag_levels = 'A')
+ggsave("figures/SF3.png", plot = p, width = 15, height = 6, dpi=300)
 
 ## Sensitivity analysis
 ## Figure S6, panel A
@@ -374,8 +377,9 @@ b2s <- ggplot(stack(datas[c(5,6,7)]), aes(x = ind, y = values)) +
   ylim(0, 20) + theme_bw() + 
   theme(text = element_text(size = 14))
 
-dev.new()
-b1s+b2s+plot_annotation(tag_levels = 'A') 
+
+p<-b1s+b2s+plot_annotation(tag_levels = 'A') 
+ggsave("figures/SF6.png", plot = p, width = 15, height = 6, dpi=300)
 
 ##------------------------------------------------------------------------------
 ## Figure S4 and S8 : Calibrated VR model, distributions of final mf prev & 
@@ -395,8 +399,8 @@ names(ALLdataAccepted) <- columns
 
 # With cumulative effect, original fitting results
 # Extract data from biannual MDAi
-load("Final_posterior_burnins_plusbiannualMDAs_cumu.Rdata")
-load("posteriors_ABR_65000_UU_cumu.Rdata")
+load("data_files/Final_posterior_burnins_plusbiannualMDAs_cumu.Rdata")
+load("data_files/posteriors_ABR_65000_UU_cumu.Rdata")
 posteriors <- posteriors[posteriors[,3]<0.5 & posteriors[,4]>0.5,]
 num_sims<-length(posteriors[,1])
 RecFinal <- matrix(0,nrow=num_sims,ncol=6)
@@ -448,8 +452,8 @@ names(ALLdataAccepted) <- columns
 
 # With cumulative effect, sensitivity analysis fitting results
 # Extract data from biannual MDAi
-load("Final_posterior_burnins_plusbiannualMDAs_cumuSA.Rdata")
-load("posteriors_ABR_65000_UU_cumuSA.Rdata")
+load("data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA.Rdata")
+load("data_files/posteriors_ABR_65000_UU_cumuSA.Rdata")
 posteriors <- posteriors[posteriors[,3]<0.5 & posteriors[,4]>0.5,]
 num_sims<-length(posteriors[,1])
 RecFinal <- matrix(0,nrow=num_sims,ncol=6)
@@ -514,8 +518,8 @@ b4 <- ggplot(stack(ALLdataAcceptedO[c(12,16)]), aes(x = ind, y = values)) +
   scale_x_discrete(labels = c("mf prevalence", "further increase in\n proportion of SOR worms")) +
   theme(text = element_text(size = 14))
 
-dev.new()
-b3+b4+plot_annotation(tag_levels = 'A') 
+p<-b3+b4+plot_annotation(tag_levels = 'A') 
+ggsave("figures/SF4.png", plot = p, width = 15, height = 6, dpi=300)
 
 # Figure S8, panel A
 b3s <- ggplot(stack(ALLdataAcceptedSA[c(9,10)]), aes(x = ind, y = values)) + 
@@ -535,8 +539,8 @@ b4s <- ggplot(stack(ALLdataAcceptedSA[c(12,16)]), aes(x = ind, y = values)) +
   scale_x_discrete(labels = c("mf prevalence", "further increase in\n proportion of SOR worms")) +
   theme(text = element_text(size = 14))
 
-dev.new()
-b3s+b4s+plot_annotation(tag_levels = 'A')
+p<-b3s+b4s+plot_annotation(tag_levels = 'A')
+ggsave("figures/SF8.png", plot = p, width = 15, height = 6, dpi=300)
 
 ##--------------------------------------------------------
 ## Create tables of summary stats for Asubende simulations
@@ -580,7 +584,7 @@ for(i in 1:6){
                                  probs=c(0.05,0.25,0.5,0.75,0.95)))
 }
 
-save(ParameterStatsO,SummaryStatsO,file = "Tables_Asubende.Rdata")
+save(ParameterStatsO,SummaryStatsO,file = "data_files/Tables_Asubende.Rdata")
 
 # Sensitivity analysis model, with cumulative effect
 # Create matrix of posterior distributions of parameters
@@ -598,4 +602,4 @@ for(i in 1:6){
                                 probs=c(0.05,0.25,0.5,0.75,0.95)))
 }
 
-save(ParameterStatsSA,SummaryStatsSA,file = "Tables_AsubendeSA.Rdata")
+save(ParameterStatsSA,SummaryStatsSA,file = "data_files/Tables_AsubendeSA.Rdata")

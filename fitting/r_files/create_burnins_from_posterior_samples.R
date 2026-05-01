@@ -1,3 +1,13 @@
+library(foreach)
+library(doParallel)
+library(grid)
+library(epiR)
+library(lhs)
+library(deSolve)
+
+# load equations (define functions)
+source("equations.R")
+
 
 #Intervention parameters
 MDAi<-1 # I: MDAi=1, M: MDAi=0
@@ -13,9 +23,9 @@ my_coverage<-c(65,65,65,65,65,
                84.10,74.70,79.40,87.10,86.20)/100
 
 # load fixed parameters (define functions)
-#source("fixed-parameters.R")
-# Eq prev 80%
-#load("fitting_burnin_65000_UU.Rdata")
+source("fixed-parameters.R")
+
+# From: "fitting_burnin_65000_UU.Rdata"
 O1<-l[[1]]
 O2<-l[[2]]
 
@@ -34,6 +44,7 @@ ls0<-1*lg0
 my_dom_c_SS<-1
 my_dom_c_SG<-3
 my_psiSOR<-my_psiGR*(10^0.5) 
+my_r<-0
 
 #setup parallel backend to use many processors
 parallel::detectCores()

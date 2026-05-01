@@ -3,6 +3,10 @@ library(ggplot2)
 library(patchwork)
 library(reshape2)
 
+if (!dir.exists("figures")) {
+  dir.create("figures")
+}
+
 # load equations and parameters
 source("equations.R")
 MDAi<-1
@@ -10,27 +14,27 @@ ABR<-65000
 source("fixed-parameters.R")
 
 # load stats and params from 1000 LHS samples
-load("fitting_burnin_65000_UU.Rdata")
+load("data_files/fitting_burnin_65000_UU.Rdata")
 
 # Determine simulations that match criteria 1
 indv2<-which(l[[2]][,1]-l[[2]][,3]>0 & l[[2]][,3]-l[[2]][,2]>0 & l[[1]][,1]< 0.15 & l[[1]][,1] > 0.05)
 num_samples<-length(indv2)
 
 # loads OutputB (posterior burnin data) 
-load("burnin_157_ABR_65000_UU.Rdata")
+load("data_files/burnin_157_ABR_65000_UU.Rdata")
 
 for(sa in 1:2){
   
   if(sa==1){
-    filename1<-"Final_posterior_burnins_plusbiannualMDAs_cumu.Rdata"
-    filename2<-"posteriors_ABR_65000_UU_cumu.Rdata"
-    filename3<-"1patch2phenotypeALLdata.Rdata"
-    filename4<-"accepted_trajectories.Rdata"
+    filename1<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumu.Rdata"
+    filename2<-"data_files/posteriors_ABR_65000_UU_cumu.Rdata"
+    filename3<-"data_files/1patch2phenotypeALLdata.Rdata"
+    filename4<-"data_files/accepted_trajectories.Rdata"
   }else{
-    filename1<-"Final_posterior_burnins_plusbiannualMDAs_cumuSA.Rdata"
-    filename2<-"posteriors_ABR_65000_UU_cumuSA.Rdata"
-    filename3<-"1patch2phenotypeALLdataSA.Rdata"
-    filename4<-"accepted_trajectoriesSA.Rdata"
+    filename1<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA.Rdata"
+    filename2<-"data_files/posteriors_ABR_65000_UU_cumuSA.Rdata"
+    filename3<-"data_files/1patch2phenotypeALLdataSA.Rdata"
+    filename4<-"data_files/accepted_trajectoriesSA.Rdata"
   }
   
   # loads OutputMM (yout for biannual period)
@@ -132,7 +136,7 @@ for(sa in 1:2){
   }
   
   # Load GR-only model data
-  load("GR_only_model_final_stats.Rdata")
+  load("data_files/GR_only_model_final_stats.Rdata")
   
   Final_GRprevBI <- prevalence(GR_only_model[1,4],my_k0,my_k1)
   Final_GRprevA <- prevalence(GR_only_model[2,4],my_k0,my_k1)
@@ -186,7 +190,7 @@ for(sa in 1:2){
   final_data <- melt(dataf, id='time')
   names(final_data) <- c('id','func', 'value')
   
-  load("GR_only_model_full_trajectory.Rdata")
+  load("data_files/GR_only_model_full_trajectory.Rdata")
   youtgr<-yout_biannual
   Prevalencegr<-prevalence(youtgr[,9]+youtgr[,5],my_k0,my_k1)*100
   datafg<-as.data.frame(Prevalencegr)
@@ -197,12 +201,12 @@ for(sa in 1:2){
   f2a<- ggplot() + geom_line(data = final_datag, aes(x = id+1987, y = value, color = "red")) + 
     geom_line(data = final_data, aes(x = id+1987, y = value, group = func), alpha=0.0075) + xlab("Time (years)") +
     ylab("mf prevalence (%)") + theme_bw() + 
-    annotate("text", label = "Variable response model", x = 32+1987, y = 0.75*100, color = "black") +
+    annotate("text", label = "Variable response model", x = 31.3+1987, y = 0.75*100, color = "black") +
     annotate("text", label = "GR-only model", x = 29.6+1987, y = 0.68*100, color = "black") +
     annotate("segment", x = 23+1987, xend = 25.2+1987, y = 0.68*100, yend = 0.68*100,colour = "red") +
     annotate("segment", x = 23+1987, xend = 25.2+1987, y = 0.75*100, yend = 0.75*100,colour = "black") +
     annotate("segment", x = 2007, xend = 2007, y = 0, yend = 80,colour = "darkcyan") +
-    annotate("text", x = 2007.8, y = 40, color = "darkcyan", label = "Fitting  Prediction") +
+    annotate("text", x = 2007.7, y = 40, color = "darkcyan", label = "Fitting  Prediction") +
     annotate("segment", x = 2012, y = 40, xend=2015, yend=40, color = "darkcyan", arrow = arrow(length = unit(0.2, "cm"), type = "closed")) +
     theme(legend.position = "none", text = element_text(size = 16))
   
@@ -217,9 +221,9 @@ for(sa in 1:2){
 }
 
 # Figure 2
-dev.new()  
-patchworko + plot_annotation(tag_levels = 'A') + plot_layout(widths = c(2, 1.25))
+p <- patchworko + plot_annotation(tag_levels = 'A') + plot_layout(widths = c(2, 1.25))
+ggsave("figures/F2.png", plot = p, width = 15, height = 4, dpi=300)
 
 # Analogous supplementary figure from sensitivity analysis
-dev.new()
-patchworksa + plot_annotation(tag_levels = 'A') + plot_layout(widths = c(2, 1.25))
+p <- patchworksa + plot_annotation(tag_levels = 'A') + plot_layout(widths = c(2, 1.25))
+ggsave("figures/F2_SA.png", plot = p, width = 15, height = 4, dpi=300)

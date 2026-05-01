@@ -20,7 +20,7 @@ MDAi<-1 # I: MDAi=1, M: MDAi=0
 source("fixed-parameters.R")
 
 # load burnin that satisfy burnin criteria 1 and c_gg > c0sg > c0_ss
-load("burnin_157_ABR_65000_UU.Rdata")
+load("data_files/burnin_157_ABR_65000_UU.Rdata")
 
 # For original model and then the sensitivity analysis, run the MDAs:
 for(sa in 1:2){
@@ -39,13 +39,13 @@ for(sa in 1:2){
   
   # load accepted posterior samples that satisfy criteria 2
   if(sa==1){
-    load("posteriors_ABR_65000_UU_cumu.Rdata")
-    filename1<-"Final_posterior_burnins.Rdata"
-    filename2<-"Final_posterior_burnins_plusbiannualMDAs_cumu.Rdata"
+    load("data_files/posteriors_ABR_65000_UU_cumu.Rdata")
+    filename1<-"data_files/Final_posterior_burnins.Rdata"
+    filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumu.Rdata"
   }else{
-    load("posteriors_ABR_65000_UU_cumuSA.Rdata")
-    filename1<-"Final_posterior_burninsSA.Rdata"
-    filename2<-"Final_posterior_burnins_plusbiannualMDAs_cumuSA.Rdata"
+    load("data_files/posteriors_ABR_65000_UU_cumuSA.Rdata")
+    filename1<-"data_files/Final_posterior_burninsSA.Rdata"
+    filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA.Rdata"
   }
 
   posteriors <- posteriors[posteriors[,3]<0.5 & posteriors[,4]>0.5,]

@@ -1,3 +1,13 @@
+library(foreach)
+library(doParallel)
+library(grid)
+library(epiR)
+library(lhs)
+library(deSolve)
+
+# load equations (define functions)
+source("equations.R")
+
 #Intervention parameters
 MDAi<-1 # I: MDAi=1, M: MDAi=0
 MDAon<-0 # 0:no MDA, 1: MDA (starts off at zero for the burnin)
@@ -10,6 +20,10 @@ my_coverage<-c(65,65,65,65,65,
                65,65,65,65,65,
                65,81.7,80.1,80,84.10,
                84.10,74.70,79.40,87.10,86.20)/100
+
+# load fixed parameters (define functions)
+source("fixed-parameters.R")
+my_zeta<-my_zetaX
 
 indv2<-which(l[[2]][,1]-l[[2]][,3]>0 & l[[2]][,3]-l[[2]][,2]>0 & l[[1]][,1]< 0.15 & l[[1]][,1] > 0.05)
 num_samples<-length(indv2)

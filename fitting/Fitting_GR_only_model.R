@@ -10,7 +10,7 @@ library(deSolve)
 ABR<-65000 # 80% prev
 
 # Load LHS parameter samples
-load("fitting_MDA_ABR_65000_UU_from_posterior_samples_cumu.Rdata")
+load("data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_cumu.Rdata")
 y<-ll[[1]][,9] # in equations.R, this parameter is labelled "r"
 names(y)<-NULL
 num_sims<-length(y)
@@ -278,9 +278,9 @@ for(ce in 1:2){
   l[[3]]<-y
   
   if(my_zeta!=0){
-    save(l, file = "GR_only_model_LHS_simulations_annual_cumu.Rdata")
+    save(l, file = "data_files/GR_only_model_LHS_simulations_annual_cumu.Rdata")
   }else{
-    save(l, file = "GR_only_model_LHS_simulations_annual_no_cumu.Rdata")
+    save(l, file = "data_files/GR_only_model_LHS_simulations_annual_no_cumu.Rdata")
   }
 }
 

@@ -20,10 +20,6 @@ my_coverage<-c(65,65,65,65,65,
                65,65,65,65,65,
                65,81.7,80.1,80,84.10,
                84.10,74.70,79.40,87.10,86.20)/100
-my_coverage<-c(1,1,1,1,1,
-               1,1,1,1,1,
-               1,1,1,1,1,
-               1,1,1,1,1)
 
 # load fixed parameters (define functions)
 source("fixed-parameters.R")
@@ -32,6 +28,7 @@ source("fixed-parameters.R")
 my_dom_c_SS<-1
 my_dom_c_SG<-3
 my_psiSOR<-my_psiGR*(10^0.5) 
+my_r<-0
 
 # Burn in details
 yinit <- c(10, 10, 10, 10, 10, 10, 10, 10, 20, 20)

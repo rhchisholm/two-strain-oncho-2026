@@ -6,9 +6,9 @@ ABR<-65000 # 80% prev
 # calculate and store summary stats and LHS samples of burnins in the file: 
 # "fitting_burnin_65000_UU.Rdata"
 
-filename<-"fitting_burnin_65000_UU.Rdata"
+filename<-"data_files/fitting_burnin_65000_UU.Rdata"
 if (file.exists(filename)==FALSE){
-  source("Fitting_phenotype_parameters.R")
+  source("r_files/Fitting_phenotype_parameters.R")
 }else{
   load(filename)
 }
@@ -17,9 +17,9 @@ if (file.exists(filename)==FALSE){
 # of between 5-15% SOR worms, and c_gg > c0sg > c0_ss, and store burnins in the 
 # file: "burnin_157_ABR_65000_UU.Rdata"
 
-filename<-"burnin_157_ABR_65000_UU.Rdata"
+filename<-"data_files/burnin_157_ABR_65000_UU.Rdata"
 if (file.exists(filename)==FALSE){
-  source("create_burnins_from_posterior_samples.R")
+  source("r_files/create_burnins_from_posterior_samples.R")
 } else {
   load(filename)
 }
@@ -29,59 +29,59 @@ if (file.exists(filename)==FALSE){
 # each of the accepted LHS samples from step 1. 
 
 # with cumulative effect
-my_zeta<-0.3
-filename<-"fitting_MDA_ABR_65000_UU_from_posterior_samples_cumu.Rdata"
+my_zetaX<-0.3
+filename<-"data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_cumu.Rdata"
 if (file.exists(filename)==FALSE){
-  source("Fitting_SOR_response_parameters_from_posterior_burnins.R")
+  source("r_files/Fitting_SOR_response_parameters_from_posterior_burnins.R")
 } else {
   load(filename)
 }
 
 # process output, determine samples that satisfy criteria 2: change in SOR worm 
 # proportion x,  so that x > 0.1
-SA<-1
-filename<-"posteriors_ABR_65000_UU_cumu.Rdata"
+SA<-0
+filename<-"data_files/posteriors_ABR_65000_UU_cumu.Rdata"
 if (file.exists(filename)==FALSE){
-  source("Process_output.R")
+  source("r_files/Process_output.R")
 } else {
   load(filename)
 }
 
 # process output for sensitivity analysis with different criteria 2: change in 
 # SOR worm proportion x, so that 0.05 < x < 0.1 
-SA<-0
-filename<-"posteriors_ABR_65000_UU_cumuSA.Rdata"
+SA<-1
+filename<-"data_files/posteriors_ABR_65000_UU_cumuSA.Rdata"
 if (file.exists(filename)==FALSE){
-  source("Process_output.R")
+  source("r_files/Process_output.R")
 } else {
   load(filename)
 }
 
 # without cumulative effect
-my_zeta<-0.1
-filename<-"fitting_MDA_ABR_65000_UU_from_posterior_samples_no_cumu.Rdata"
+my_zetaX<-0
+filename<-"data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_no_cumu.Rdata"
 if (file.exists(filename)==FALSE){
-  source("Fitting_SOR_response_parameters_from_posterior_burnins.R")
+  source("r_files/Fitting_SOR_response_parameters_from_posterior_burnins.R")
 } else {
   load(filename)
 }
 
 # process output, determine samples that satisfy criteria 2: change in SOR worm 
 # proportion x,  so that x > 0.1
-SA<-1
-filename<-"posteriors_ABR_65000_UU_no_cumu.Rdata"
+SA<-0
+filename<-"data_files/posteriors_ABR_65000_UU_no_cumu.Rdata"
 if (file.exists(filename)==FALSE){
-  source("Process_output.R")
+  source("r_files/Process_output.R")
 } else {
   load(filename)
 }
 
 # process output for sensitivity analysis with different criteria 2: change in 
 # SOR worm proportion x, so that 0.05 < x < 0.1 
-SA<-0
-filename<-"posteriors_ABR_65000_UU_no_cumuSA.Rdata"
+SA<-1
+filename<-"data_files/posteriors_ABR_65000_UU_no_cumuSA.Rdata"
 if (file.exists(filename)==FALSE){
-  source("Process_output.R")
+  source("r_files/Process_output.R")
 } else {
   load(filename)
 }
