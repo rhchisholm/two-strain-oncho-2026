@@ -1,0 +1,26 @@
+READ ME for folder "scenarios"
+Author: Rebecca Chisholm, La Trobe University, 2026
+
+This folder contains files to run all of the scenarios for figures 3-5 in the 
+manuscript.
+
+First, run: Simulate_all_scenarios.R
+
+This will save an RData file in the folder "outputs" for each scenario 
+considered, with specific
+- Annual biting rate (3 values)
+- Ivermectin vs Moxidectin
+- Annual vs biannual MDA
+- Using the original model parameterisation or the sensitivity analysis
+
+Next, run: process_output.R
+
+This will load each of the files and create two data frames (one for the 
+original model parameterisation, df, and the other for the sensitivity analysis,
+dfSA), and save them in the file "processed_outputs.RData"
+
+Finally, run: create_figures.R
+
+This will load "processed_outputs.RData" and create figures 3-5 and their 
+corresponding versions from the sensitivity analysis, and save them in the 
+folder "figures"
