@@ -33,11 +33,8 @@ PostParms<-matrix(c(my_CGR_GG, my_CGR_SS, my_CGR_SG,
                   nrow=1, ncol=7)
 
 filename<-"test.Rdata"
-if(my_zeta!=0){
-  single_VR(PostParms,1,filename,MDAf,NumberMDAs,ABR,MDAi,Dburnin,my_zeta)
-}else{
-  single_VR_noc(PostParms,1,filename,MDAf,NumberMDAs,ABR,MDAi,Dburnin)
-}
+
+single_VR(PostParms,1,filename,MDAf,NumberMDAs,ABR,MDAi,Dburnin,my_zeta)
 
 load("test.Rdata")
 yout<-OutputM[[1]]

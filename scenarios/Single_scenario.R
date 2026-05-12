@@ -92,8 +92,12 @@ single_VR <- function(PostParms,num_samples,filename,MDAf,NumberMDAs,ABR,MDAi,Db
     tailyBI<-tailyALLBI[,2:9]
     
     ## define initial conditions for MDA scenario from burn in
-    cBI<-my_coverage[1]
-    yinitBI <- c(tailyBI,0*cBI+(1-cBI)*tailyALLBI[,10], 0*cBI+(1-cBI)*tailyALLBI[,11], cBI*tailyALLBI[,10:11])
+    cBI<-my_coverage[1] 
+    if(my_zeta>0){
+      yinitBI <- c(tailyBI,(1-cBI)*tailyALLBI[,10], (1-cBI)*tailyALLBI[,11], cBI*tailyALLBI[,10:11])
+    }else{
+      yinitBI<-tailyALLBI[,-1]
+    }
     timesBI <- seq(0, MDAf, by = 0.01)
     
     ## Calculate lags
@@ -148,9 +152,13 @@ single_VR <- function(PostParms,num_samples,filename,MDAf,NumberMDAs,ABR,MDAi,Db
     taily<-tailyALL[,2:9]
     lasttime<-tailyALL[,1]
     c<-my_coverage[2]
-    yinit <- c(taily,0*c+(1-c)*tailyALL[,10], 0*c+(1-c)*tailyALL[,11], 
-               c*tailyALL[,10:11] + (1-c)*tailyALL[,12:13],
-               c*tailyALL[,12:13] + (1-c)*0)
+    if(my_zeta>0){
+      yinit <- c(taily,(1-c)*tailyALL[,10], +(1-c)*tailyALL[,11], 
+                 c*tailyALL[,10:11] + (1-c)*tailyALL[,12:13],
+                 c*tailyALL[,12:13])
+    }else{
+      yinit <- tailyALL[, -1]
+    }
     times <- seq(0, MDAf, by = 0.01)
     
     ## Calculate lags
@@ -186,9 +194,13 @@ single_VR <- function(PostParms,num_samples,filename,MDAf,NumberMDAs,ABR,MDAi,Db
       taily<-tailyALL[,2:9]
       lasttime<-tailyALL[,1]
       c<-my_coverage[i]
-      yinit <- c(taily,0*c+(1-c)*tailyALL[,10], 0*c+(1-c)*tailyALL[,11], 
-                 c*tailyALL[,10:(7+2*i)] + (1-c)*tailyALL[,12:(9+2*i)],
-                 c*tailyALL[,(8+2*i):(9+2*i)] + (1-c)*0)
+      if(my_zeta>0){
+        yinit <- c(taily,(1-c)*tailyALL[,10], (1-c)*tailyALL[,11], 
+                   c*tailyALL[,10:(7+2*i)] + (1-c)*tailyALL[,12:(9+2*i)],
+                   c*tailyALL[,(8+2*i):(9+2*i)])
+      }else{
+        yinit <- tailyALL[, -1]
+      }
       times <- seq(0, MDAf, by = 0.01)
       
       ## Calculate lags

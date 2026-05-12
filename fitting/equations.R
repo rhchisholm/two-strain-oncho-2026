@@ -53,6 +53,10 @@ derivs_MDA <- function(t,y,parameters,MDAon,t0,lg0,ls0,expMIN,expMAX,postMDA,fMD
     }
   }
   
+  if(zeta==0){
+    expMAX <- 0 # this switches off solving DEs for cumulative effect 
+  }
+  
   r<-parameters["r"]
   omega0<-0.59
   omegabar<-omega0
