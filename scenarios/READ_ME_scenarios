@@ -25,7 +25,7 @@ This will load "processed_outputs.RData" and create figures 3-5 and their
 corresponding versions from the sensitivity analysis, and save them in the 
 folder "figures"
 
-Theny, run: create_tables.R
+Then, run: create_tables.R
 
 This will load "processed_outputs.RData" and create tables for the supp, and 
 save them in the folder "tables"
