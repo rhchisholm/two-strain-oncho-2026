@@ -1,7 +1,11 @@
-# create tables for scenarios
+# create tables summmarising different endemic prevalence scenarios
 
 load("processed_outputs.RData")
 ABRall<-c(2942,5350,27000)
+
+if (!dir.exists("tables")) {
+  dir.create("tables")
+}
 
 ################################################################################
 ################################################################################
@@ -516,4 +520,4 @@ save(s3,s4,s5,s6,
      s14,s15,s16,s17,
      s18,s19,s20,s21,
      s22,s23,
-     file = "output/Tables_different_prev_VR_stats.Rdata")
+     file = "tables/Tables_scenarios_supp.Rdata")

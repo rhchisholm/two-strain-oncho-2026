@@ -19,11 +19,16 @@ This will load each of the files and create two data frames (one for the
 original model parameterisation, df, and the other for the sensitivity analysis,
 dfSA), and save them in the file "processed_outputs.RData"
 
-Finally, run: create_figures.R
+Theny, run: create_figures.R
 
 This will load "processed_outputs.RData" and create figures 3-5 and their 
 corresponding versions from the sensitivity analysis, and save them in the 
 folder "figures"
+
+Theny, run: create_tables.R
+
+This will load "processed_outputs.RData" and create tables for the supp, and 
+save them in the folder "tables"
 
 There is an additional script to run a single realisation of the model for a given 
 parameterisation, and produce some plots of the output.  This is: run_once.R
