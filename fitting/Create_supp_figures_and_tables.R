@@ -3,6 +3,13 @@ library(ggplot2)
 library(latex2exp)
 library(patchwork)
 
+if (!dir.exists("figures")) {
+  dir.create("figures")
+}
+
+if (!dir.exists("tables")) {
+  dir.create("tables")
+}
 ##-----------------------------------------------------
 ## Figure S1 ## Prevalence and MDA Coverage in Asubende
 ##-----------------------------------------------------
@@ -85,7 +92,7 @@ c2 <- ggplot(Realdata2, aes(x = Year, y = Prevalence, color=Missing)) +
        y="mf prevalence", title=NULL) + xlim(1987,2024) +
   labs(color = "Data source") +
   ylim(0,1) + theme_bw() + 
-  theme(legend.position = "none",text = element_text(size = 14))
+  theme(legend.position = "none",text = element_text(size = 18))
 
 dev.new()
 p<-c2+c1+plot_annotation(tag_levels = 'A') 
@@ -255,8 +262,8 @@ names(dfall) <- columns
 # Figure S1a
 # Add a rectangle annotation
 # Define the coordinates for the subset
-x_min_subset <- 0.1
-x_max_subset <- 0.12
+x_min_subset <- 0.1*100
+x_max_subset <- 0.12*100
 y_min_subset <- 0.1
 y_max_subset <- 0.2
 
@@ -266,7 +273,7 @@ y_max_subset2 <- 0.1
 data=subset(dfall, c0_SORSOR<0.5 & c0_GRSOR>0.5)
 
 # VR model calibration, panel A
-b5 <- ggplot(data, aes(x = Final_mf_prevalence, 
+b5 <- ggplot(data, aes(x = Final_mf_prevalence*100, 
                        y = Increase_in_SOR_worm_proportion, color=factor(Cumulative_Effect))) +
   geom_point(alpha = 0.4) +
   scale_color_manual(
@@ -283,15 +290,15 @@ b5 <- ggplot(data, aes(x = Final_mf_prevalence,
            ymin = y_min_subset2, ymax = y_max_subset2,
            fill = "#EE7733", alpha = 0.2, color = "#EE7733", linetype = "solid") +
   #ylim(0, 0.2) +
-  labs(x="Final mf prevalence", y="Final increase in SOR worm proportion")  + theme_bw() + 
-  theme(legend.position = "none", text = element_text(size = 14)) 
+  labs(x="Final mf prevalence (%)", y="Final increase in SOR worm proportion")  + theme_bw() + 
+  theme(legend.position = "none", text = element_text(size = 18)) 
 
 # GR-only model, panel B
 load("data_files/GR_only_model_LHS_simulations_annual_no_cumu.Rdata")
-PrevFinalnc<-l[[2]]
+PrevFinalnc<-l[[2]]*100
 y<-l[[3]]
 load("data_files/GR_only_model_LHS_simulations_annual_cumu.Rdata")
-PrevFinalc<-l[[2]]
+PrevFinalc<-l[[2]]*100
 
 cumu<-(1:50)*0+1
 posteriorsc<-matrix(c(y,PrevFinalc,cumu),ncol=3)
@@ -313,12 +320,12 @@ b6 <- ggplot(dfallgr, aes(x = y,
     labels = c("0" = "None", "1" = TeX(r"(Present with $\zeta=0.3$)")) # Assign custom labels
   ) + ggtitle('GR-only model') +
   labs(color = "Cumulative effect") +
-  labs(x="y", y="Final mf prevalence") +
+  labs(x="y", y="Final mf prevalence (%)") +
   annotate("rect",
            xmin = 0, xmax = 1,
-           ymin = 0.1, ymax = 0.12,
+           ymin = 0.1*100, ymax = 0.12*100,
            fill = "blue", alpha = 0.2, color = "blue", linetype = "solid") + theme_bw() + 
-  theme(text = element_text(size = 14))
+  theme(text = element_text(size = 18))
 
 p<-b5+b6+plot_annotation(tag_levels = 'A') 
 ggsave("figures/SF2.png", plot = p, width = 15, height = 6, dpi=300)
@@ -349,14 +356,14 @@ b1 <- ggplot(stack(data[c(2,3,4,8)]), aes(x = ind, y = values)) +
   geom_boxplot() + #geom_violin() + #
   labs(x=NULL, y=NULL, title="After annual MDAi program") +
   ylim(0, 1) + theme_bw() + 
-  theme(text = element_text(size = 14))
+  theme(text = element_text(size = 18))
 
 ## Figure S3, panel B
 b2 <- ggplot(stack(data[c(5,6,7)]), aes(x = ind, y = values)) +
   geom_boxplot() + #geom_violin() + #
   labs(x=NULL, y=NULL, title="After annual MDAi program") +
   ylim(0, 20) + theme_bw() + 
-  theme(text = element_text(size = 14))
+  theme(text = element_text(size = 18))
 
 
 p<-b1+b2+plot_annotation(tag_levels = 'A')
@@ -368,14 +375,14 @@ b1s <- ggplot(stack(datas[c(2,3,4,8)]), aes(x = ind, y = values)) +
   geom_boxplot() + #geom_violin() + #
   labs(x=NULL, y=NULL, title="After annual MDAi program") +
   ylim(0, 1) + theme_bw() + 
-  theme(text = element_text(size = 14))
+  theme(text = element_text(size = 18))
 
 ## Figure S6, panel B
 b2s <- ggplot(stack(datas[c(5,6,7)]), aes(x = ind, y = values)) +
   geom_boxplot() + #geom_violin() + #
   labs(x=NULL, y=NULL, title="After annual MDAi program") +
   ylim(0, 20) + theme_bw() + 
-  theme(text = element_text(size = 14))
+  theme(text = element_text(size = 18))
 
 
 p<-b1s+b2s+plot_annotation(tag_levels = 'A') 
@@ -507,7 +514,7 @@ b3 <- ggplot(stack(ALLdataAcceptedO[c(9,10)]), aes(x = ind, y = values)) +
        y=NULL, title="After annual MDAi program") +
   ylim(0,0.3) + theme_bw() + 
   scale_x_discrete(labels = c("mf prevalence", "increase in\n proportion of SOR worms")) +
-  theme(text = element_text(size = 14))
+  theme(text = element_text(size = 18))
 
 # Figure S4, panel B
 b4 <- ggplot(stack(ALLdataAcceptedO[c(12,16)]), aes(x = ind, y = values)) + 
@@ -516,7 +523,7 @@ b4 <- ggplot(stack(ALLdataAcceptedO[c(12,16)]), aes(x = ind, y = values)) +
        y=NULL, title="After biannual MDAi program") +
   ylim(0,0.3) + theme_bw() + 
   scale_x_discrete(labels = c("mf prevalence", "further increase in\n proportion of SOR worms")) +
-  theme(text = element_text(size = 14))
+  theme(text = element_text(size = 18))
 
 p<-b3+b4+plot_annotation(tag_levels = 'A') 
 ggsave("figures/SF4.png", plot = p, width = 15, height = 6, dpi=300)
@@ -528,7 +535,7 @@ b3s <- ggplot(stack(ALLdataAcceptedSA[c(9,10)]), aes(x = ind, y = values)) +
        y=NULL, title="After annual MDAi program") +
   ylim(0,0.3) + theme_bw() + 
   scale_x_discrete(labels = c("mf prevalence", "increase in\n proportion of SOR worms")) +
-  theme(text = element_text(size = 14))
+  theme(text = element_text(size = 18))
 
 # Figure S8, panel B
 b4s <- ggplot(stack(ALLdataAcceptedSA[c(12,16)]), aes(x = ind, y = values)) + 
@@ -537,7 +544,7 @@ b4s <- ggplot(stack(ALLdataAcceptedSA[c(12,16)]), aes(x = ind, y = values)) +
        y=NULL, title="After biannual MDAi program") +
   ylim(0,0.3) + theme_bw() + 
   scale_x_discrete(labels = c("mf prevalence", "further increase in\n proportion of SOR worms")) +
-  theme(text = element_text(size = 14))
+  theme(text = element_text(size = 18))
 
 p<-b3s+b4s+plot_annotation(tag_levels = 'A')
 ggsave("figures/SF8.png", plot = p, width = 15, height = 6, dpi=300)
@@ -559,12 +566,13 @@ stats_names<-c('Final_mf_prevalence_annual',
                'Final_SOR_worm_proportion_annual',
                'Final_mf_prevalence_biannual',
                'Further_increase_in_SOR_worm_proportion_biannual',
-               'Final_SOR_worm_proportion_biannual')
+               'Final_SOR_worm_proportion_biannual',
+               'Initial_SOR_worm_proportion')
 
 ParameterStats<-matrix(ncol = 5, nrow = 7, 
                        dimnames = list(param_names,
                                        c("0.05", "0.25", "0.5", "0.75","0.95")))
-SummaryStats<-matrix(ncol = 5, nrow = 6, 
+SummaryStats<-matrix(ncol = 5, nrow = 7, 
                      dimnames = list(stats_names,
                                      c("0.05", "0.25", "0.5", "0.75","0.95")))
 
@@ -579,12 +587,18 @@ for(i in 1:7){
 # Create matrix of posterior distributions of summary stats
 SummaryStatsO<-SummaryStats
 inds<-c(9,10,11,12,16,13)
-for(i in 1:6){
-  SummaryStatsO[i,]<-c(quantile(ALLdataAcceptedO[,inds[i]], 
+for(i in 1:7){
+  if(i==7){
+    dataSORi<-ALLdataAcceptedO[,11]-ALLdataAcceptedO[,10]
+    SummaryStatsO[i,]<-c(quantile(dataSORi, 
+                                  probs=c(0.05,0.25,0.5,0.75,0.95)))
+  }else{
+    SummaryStatsO[i,]<-c(quantile(ALLdataAcceptedO[,inds[i]], 
                                  probs=c(0.05,0.25,0.5,0.75,0.95)))
+  }
 }
 
-save(ParameterStatsO,SummaryStatsO,file = "data_files/Tables_Asubende.Rdata")
+save(ParameterStatsO,SummaryStatsO,file = "tables/Tables_Asubende.Rdata")
 
 # Sensitivity analysis model, with cumulative effect
 # Create matrix of posterior distributions of parameters
@@ -597,9 +611,15 @@ for(i in 1:7){
 # Create matrix of posterior distributions of summary stats
 SummaryStatsSA<-SummaryStats
 inds<-c(9,10,11,12,16,13)
-for(i in 1:6){
-  SummaryStatsSA[i,]<-c(quantile(ALLdataAcceptedSA[,inds[i]], 
-                                probs=c(0.05,0.25,0.5,0.75,0.95)))
+for(i in 1:7){
+  if(i==7){
+    dataSORi<-ALLdataAcceptedSA[,11]-ALLdataAcceptedSA[,10]
+    SummaryStatsSA[i,]<-c(quantile(dataSORi, 
+                                  probs=c(0.05,0.25,0.5,0.75,0.95)))
+  }else{
+    SummaryStatsSA[i,]<-c(quantile(ALLdataAcceptedSA[,inds[i]], 
+                                  probs=c(0.05,0.25,0.5,0.75,0.95)))
+  }
 }
 
-save(ParameterStatsSA,SummaryStatsSA,file = "data_files/Tables_AsubendeSA.Rdata")
+save(ParameterStatsSA,SummaryStatsSA,file = "tables/Tables_AsubendeSA.Rdata")
