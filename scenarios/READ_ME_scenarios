@@ -19,7 +19,7 @@ This will load each of the files and create two data frames (one for the
 original model parameterisation, df, and the other for the sensitivity analysis,
 dfSA), and save them in the file "processed_outputs.RData"
 
-Theny, run: create_figures.R
+Then, run: create_figures.R
 
 This will load "processed_outputs.RData" and create figures 3-5 and their 
 corresponding versions from the sensitivity analysis, and save them in the 
