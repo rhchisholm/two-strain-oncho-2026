@@ -62,7 +62,7 @@ Realdata1$Missing<-as.factor(Realdata1$Missing)
 for(i in 1:length(prev.time)){
   missing<-0
   time<-prev.time[i]
-  prev<-prevalence[i]/100
+  prev<-prevalence[i]
   newrow<-c(time, prev,missing)
   Realdata2[nrow(Realdata2) + 1, ]<-newrow
   
@@ -80,7 +80,7 @@ c1 <- ggplot(Realdata1, aes(x = Year, y = Coverage, color=Missing)) +
        y="MDAi coverage (proportion)", title=NULL) + xlim(1987,2024) +
   labs(color = "Data source") +
   ylim(0,1) + theme_bw() + 
-  theme(text = element_text(size = 14))
+  theme(text = element_text(size = 18))
 
 # Figure S1b
 c2 <- ggplot(Realdata2, aes(x = Year, y = Prevalence, color=Missing)) + 
@@ -89,9 +89,9 @@ c2 <- ggplot(Realdata2, aes(x = Year, y = Prevalence, color=Missing)) +
     values = c("1" = "#EE3377", "0" = "#009988"), # Assign specific colors
     labels = c("0" = "Measured", "1" = "Estimated")) + # Assign custom labels
   labs(x="Year",
-       y="mf prevalence", title=NULL) + xlim(1987,2024) +
+       y="mf prevalence (%)", title=NULL) + xlim(1987,2024) +
   labs(color = "Data source") +
-  ylim(0,1) + theme_bw() + 
+  ylim(0,100) + theme_bw() + 
   theme(legend.position = "none",text = element_text(size = 18))
 
 dev.new()
