@@ -9,6 +9,34 @@ if (!dir.exists("tables")) {
 
 ################################################################################
 ################################################################################
+# Initial SOR worm proportion
+################################################################################
+
+# Original model
+SOR_initial<-matrix(ncol = 5, nrow = 3, 
+                 dimnames = list(c("30%", "50%","70%"),
+                                 c("0.05", "0.25", "0.5", "0.75","0.95")))
+
+for(i in 1:3){
+  data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==1 & MDAi==1 & SOR_present==1)
+  SOR_initial[i,]<-c(quantile(data$Initial_SOR_proportion_worms, 
+                           probs=c(0.05,0.25,0.5,0.75,0.95)))
+}
+
+# Sensitivity Analysis
+SOR_initialSA<-matrix(ncol = 5, nrow = 3, 
+                    dimnames = list(c("30%", "50%","70%"),
+                                    c("0.05", "0.25", "0.5", "0.75","0.95")))
+
+for(i in 1:3){
+  data=subset(dfSA, Endemic_prevalence==ABRall[i] & MDA_frequency==1 & MDAi==1 & SOR_present==1)
+  SOR_initialSA[i,]<-c(quantile(data$Initial_SOR_proportion_worms, 
+                              probs=c(0.05,0.25,0.5,0.75,0.95)))
+}
+
+
+################################################################################
+################################################################################
 # Final prevalence tables 
 ################################################################################
 #Table S3
@@ -520,4 +548,5 @@ save(s3,s4,s5,s6,
      s14,s15,s16,s17,
      s18,s19,s20,s21,
      s22,s23,
+     SOR_initial,SOR_initialSA,
      file = "tables/Tables_scenarios_supp.Rdata")
