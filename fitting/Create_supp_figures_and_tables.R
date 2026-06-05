@@ -571,17 +571,17 @@ stats_names<-c('Final_mf_prevalence_annual',
 
 ParameterStats<-matrix(ncol = 5, nrow = 7, 
                        dimnames = list(param_names,
-                                       c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                       c("0.025", "0.25", "0.5", "0.75","0.975")))
 SummaryStats<-matrix(ncol = 5, nrow = 7, 
                      dimnames = list(stats_names,
-                                     c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                     c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 # Original model, with cumulative effect
 # Create matrix of posterior distributions of parameters
 ParameterStatsO<-ParameterStats
 for(i in 1:7){
   ParameterStatsO[i,]<-c(quantile(ALLdataAcceptedO[,i+1], 
-                                 probs=c(0.05,0.25,0.5,0.75,0.95)))
+                                 probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 # Create matrix of posterior distributions of summary stats
@@ -591,10 +591,10 @@ for(i in 1:7){
   if(i==7){
     dataSORi<-ALLdataAcceptedO[,11]-ALLdataAcceptedO[,10]
     SummaryStatsO[i,]<-c(quantile(dataSORi, 
-                                  probs=c(0.05,0.25,0.5,0.75,0.95)))
+                                  probs=c(0.025,0.25,0.5,0.75,0.975)))
   }else{
     SummaryStatsO[i,]<-c(quantile(ALLdataAcceptedO[,inds[i]], 
-                                 probs=c(0.05,0.25,0.5,0.75,0.95)))
+                                 probs=c(0.025,0.25,0.5,0.75,0.975)))
   }
 }
 
@@ -605,7 +605,7 @@ save(ParameterStatsO,SummaryStatsO,file = "tables/Tables_Asubende.Rdata")
 ParameterStatsSA<-ParameterStats
 for(i in 1:7){
   ParameterStatsSA[i,]<-c(quantile(ALLdataAcceptedSA[,i+1], 
-                                  probs=c(0.05,0.25,0.5,0.75,0.95)))
+                                  probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 # Create matrix of posterior distributions of summary stats
@@ -615,10 +615,10 @@ for(i in 1:7){
   if(i==7){
     dataSORi<-ALLdataAcceptedSA[,11]-ALLdataAcceptedSA[,10]
     SummaryStatsSA[i,]<-c(quantile(dataSORi, 
-                                  probs=c(0.05,0.25,0.5,0.75,0.95)))
+                                  probs=c(0.025,0.25,0.5,0.75,0.975)))
   }else{
     SummaryStatsSA[i,]<-c(quantile(ALLdataAcceptedSA[,inds[i]], 
-                                  probs=c(0.05,0.25,0.5,0.75,0.95)))
+                                  probs=c(0.025,0.25,0.5,0.75,0.975)))
   }
 }
 
