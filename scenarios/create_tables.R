@@ -15,23 +15,23 @@ if (!dir.exists("tables")) {
 # Original model
 SOR_initial<-matrix(ncol = 5, nrow = 3, 
                  dimnames = list(c("30%", "50%","70%"),
-                                 c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                 c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==1 & MDAi==1 & SOR_present==1)
   SOR_initial[i,]<-c(quantile(data$Initial_SOR_proportion_worms, 
-                           probs=c(0.05,0.25,0.5,0.75,0.95)))
+                           probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 # Sensitivity Analysis
 SOR_initialSA<-matrix(ncol = 5, nrow = 3, 
                     dimnames = list(c("30%", "50%","70%"),
-                                    c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                    c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(dfSA, Endemic_prevalence==ABRall[i] & MDA_frequency==1 & MDAi==1 & SOR_present==1)
   SOR_initialSA[i,]<-c(quantile(data$Initial_SOR_proportion_worms, 
-                              probs=c(0.05,0.25,0.5,0.75,0.95)))
+                              probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 
@@ -42,22 +42,22 @@ for(i in 1:3){
 #Table S3
 S3Annual<-matrix(ncol = 5, nrow = 3, 
                          dimnames = list(c("30%", "50%","70%"),
-                                         c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                         c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==1 & MDAi==1 & SOR_present==1)
   S3Annual[i,]<-c(quantile(data$Final_Prevalence, 
-                                     probs=c(0.05,0.25,0.5,0.75,0.95)))
+                                     probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 S3Biannual<-matrix(ncol = 5, nrow = 3, 
                          dimnames = list(c("30%", "50%","70%"),
-                                         c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                         c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==0.5 & MDAi==1 & SOR_present==1)
   S3Biannual[i,]<-c(quantile(data$Final_Prevalence, 
-                                   probs=c(0.05,0.25,0.5,0.75,0.95)))
+                                   probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 
@@ -65,22 +65,22 @@ for(i in 1:3){
 #Table S4
 S4Annual<-matrix(ncol = 5, nrow = 3, 
                          dimnames = list(c("30%", "50%","70%"),
-                                         c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                         c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==1 & MDAi==1 & SOR_present==0)
   S4Annual[i,]<-c(quantile(data$Final_Prevalence, 
-                                   probs=c(0.05,0.25,0.5,0.75,0.95)))
+                                   probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 S4Biannual<-matrix(ncol = 5, nrow = 3, 
                            dimnames = list(c("30%", "50%","70%"),
-                                           c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                           c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==0.5 & MDAi==1 & SOR_present==0)
   S4Biannual[i,]<-c(quantile(data$Final_Prevalence, 
-                                     probs=c(0.05,0.25,0.5,0.75,0.95)))
+                                     probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 
@@ -89,22 +89,22 @@ for(i in 1:3){
 
 S5Annual<-matrix(ncol = 5, nrow = 3, 
                          dimnames = list(c("30%", "50%","70%"),
-                                         c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                         c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==1 & MDAi==0 & SOR_present==1)
   S5Annual[i,]<-c(quantile(data$Final_Prevalence, 
-                                     probs=c(0.05,0.25,0.5,0.75,0.95)))
+                                     probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 S5Biannual<-matrix(ncol = 5, nrow = 3, 
                            dimnames = list(c("30%", "50%","70%"),
-                                           c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                           c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==0.5 & MDAi==0 & SOR_present==1)
   S5Biannual[i,]<-c(quantile(data$Final_Prevalence, 
-                                       probs=c(0.05,0.25,0.5,0.75,0.95)))
+                                       probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 ################################################################################
@@ -112,22 +112,22 @@ for(i in 1:3){
 
 S6Annual<-matrix(ncol = 5, nrow = 3, 
                          dimnames = list(c("30%", "50%","70%"),
-                                         c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                         c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==1 & MDAi==0 & SOR_present==0)
   S6Annual[i,]<-c(quantile(data$Final_Prevalence, 
-                                   probs=c(0.05,0.25,0.5,0.75,0.95)))
+                                   probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 S6Biannual<-matrix(ncol = 5, nrow = 3, 
                            dimnames = list(c("30%", "50%","70%"),
-                                           c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                           c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==0.5 & MDAi==0 & SOR_present==0)
   S6Biannual[i,]<-c(quantile(data$Final_Prevalence, 
-                                     probs=c(0.05,0.25,0.5,0.75,0.95)))
+                                     probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 ################################################################################
@@ -137,22 +137,22 @@ for(i in 1:3){
 #Table S7
 S7Annual<-matrix(ncol = 5, nrow = 3, 
                  dimnames = list(c("30%", "50%","70%"),
-                                 c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                 c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==1 & MDAi==1 & SOR_present==1 & is.na(pOTTIS)==0)
   S7Annual[i,]<-c(quantile(data$pOTTIS, 
-                           probs=c(0.05,0.25,0.5,0.75,0.95)))
+                           probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 S7Biannual<-matrix(ncol = 5, nrow = 3, 
                    dimnames = list(c("30%", "50%","70%"),
-                                   c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                   c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==0.5 & MDAi==1 & SOR_present==1 & is.na(pOTTIS)==0)
   S7Biannual[i,]<-c(quantile(data$pOTTIS, 
-                             probs=c(0.05,0.25,0.5,0.75,0.95)))
+                             probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 
@@ -160,22 +160,22 @@ for(i in 1:3){
 #Table S8
 S8Annual<-matrix(ncol = 5, nrow = 3, 
                  dimnames = list(c("30%", "50%","70%"),
-                                 c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                 c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==1 & MDAi==1 & SOR_present==0 & is.na(pOTTIS)==0)
   S8Annual[i,]<-c(quantile(data$pOTTIS, 
-                           probs=c(0.05,0.25,0.5,0.75,0.95)))
+                           probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 S8Biannual<-matrix(ncol = 5, nrow = 3, 
                    dimnames = list(c("30%", "50%","70%"),
-                                   c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                   c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==0.5 & MDAi==1 & SOR_present==0 & is.na(pOTTIS)==0)
   S8Biannual[i,]<-c(quantile(data$pOTTIS, 
-                             probs=c(0.05,0.25,0.5,0.75,0.95)))
+                             probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 
@@ -184,22 +184,22 @@ for(i in 1:3){
 
 S9Annual<-matrix(ncol = 5, nrow = 3, 
                  dimnames = list(c("30%", "50%","70%"),
-                                 c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                 c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==1 & MDAi==0 & SOR_present==1 & is.na(pOTTIS)==0)
   S9Annual[i,]<-c(quantile(data$pOTTIS, 
-                           probs=c(0.05,0.25,0.5,0.75,0.95)))
+                           probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 S9Biannual<-matrix(ncol = 5, nrow = 3, 
                    dimnames = list(c("30%", "50%","70%"),
-                                   c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                   c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==0.5 & MDAi==0 & SOR_present==1 & is.na(pOTTIS)==0)
   S9Biannual[i,]<-c(quantile(data$pOTTIS, 
-                             probs=c(0.05,0.25,0.5,0.75,0.95)))
+                             probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 ################################################################################
@@ -207,22 +207,22 @@ for(i in 1:3){
 
 S10Annual<-matrix(ncol = 5, nrow = 3, 
                  dimnames = list(c("30%", "50%","70%"),
-                                 c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                 c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==1 & MDAi==0 & SOR_present==0 & is.na(pOTTIS)==0)
   S10Annual[i,]<-c(quantile(data$pOTTIS, 
-                           probs=c(0.05,0.25,0.5,0.75,0.95)))
+                           probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 S10Biannual<-matrix(ncol = 5, nrow = 3, 
                    dimnames = list(c("30%", "50%","70%"),
-                                   c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                   c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==0.5 & MDAi==0 & SOR_present==0 & is.na(pOTTIS)==0)
   S10Biannual[i,]<-c(quantile(data$pOTTIS, 
-                             probs=c(0.05,0.25,0.5,0.75,0.95)))
+                             probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 ################################################################################
@@ -232,22 +232,22 @@ for(i in 1:3){
 #Table S11
 S11Annual<-matrix(ncol = 5, nrow = 3, 
                  dimnames = list(c("30%", "50%","70%"),
-                                 c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                 c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==1 & MDAi==1 & SOR_present==1 )
   S11Annual[i,]<-c(quantile(data$Final_SOR_proportion_worms20yr, 
-                           probs=c(0.05,0.25,0.5,0.75,0.95)))
+                           probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 S11Biannual<-matrix(ncol = 5, nrow = 3, 
                    dimnames = list(c("30%", "50%","70%"),
-                                   c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                   c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==0.5 & MDAi==1 & SOR_present==1 )
   S11Biannual[i,]<-c(quantile(data$Final_SOR_proportion_worms20yr, 
-                             probs=c(0.05,0.25,0.5,0.75,0.95)))
+                             probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 
@@ -257,22 +257,22 @@ for(i in 1:3){
 
 S12Annual<-matrix(ncol = 5, nrow = 3, 
                  dimnames = list(c("30%", "50%","70%"),
-                                 c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                 c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==1 & MDAi==0 & SOR_present==1 )
   S12Annual[i,]<-c(quantile(data$Final_SOR_proportion_worms20yr, 
-                           probs=c(0.05,0.25,0.5,0.75,0.95)))
+                           probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 S12Biannual<-matrix(ncol = 5, nrow = 3, 
                    dimnames = list(c("30%", "50%","70%"),
-                                   c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                   c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==0.5 & MDAi==0 & SOR_present==1 )
   S12Biannual[i,]<-c(quantile(data$Final_SOR_proportion_worms20yr, 
-                             probs=c(0.05,0.25,0.5,0.75,0.95)))
+                             probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 
@@ -286,22 +286,22 @@ df<-dfSA
 #Table S14
 S14Annual<-matrix(ncol = 5, nrow = 3, 
                  dimnames = list(c("30%", "50%","70%"),
-                                 c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                 c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==1 & MDAi==1 & SOR_present==1)
   S14Annual[i,]<-c(quantile(data$Final_Prevalence, 
-                           probs=c(0.05,0.25,0.5,0.75,0.95)))
+                           probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 S14Biannual<-matrix(ncol = 5, nrow = 3, 
                    dimnames = list(c("30%", "50%","70%"),
-                                   c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                   c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==0.5 & MDAi==1 & SOR_present==1)
   S14Biannual[i,]<-c(quantile(data$Final_Prevalence, 
-                             probs=c(0.05,0.25,0.5,0.75,0.95)))
+                             probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 
@@ -309,22 +309,22 @@ for(i in 1:3){
 #Table S15
 S15Annual<-matrix(ncol = 5, nrow = 3, 
                  dimnames = list(c("30%", "50%","70%"),
-                                 c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                 c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==1 & MDAi==1 & SOR_present==0)
   S15Annual[i,]<-c(quantile(data$Final_Prevalence, 
-                           probs=c(0.05,0.25,0.5,0.75,0.95)))
+                           probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 S15Biannual<-matrix(ncol = 5, nrow = 3, 
                    dimnames = list(c("30%", "50%","70%"),
-                                   c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                   c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==0.5 & MDAi==1 & SOR_present==0)
   S15Biannual[i,]<-c(quantile(data$Final_Prevalence, 
-                             probs=c(0.05,0.25,0.5,0.75,0.95)))
+                             probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 
@@ -333,22 +333,22 @@ for(i in 1:3){
 
 S16Annual<-matrix(ncol = 5, nrow = 3, 
                  dimnames = list(c("30%", "50%","70%"),
-                                 c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                 c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==1 & MDAi==0 & SOR_present==1)
   S16Annual[i,]<-c(quantile(data$Final_Prevalence, 
-                           probs=c(0.05,0.25,0.5,0.75,0.95)))
+                           probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 S16Biannual<-matrix(ncol = 5, nrow = 3, 
                    dimnames = list(c("30%", "50%","70%"),
-                                   c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                   c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==0.5 & MDAi==0 & SOR_present==1)
   S16Biannual[i,]<-c(quantile(data$Final_Prevalence, 
-                             probs=c(0.05,0.25,0.5,0.75,0.95)))
+                             probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 ################################################################################
@@ -356,22 +356,22 @@ for(i in 1:3){
 
 S17Annual<-matrix(ncol = 5, nrow = 3, 
                  dimnames = list(c("30%", "50%","70%"),
-                                 c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                 c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==1 & MDAi==0 & SOR_present==0)
   S17Annual[i,]<-c(quantile(data$Final_Prevalence, 
-                           probs=c(0.05,0.25,0.5,0.75,0.95)))
+                           probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 S17Biannual<-matrix(ncol = 5, nrow = 3, 
                    dimnames = list(c("30%", "50%","70%"),
-                                   c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                   c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==0.5 & MDAi==0 & SOR_present==0)
   S17Biannual[i,]<-c(quantile(data$Final_Prevalence, 
-                             probs=c(0.05,0.25,0.5,0.75,0.95)))
+                             probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 ################################################################################
@@ -381,22 +381,22 @@ for(i in 1:3){
 #Table S18
 S18Annual<-matrix(ncol = 5, nrow = 3, 
                  dimnames = list(c("30%", "50%","70%"),
-                                 c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                 c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==1 & MDAi==1 & SOR_present==1 & is.na(pOTTIS)==0)
   S18Annual[i,]<-c(quantile(data$pOTTIS, 
-                           probs=c(0.05,0.25,0.5,0.75,0.95)))
+                           probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 S18Biannual<-matrix(ncol = 5, nrow = 3, 
                    dimnames = list(c("30%", "50%","70%"),
-                                   c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                   c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==0.5 & MDAi==1 & SOR_present==1 & is.na(pOTTIS)==0)
   S18Biannual[i,]<-c(quantile(data$pOTTIS, 
-                             probs=c(0.05,0.25,0.5,0.75,0.95)))
+                             probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 
@@ -404,22 +404,22 @@ for(i in 1:3){
 #Table S19
 S19Annual<-matrix(ncol = 5, nrow = 3, 
                  dimnames = list(c("30%", "50%","70%"),
-                                 c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                 c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==1 & MDAi==1 & SOR_present==0 & is.na(pOTTIS)==0)
   S19Annual[i,]<-c(quantile(data$pOTTIS, 
-                           probs=c(0.05,0.25,0.5,0.75,0.95)))
+                           probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 S19Biannual<-matrix(ncol = 5, nrow = 3, 
                    dimnames = list(c("30%", "50%","70%"),
-                                   c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                   c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==0.5 & MDAi==1 & SOR_present==0 & is.na(pOTTIS)==0)
   S19Biannual[i,]<-c(quantile(data$pOTTIS, 
-                             probs=c(0.05,0.25,0.5,0.75,0.95)))
+                             probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 
@@ -428,22 +428,22 @@ for(i in 1:3){
 
 S20Annual<-matrix(ncol = 5, nrow = 3, 
                  dimnames = list(c("30%", "50%","70%"),
-                                 c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                 c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==1 & MDAi==0 & SOR_present==1 & is.na(pOTTIS)==0)
   S20Annual[i,]<-c(quantile(data$pOTTIS, 
-                           probs=c(0.05,0.25,0.5,0.75,0.95)))
+                           probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 S20Biannual<-matrix(ncol = 5, nrow = 3, 
                    dimnames = list(c("30%", "50%","70%"),
-                                   c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                   c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==0.5 & MDAi==0 & SOR_present==1 & is.na(pOTTIS)==0)
   S20Biannual[i,]<-c(quantile(data$pOTTIS, 
-                             probs=c(0.05,0.25,0.5,0.75,0.95)))
+                             probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 ################################################################################
@@ -451,22 +451,22 @@ for(i in 1:3){
 
 S21Annual<-matrix(ncol = 5, nrow = 3, 
                   dimnames = list(c("30%", "50%","70%"),
-                                  c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                  c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==1 & MDAi==0 & SOR_present==0 & is.na(pOTTIS)==0)
   S21Annual[i,]<-c(quantile(data$pOTTIS, 
-                            probs=c(0.05,0.25,0.5,0.75,0.95)))
+                            probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 S21Biannual<-matrix(ncol = 5, nrow = 3, 
                     dimnames = list(c("30%", "50%","70%"),
-                                    c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                    c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==0.5 & MDAi==0 & SOR_present==0 & is.na(pOTTIS)==0)
   S21Biannual[i,]<-c(quantile(data$pOTTIS, 
-                              probs=c(0.05,0.25,0.5,0.75,0.95)))
+                              probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 ################################################################################
@@ -476,22 +476,22 @@ for(i in 1:3){
 #Table S22
 S22Annual<-matrix(ncol = 5, nrow = 3, 
                   dimnames = list(c("30%", "50%","70%"),
-                                  c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                  c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==1 & MDAi==1 & SOR_present==1 )
   S22Annual[i,]<-c(quantile(data$Final_SOR_proportion_worms20yr, 
-                            probs=c(0.05,0.25,0.5,0.75,0.95)))
+                            probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 S22Biannual<-matrix(ncol = 5, nrow = 3, 
                     dimnames = list(c("30%", "50%","70%"),
-                                    c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                    c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==0.5 & MDAi==1 & SOR_present==1 )
   S22Biannual[i,]<-c(quantile(data$Final_SOR_proportion_worms20yr, 
-                              probs=c(0.05,0.25,0.5,0.75,0.95)))
+                              probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 
@@ -501,22 +501,22 @@ for(i in 1:3){
 
 S23Annual<-matrix(ncol = 5, nrow = 3, 
                   dimnames = list(c("30%", "50%","70%"),
-                                  c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                  c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==1 & MDAi==0 & SOR_present==1 )
   S23Annual[i,]<-c(quantile(data$Final_SOR_proportion_worms20yr, 
-                            probs=c(0.05,0.25,0.5,0.75,0.95)))
+                            probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 S23Biannual<-matrix(ncol = 5, nrow = 3, 
                     dimnames = list(c("30%", "50%","70%"),
-                                    c("0.05", "0.25", "0.5", "0.75","0.95")))
+                                    c("0.025", "0.25", "0.5", "0.75","0.975")))
 
 for(i in 1:3){
   data=subset(df, Endemic_prevalence==ABRall[i] & MDA_frequency==0.5 & MDAi==0 & SOR_present==1 )
   S23Biannual[i,]<-c(quantile(data$Final_SOR_proportion_worms20yr, 
-                              probs=c(0.05,0.25,0.5,0.75,0.95)))
+                              probs=c(0.025,0.25,0.5,0.75,0.975)))
 }
 
 

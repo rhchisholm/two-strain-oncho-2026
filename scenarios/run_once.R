@@ -5,6 +5,7 @@ library(grid)
 library(epiR)
 library(lhs)
 library(deSolve)
+library(ggplot2)
 
 # load equations (define functions) and fixed parameters
 source("Single_scenario.R")
@@ -12,20 +13,20 @@ source("Single_scenario.R")
 # SCENARIO parameters
 MDAi<-1 # I: MDAi=1, M: MDAi=0
 Dburnin<-300 # duration of burnin
-ABRall<-c(27000) # annual biting rates
+ABRall<-c(4600) # annual biting rates
 MDAfall<-c(1) # time between MDA rounds (years)
 MDAnall<-c(20) # total number of MDA rounds
 ABR<-ABRall[1]
 MDAf <-MDAfall[1]
 NumberMDAs <- MDAnall[1]
 
-my_CGR_GG<-0.95
-my_CGR_SS<-0.2
-my_CGR_SG<-0.75
-my_dom_c_SS<-9
-my_dom_c_SG<-9
-my_ratio<-5 # relative rate of loss of embryostatic effect ivermectin in SOR compared to GR worms
-my_r<-0.55 
+my_CGR_GG<-0.945
+my_CGR_SS<-0.218
+my_CGR_SG<-0.729
+my_dom_c_SS<-11.546
+my_dom_c_SG<-14.763
+my_ratio<-6.138 # relative rate of loss of embryostatic effect ivermectin in SOR compared to GR worms
+my_r<-0.4 
 my_zeta<-0.3 # set cumulative effect of ivermectin on GR worm fertility here
 
 PostParms<-matrix(c(my_CGR_GG, my_CGR_SS, my_CGR_SG,
@@ -49,11 +50,13 @@ RecSOR_proportion_mf <- 1 - (yout[,5])/(yout[,5]+yout[,9])
 RecPrevalenceGR <- prevalence(yout[,5],my_k0,my_k1)
 RecPrevalenceSOR <- prevalence(yout[,9],my_k0,my_k1)
 RecPrevalence <- prevalence(yout[,9]+yout[,5],my_k0,my_k1)
+wormsS <- yout[,8]+yout[,7]
+wormsG <- yout[,3]+yout[,4]
 
-data <- c(tt,RecSOR_proportion_worms,RecSOR_proportion_mf,RecPrevalenceGR,RecPrevalenceSOR, RecPrevalence)
+data <- c(tt,RecSOR_proportion_worms,RecSOR_proportion_mf,RecPrevalenceGR,RecPrevalenceSOR, RecPrevalence,wormsS,wormsG)
 data <- matrix(data, nrow=length(RecSOR_proportion_worms),length(data))
 dft <- as.data.frame(data)
-names(dft) <- c("time","SOR_worm_proportion","SOR_mf_proportion","Prevalence_GR","Prevalence_SOR","Prevalence")
+names(dft) <- c("time","SOR_worm_proportion","SOR_mf_proportion","Prevalence_GR","Prevalence_SOR","Prevalence","SOR_worms","GR_worms")
 
 f <- ggplot(dft, aes(x = time)) + 
   geom_line(aes(y=Prevalence, color = "Total")) +
@@ -73,3 +76,12 @@ g <- ggplot(dft, aes(x = time)) +
   ylab("Proportion SOR") + theme_bw() + theme(legend.position = c(0.9,0.85))
 
 g
+
+h <- ggplot(dft, aes(x = time)) + 
+  geom_line(aes(y=SOR_worms, color = "SOR")) +
+  geom_line(aes(y = GR_worms, color = "GR")) +
+  labs(color = "") +
+  xlab("Time (years)") +
+  ylab("Number of worms") + theme_bw() + theme(legend.position = c(0.9,0.85))
+
+h
