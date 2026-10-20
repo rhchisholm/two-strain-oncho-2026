@@ -150,16 +150,16 @@ MDAn_sens <- c(
 VR_sensitivity_files <- c(
   
   Moderate =
-    "../fitting/data_files/primary_retained_parameter_outcomes_100.Rdata",
+    "../fitting/data_files/primary_retained_parameter_outcomesSA_100.Rdata",
   
   Weak =
-    "../fitting/data_files/primary_retained_parameter_outcomesSA2_100",
+    "../fitting/data_files/primary_retained_parameter_outcomesSA2_100.Rdata",
   
   No_selection =
-    "../fitting/data_files/primary_retained_parameter_outcomesSA5_100",
+    "../fitting/data_files/primary_retained_parameter_outcomesSA5_100.Rdata",
   
   Wider_prevalence =
-    "../fitting/data_files/primary_retained_parameter_outcomesSA3_100"
+    "../fitting/data_files/primary_retained_parameter_outcomesSA3_100.Rdata"
 )
 
 ## Short labels used in output filenames
