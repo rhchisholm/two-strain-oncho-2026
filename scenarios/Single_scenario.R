@@ -222,7 +222,37 @@ single_VR <- function(PostParms,num_samples,filename,MDAf,NumberMDAs,ABR,MDAi,Db
       yout<-combineDFs(yout,yout2)
     }
     # trim trajectories to save:
-    yout<-yout[abs(yout[,1] %% 0.05) < 1e-9, ]
+    #yout<-yout[abs(yout[,1] %% 0.05) < 1e-9, ]
+    keep <- abs(
+      yout[,1] / 0.05 -
+        round(yout[,1] / 0.05)
+    ) < 1e-6
+    
+    yout <- yout[keep, , drop = FALSE]
+    ## Retain regular 0.05-year points
+    keep_regular <- abs(
+      yout[,1] / 0.05 -
+        round(yout[,1] / 0.05)
+    ) < 1e-6
+    
+    ## Always retain exact MDA-round times
+    MDA_times <- seq(
+      from = 0,
+      to = NumberMDAs * MDAf,
+      by = MDAf
+    )
+    
+    keep_MDA <- vapply(
+      yout[,1],
+      function(t) any(abs(t - MDA_times) < 1e-6),
+      logical(1)
+    )
+    
+    yout <- yout[
+      keep_regular | keep_MDA,
+      ,
+      drop = FALSE
+    ]
     yout
     
   }
@@ -441,7 +471,37 @@ single_GR <- function(PostParms,num_samples,filename,MDAf,NumberMDAs,ABR,MDAi,Db
       yout<-combineDFs(yout,yout2)
     }
     # trim trajectories to save:
-    yout<-yout[abs(yout[,1] %% 0.05) < 1e-9, ]
+    #yout<-yout[abs(yout[,1] %% 0.05) < 1e-9, ]
+    keep <- abs(
+      yout[,1] / 0.05 -
+        round(yout[,1] / 0.05)
+    ) < 1e-6
+    
+    yout <- yout[keep, , drop = FALSE]
+    ## Retain regular 0.05-year points
+    keep_regular <- abs(
+      yout[,1] / 0.05 -
+        round(yout[,1] / 0.05)
+    ) < 1e-6
+    
+    ## Always retain exact MDA-round times
+    MDA_times <- seq(
+      from = 0,
+      to = NumberMDAs * MDAf,
+      by = MDAf
+    )
+    
+    keep_MDA <- vapply(
+      yout[,1],
+      function(t) any(abs(t - MDA_times) < 1e-6),
+      logical(1)
+    )
+    
+    yout <- yout[
+      keep_regular | keep_MDA,
+      ,
+      drop = FALSE
+    ]
     yout
     
   }

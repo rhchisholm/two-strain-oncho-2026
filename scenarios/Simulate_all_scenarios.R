@@ -75,22 +75,24 @@ MDAi<-1 # I: MDAi=1, M: MDAi=0
 #   }
 # }
 
-# # Original model with GR only, with MDAm
-# filenames<-c(list("output/MDAm_Low_B_GR.Rdata", "output/MDAm_Med_B_GR.Rdata","output/MDAm_Hig_B_GR.Rdata"),
-#              list("output/MDAm_Low_A_GR.Rdata", "output/MDAm_Med_A_GR.Rdata", "output/MDAm_Hig_A_GR.Rdata"))
-# 
-# MDAi<-0 # I: MDAi=1, M: MDAi=0
-# 
-# for(ii in 1:3){
-#   ABR<-ABRall[ii]
-#   for(k in 1:2){
-#     ind<-(k-1)*3+ii
-#     MDAf <-MDAfall[k]
-#     NumberMDAs <- MDAnall[k]
-#     filename<-filenames[[ind]]
-#     single_GR(PostParms,num_samples,filename,MDAf,NumberMDAs,ABR,MDAi,Dburnin)
-#   }
-# }
+### From here:
+
+# Original model with GR only, with MDAm
+filenames<-c(list("output/MDAm_Low_B_GR.Rdata", "output/MDAm_Med_B_GR.Rdata","output/MDAm_Hig_B_GR.Rdata"),
+             list("output/MDAm_Low_A_GR.Rdata", "output/MDAm_Med_A_GR.Rdata", "output/MDAm_Hig_A_GR.Rdata"))
+
+MDAi<-0 # I: MDAi=1, M: MDAi=0
+
+for(ii in 1:3){
+  ABR<-ABRall[ii]
+  for(k in 1:2){
+    ind<-(k-1)*3+ii
+    MDAf <-MDAfall[k]
+    NumberMDAs <- MDAnall[k]
+    filename<-filenames[[ind]]
+    single_GR(PostParms,num_samples,filename,MDAf,NumberMDAs,ABR,MDAi,Dburnin)
+  }
+}
 
 ###############################################################################
 ## SENSITIVITY ANALYSIS SCENARIOS
