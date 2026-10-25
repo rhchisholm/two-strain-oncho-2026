@@ -38,6 +38,10 @@ lg0<-0*t0+10
 ls0<-1*lg0
 
 # Specify LHS distributions
+if (is.null(seednumber)) {
+  seednumber <- sample.int(.Machine$integer.max, 1)
+}
+set.seed(seednumber)
 LHSsamples<- 1000 # Number of LHS samples
 LHSparameters<- 3 # number of LHS parameters 
 uniformsamples <- randomLHS(LHSsamples,LHSparameters) # LHS samples from U[0,1]
@@ -73,11 +77,10 @@ foreach::getDoParRegistered()
 #how many workers are available? (optional)
 foreach::getDoParWorkers()
 
-
 # Run burnin, determine equilibrium proportion of worms
 Output <- foreach(
-  i=1:LHSsamples, 
-  .combine=cbind
+  i=1:LHSsamples #, 
+  #.combine=cbind
   ) %dopar% {
   
   # Specify parameter values from sample
@@ -128,6 +131,7 @@ Output <- foreach(
 parallel::stopCluster(cl = my.cluster)
 
 ## Save fitting data
+Output <- do.call(cbind, Output)
 l <- vector("list", 2)
 l[[1]]<-t(Output)
 l[[2]]<-uniformsamples

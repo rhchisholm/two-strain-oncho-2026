@@ -109,7 +109,7 @@ BIsamplen <- c()
 
 if(SA==0){
   for(n in 1:num_samples){
-    for(i in 1:50){
+    for(i in 1:100){
       if(dSOR[[n]][i]>0.1){ #original
         if(fPrev[[n]][i]>0.1){
           if(fPrev[[n]][i]<0.12){
@@ -127,7 +127,7 @@ if(SA==0){
 }
 if(SA==1){
   for(n in 1:num_samples){
-    for(i in 1:50){
+    for(i in 1:100){
       if(dSOR[[n]][i]>0.05){ 
         if(dSOR[[n]][i]<0.1){ 
           if(fPrev[[n]][i]>0.1){
@@ -142,6 +142,60 @@ if(SA==1){
           }
         } 
       }
+    }
+  }
+}
+if(SA==2){
+  for(n in 1:num_samples){
+    for(i in 1:100){
+      if(dSOR[[n]][i]<0.05){ 
+        if(fPrev[[n]][i]>0.1){
+          if(fPrev[[n]][i]<0.12){
+            p <- c(preMDA[[n]][6:8],params[[n]][i,])
+            FinalParams <-rbind(FinalParams, p)
+            FinalPrev <- rbind(FinalPrev,fPrev[[n]][i])
+            FinaldSOR <- rbind(FinaldSOR,dSOR[[n]][i])
+            FinalSOR <- rbind(FinalSOR,fSOR[[n]][i])
+            BIsamplen <- rbind(BIsamplen, n)
+          }
+        }
+      }
+    }
+  }
+}
+if(SA==3){
+  for(n in 1:num_samples){
+    for(i in 1:100){
+      if(dSOR[[n]][i]>0.1){ #original
+        if(fPrev[[n]][i]>0.08){
+          if(fPrev[[n]][i]<0.14){
+            p <- c(preMDA[[n]][6:8],params[[n]][i,])
+            FinalParams <-rbind(FinalParams, p)
+            FinalPrev <- rbind(FinalPrev,fPrev[[n]][i])
+            FinaldSOR <- rbind(FinaldSOR,dSOR[[n]][i])
+            FinalSOR <- rbind(FinalSOR,fSOR[[n]][i])
+            BIsamplen <- rbind(BIsamplen, n)
+          }
+        } 
+      }
+    }
+  }
+}
+if(SA==5){
+  for(n in 1:num_samples){
+    for(i in 1:100){
+      #if(dSOR[[n]][i]>0.1){ #original
+        if(fPrev[[n]][i]>0.1){
+          if(fPrev[[n]][i]<0.12){
+            p <- c(preMDA[[n]][6:8],params[[n]][i,])
+            FinalParams <-rbind(FinalParams, p)
+            FinalPrev <- rbind(FinalPrev,fPrev[[n]][i])
+            FinaldSOR <- rbind(FinaldSOR,dSOR[[n]][i])
+            FinalSOR <- rbind(FinalSOR,fSOR[[n]][i])
+            BIsamplen <- rbind(BIsamplen, n)
+          }
+        } 
+      #}
     }
   }
 }

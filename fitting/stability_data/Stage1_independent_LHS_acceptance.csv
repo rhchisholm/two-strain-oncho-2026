@@ -1,0 +1,4 @@
+"design","N","n_accepted","acceptance_rate"
+"Primary (N=1000)",1000,157,0.157
+"Independent 1 (N=250)",250,43,0.172
+"Independent 2 (N=250)",250,48,0.192

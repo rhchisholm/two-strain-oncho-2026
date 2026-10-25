@@ -29,7 +29,7 @@ indv2<-which(l[[2]][,1]-l[[2]][,3]>0 & l[[2]][,3]-l[[2]][,2]>0 & l[[1]][,1]< 0.1
 num_samples<-length(indv2)
 
 # Specify LHS distributions
-LHSsamples<- 50 # Number of LHS samples per burnin
+LHSsamples<- 100 # Number of LHS samples per burnin
 LHSparameters<- 4 # number of LHS parameters 
 uniformsamples <- randomLHS(LHSsamples,LHSparameters) # LHS samples from U[0,1]
 minmaxvalues <- matrix(0, nrow = LHSparameters, ncol = 4) 
