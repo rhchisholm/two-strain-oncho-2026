@@ -1,52 +1,502 @@
-READ ME for folder "fitting"
-Author: Rebecca Chisholm, La Trobe University, 2026
+# Model calibration, stability and sensitivity analyses
 
-Code in this folder was developed to 
-- fit the variable response model to data from Asubende 
-- fit the GR-only model to data from Asubende 
-- run annual and biannual MDA scenarios
-- plot figures in manuscript
+Author:Rebecca Chisholm, La Trobe University, 2026
 
-Fitting_VR_model.R
-Run this to fit variable response model to annual MDAi data from Asubende
+## Overview
 
-Fitting_GR_only model.R
-Run this to fit GR only model to annual MDAi data from Asubende.
-Must be run after running Fitting_VR_model.R
+This folder contains the code used to calibrate the variable-response (VR) and 
+GR-only onchocerciasis transmission models, assess the stability of the Latin 
+hypercube sampling (LHS) used for calibration, perform calibration sensitivity 
+analyses, and reproduce the associated manuscript figures and supplementary 
+tables.
 
-Run_biannual_MDA_vr_model.R 
-This runs annual and then biannual MDA for accepted posterior trajectories for the variable response model (with cumulative effect) for the original fitted model and the sensitivity analysis
-Outputs: Final_posterior_burnins_plusbiannualMDAs_cumu.Rdata,
-Final_posterior_burnins_plusbiannualMDAs_cumuSA.Rdata
+The full calibration and projection analyses generate large raw simulation files 
+containing individual model trajectories. These large files are not included in 
+the repository. Instead, compact processed datasets sufficient to reproduce the 
+manuscript figures and tables are provided.
 
-Run_biannual_MDA_gr_model.R 
-This runs annual and then biannual MDA for accepted posterior trajectories for the GR_only model (with cumulative effect)
-Outputs: GR_only_model_final_stats.Rdata, GR_only_model_full_trajectory.Rdata
+The workflow therefore has two components:
+1. **Full analysis workflow** — runs the model calibration and projection 
+  simulations and creates the processed data objects.
+2. **Repository workflow** — uses the supplied compact processed data to 
+  reproduce the manuscript figures and tables without rerunning the 
+  computationally intensive simulations.
 
-Figure_2.R
-Run this to create figure 2 in manuscript and associated sensitivity analysis plot in supplementary
-(Need to run all of the above scripts first if you don’t have the Rdata files generated from these scripts)
+The historical object and file name `posteriors` is retained in some scripts. 
+These objects contain retained parameter combinations and should not be 
+interpreted as Bayesian posterior samples.
 
-Create_supp_figures_and_tables.R
-Run this to create Figures S1, S2, S3, S4, S6, S8 and matrices storing statistics for supp tables 2, 9
+## Core model files
 
-Other scripts that are necessary to run these scripts are:
+### `equations.R`
 
-fixed-parameters.R
-Lists the values of parameters that are fixed in fitting process.  
+Contains the model equations and functions used to simulate the transmission 
+model.
 
-equations.R
-This script included functions 
-- describing the equations of the model (with and without cumulative effect) 
-- that calculate lags in the delay differential equations
-- that calculate the mf prevalence from the mean mf load variables
-- calculate selective effect of MDA on phenotype inheritance parameters
+### `fixed-parameters.R`
 
-These are saved in "r_files" and are used in Fitting_VR_model.R 
-(their functions are described in this script):
-- Fitting_phenotype_parameters.R
-- Create_burnins_from_posterior_samples.R
-- Fitting_SOR_response_parameters_from_posterior_burnins.R
-- Process_output.R
+Contains the fixed model parameter values. The annual biting rate (ABR) is 
+specified before sourcing this file.
 
+## Variable-response model calibration
 
+### `Fitting_VR_model.R`
+
+This is the main script used to calibrate the variable-response model.
+
+Calibration is performed in two stages.
+
+### Stage 1: inheritance parameters
+
+Stage 1:
+- generates 1000 LHS samples of the three phenotype-inheritance parameters;
+- simulates each parameter set to pre-MDA endemic equilibrium;
+- retains parameter sets producing a pre-MDA SOR worm proportion of 0.05–0.15; 
+- requires the inheritance ordering
+
+  `c_GR,GR > c0_GR,SOR > c0_SOR,SOR`.
+
+The primary design retains 157 Stage 1 inheritance parameter sets.
+
+Important Stage 1 outputs are:
+
+`data_files/fitting_burnin_65000_UU.Rdata`
+
+Results from the 1000-point inheritance-parameter LHS.
+
+`data_files/burnin_157_ABR_65000_UU.Rdata`
+
+Burn-in trajectories for the inheritance parameter sets retained following Stage 1.
+
+### Stage 2: MDA-effect parameters
+
+For each inheritance parameter set retained from Stage 1, Stage 2 samples 100 
+combinations of the four MDA-effect parameters:
+- `s_SOR,SOR`
+- `s_SOR,GR`
+- `f`
+- `y`
+
+Each parameter combination is used to simulate the 20-year annual MDAi program 
+using the Asubende treatment-coverage history.
+
+The primary calibration requires:
+- final mf prevalence of 10–12%;
+- an increase in SOR worm proportion >0.10 during the annual MDAi program; and
+- the final inheritance-parameter constraints
+  `c0_SOR,SOR < 0.5` and `c0_GR,SOR > 0.5`.
+
+The primary analysis assumes a cumulative effect of repeated ivermectin 
+treatment on GR worm fertility.
+
+Important Stage 2 outputs include:
+
+`data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_cumu_100.Rdata`
+
+Simulation output from the primary 100-point Stage 2 LHS.
+
+`data_files/posteriors_ABR_65000_UU_cumu_100.Rdata`
+
+Parameter combinations retained under the primary calibration.
+
+The complete Stage 2 analysis is also performed without the cumulative 
+ivermectin effect as a model-structure comparison. Corresponding files 
+contain `no_cumu` in their filenames.
+
+## Calibration sensitivity analyses
+
+Four alternative calibration assumptions are considered.
+
+1. **Moderate increase**  
+   Final mf prevalence = 10–12%; increase in SOR worm proportion = 0.05–0.10.
+2. **Weak increase**  
+   Final mf prevalence = 10–12%; increase in SOR worm proportion = 0–0.05.
+3. **No offspring-phenotype selection**  
+   `s_SOR,SOR = s_SOR,GR = 0`; final mf prevalence = 10–12%; no criterion is 
+   imposed on the change in SOR worm proportion.
+4. **Wider prevalence**  
+   Final mf prevalence = 8–14%; increase in SOR worm proportion >0.10.
+
+Retained parameter files use the following historical suffixes:
+- `cumuSA_100` — moderate increase
+- `cumuSA2_100` — weak increase
+- `cumuSA3_100` — wider prevalence
+- `cumuSA5_100` — no offspring-phenotype selection
+
+Historical `SA4` is no longer used.
+
+## GR-only model calibration
+
+### `Fitting_GR_only_model.R`
+
+This script calibrates the GR-only model, in which SOR worms are absent.
+
+The calibration samples the MDA-effect parameter `y`, the proportionality 
+constant balancing the ivermectin-induced transition rates between fertile and 
+non-fertile female worms.
+
+The current calibration uses 2000 LHS samples of `y` and simulates the 20-year 
+annual MDAi program in Asubende.
+
+The primary calibration retains parameter values producing final mf prevalence 
+of 10–12%.
+
+The wider-prevalence sensitivity analysis retains parameter values producing 
+final mf prevalence of 8–14%.
+
+Important output:
+
+`data_files/GR_only_model_LHS_simulations_annual_cumu_2000.Rdata`
+
+This contains the GR-only annual-MDAi calibration simulations and sampled values 
+of `y`.
+
+## Subsequent biannual MDAi projections
+
+### `Run_biannual_MDA_vr_model.R`
+
+This script takes the retained VR parameter combinations and simulates the subsequent biannual MDAi period in Asubende.
+
+The current analyses are:
+- `sa = 1` — primary calibration
+- `sa = 2` — moderate-increase sensitivity analysis
+- `sa = 3` — weak-increase sensitivity analysis
+- `sa = 4` — wider-prevalence sensitivity analysis
+- `sa = 6` — no offspring-phenotype selection sensitivity analysis
+
+The main trajectory outputs include:
+- `Final_posterior_burnins_plusbiannualMDAs_cumu_100.Rdata`
+- `Final_posterior_burnins_plusbiannualMDAs_cumuSA_100.Rdata`
+- `Final_posterior_burnins_plusbiannualMDAs_cumuSA2_100.Rdata`
+- `Final_posterior_burnins_plusbiannualMDAs_cumuSA3_100.Rdata`
+- `Final_posterior_burnins_plusbiannualMDAs_cumuSA5_100.Rdata`
+
+These large trajectory files are generated by the full analysis but are not 
+required in the repository.
+
+### `Run_biannual_MDA_gr_model.R`
+
+This script generates the corresponding annual and subsequent biannual 
+trajectories for the GR-only model.
+
+The saved GR-only trajectories are generated for parameter values satisfying the 
+wider 8–14% final-prevalence criterion. The primary 10–12% calibration is a 
+nested subset of these trajectories and is selected during subsequent processing.
+
+Large outputs include:
+- `data_files/Final_posterior_burnins_GR_2000.Rdata`
+- `data_files/Final_posterior_burnins_plusbiannualMDAs_GR_cumu_2000.Rdata`
+
+These raw trajectory files are not required in the repository.
+
+## Processed retained-parameter and outcome data
+
+### `create_retained parameter_outcome_data_files.R`
+
+This script creates compact processed datasets containing retained VR parameter 
+combinations together with summary outcomes from:
+- the pre-MDA endemic equilibrium;
+- the 20-year annual MDAi calibration period; and
+- the subsequent 18-year biannual MDAi projection.
+
+Separate processed files are created for:
+- primary calibration;
+- moderate-increase sensitivity analysis;
+- weak-increase sensitivity analysis;
+- no offspring-phenotype selection sensitivity analysis; and
+- wider-prevalence sensitivity analysis.
+
+These compact files are suitable for inclusion in the repository and can be used 
+by downstream scenario and sensitivity-analysis scripts without loading the 
+large raw trajectory files.
+
+## Compact data for manuscript calibration figures
+
+### `create_compact_calibration_figure_data.R`
+
+This script is run once in the full analysis environment after the calibration 
+and projection simulations have been completed.
+
+It reads the large raw simulation objects and creates compact processed datasets 
+containing only the quantities required to reproduce manuscript Figure 2 and 
+supplementary Figures S2–S4.
+
+Outputs:
+
+### `data_processed/Figure2_plot_data.Rdata`
+
+Contains:
+- processed VR mf-prevalence trajectories required for Figure 2A;
+- processed GR-only mf-prevalence trajectories required for Figure 2A; and
+- final mf-prevalence distributions required for Figure 2B.
+
+### `data_processed/primary_calibration_figure_data.Rdata`
+
+Contains:
+- processed Stage 2 prior-predictive data required for Figure S2;
+- retained primary parameter values required for Figure S3; and
+- retained Asubende calibration and projection outcomes required for Figure S4.
+
+These two compact files are included in the repository. The large raw files used 
+to create them are not required to reproduce the figures.
+
+## Manuscript Figure 2
+
+### `Figure2.R`
+
+This script reproduces manuscript Figure 2 directly from:
+
+`data_processed/Figure2_plot_data.Rdata`
+
+Figure 2 compares mf-prevalence trajectories and final mf prevalence under 
+the calibrated SOR-present and no-SOR models during the Asubende annual MDAi 
+calibration period and subsequent biannual MDAi projection.
+
+Output:
+
+`figures/F2_100.png`
+
+The large raw trajectory files and model simulation code are not required to run 
+this plotting script.
+
+## Primary calibration supplementary figures
+
+### `create_primary_calibration_figures.R`
+
+This script reproduces supplementary Figures S2–S4 directly from:
+
+`data_processed/primary_calibration_figure_data.Rdata`
+
+It generates:
+- **Figure S2** — Stage 2 prior-predictive/calibration-space assessment;
+- **Figure S3** — distributions of retained parameter values under the primary calibration;
+- **Figure S4** — Asubende annual-MDAi calibration outcomes and subsequent biannual-MDAi projection outcomes.
+
+Outputs are saved in `figures/`.
+
+The large raw calibration and trajectory files are not required to run this 
+plotting script.
+
+## Stage 1 LHS stability
+
+### `stage1_lhs_stability.R`
+
+This script assesses the adequacy and reproducibility of the Stage 1 
+inheritance-parameter LHS.
+
+It examines:
+- cumulative acceptance proportions at increasing LHS sample sizes;
+- stability of medians and 2.5th–97.5th percentiles of accepted inheritance 
+  parameters;
+- the joint accepted parameter space identified among the first 800 and final 
+  200 samples; and
+- two independently generated 250-point LHS designs using different random seeds.
+
+Figures are saved in:
+
+`stability_figures/`
+
+Numerical summaries are saved in:
+
+`stability_data/`
+
+These analyses assess whether the retained Stage 1 parameter space is adequately 
+characterised and whether results depend strongly on the particular LHS 
+design/random seed.
+
+## Stage 2 LHS stability, parameter dependence and identifiability
+
+### `stage2_lhs_stability_identifiability.R`
+
+This script performs the main Stage 2 calibration diagnostics.
+
+It includes:
+
+- stability of calibration acceptance and final retention proportions as the 
+  number of MDA-effect LHS samples increases;
+- stability of medians and 2.5th–97.5th percentiles of retained parameters;
+- comparison of parameter regions identified by the first 80 and final 20 LHS 
+  points;
+- comparison of the primary 100-point Stage 2 design with an independent 
+  50-point design;
+- pairwise Spearman correlations among retained parameters;
+- practical-identifiability assessment based on the width of the retained 
+  2.5th–97.5th percentile interval relative to the corresponding prior range; and
+- stability and retained-parameter comparisons for the four calibration 
+  sensitivity analyses.
+
+Figures are saved in:
+
+`stability_figures/`
+
+Numerical summaries are saved in:
+
+`stability_data/`
+
+The practical-identifiability analysis is conditional on the specified model, 
+parameter prior ranges and calibration criteria. It is not a structural-
+identifiability analysis.
+
+## Asubende calibration sensitivity analyses
+
+### `sensitivity_analysis.R`
+
+This script compares Asubende outcomes across the primary calibration and four 
+sensitivity analyses.
+
+For each calibration it summarises:
+- final mf prevalence after the annual MDAi calibration period;
+- increase in SOR worm proportion during annual MDAi;
+- final SOR worm proportion after annual MDAi;
+- final mf prevalence following the subsequent biannual MDAi projection;
+- further increase in SOR worm proportion during the biannual projection; and
+- final SOR worm proportion following the biannual projection.
+
+Main outputs include:
+
+`stability_figures/Asubende_sensitivity_outcomes.png`
+
+`stability_data/Asubende_sensitivity_all_outcomes.csv`
+
+`stability_data/Asubende_sensitivity_summary.csv`
+
+The annual-MDAi outcomes are partly constrained by the calibration criteria and 
+should not be interpreted as independent predictions. Outcomes during the 
+subsequent biannual period are projections conditional on the retained parameter 
+combinations.
+
+## Supplementary calibration tables
+
+### `Tables_primary_analysis.R`
+
+This script generates summary-statistic objects used for the supplementary 
+calibration tables for the VR and GR-only models.
+
+For the VR model it summarises:
+- retained model parameters;
+- pre-MDA outcomes;
+- annual-MDAi calibration outcomes; and
+- subsequent biannual-MDAi projection outcomes.
+
+For the GR-only model it summarises:
+- the retained `y` distribution;
+- final mf prevalence following annual MDAi; and
+- final mf prevalence following the subsequent biannual projection.
+
+The GR-only primary analysis uses the 10–12% subset of trajectories generated 
+under the wider 8–14% criterion.
+
+Compact table objects are saved in:
+
+`tables/`
+
+These compact objects can be included in the repository.
+
+## Recommended workflow
+
+### Full analysis workflow
+
+To regenerate the calibration and projection simulations from the model:
+
+1. `Fitting_VR_model.R`
+2. `Fitting_GR_only_model.R`
+3. `Run_biannual_MDA_vr_model.R`
+4. `Run_biannual_MDA_gr_model.R`
+5. `create_retained parameter_outcome_data_files.R`
+6. `stage1_lhs_stability_full.R`
+7. `stage2_lhs_stability_identifiability_full.R`
+8. `sensitivity_analysis_full.R`
+9. `Tables_primary_analysis_full.R`
+10. `create_compact_calibration_figure_data.R`
+
+The early steps (1-4) generate large simulation files that are not included in 
+the repository. The subsequent processing steps (5–10) use these simulation 
+outputs to generate compact processed datasets and summary files. These compact 
+files are included in the repository and contain the information required to 
+reproduce the reported figures and tables without rerunning the computationally 
+intensive model simulations.
+
+### Reproducing figures and tables from the repository
+
+The computationally intensive model simulations and full-analysis processing 
+scripts do not need to be rerun to reproduce the manuscript figures and tables. 
+Instead, the repository includes compact processed datasets and corresponding 
+lightweight plotting scripts.
+
+Using the processed data supplied in the repository:
+1. Run `Figure2_repo.R` to reproduce manuscript Figure 2.
+2. Run `create_primary_calibration_figures.R` to reproduce supplementary 
+    Figures S2–S4.
+3. Run `stage1_lhs_stability_repo.R` to reproduce the Stage 1 LHS stability and 
+    independent-design figures.
+4. Run `stage2_lhs_stability_identifiability_repo.R` to reproduce the Stage 2 LHS 
+    stability, independent-design, parameter-dependence, identifiability, and 
+    calibration-sensitivity figures.
+5. Run `sensitivity_analysis_repo.R` to reproduce the comparison of Asubende 
+    outcomes across the primary calibration and four sensitivity analyses.
+6. Run `Tables_primary_analysis_repo.R` to reproduce the supplementary 
+    calibration table objects for the variable-response and GR-only models.
+    
+Then, to generate the results/figures related to the scenario analyses:
+
+7. Run the scenario figure scripts using the processed scenario data.
+8. Run the scenario table-generation scripts using the processed scenario data.
+
+## Directory structure
+
+### `data_files/`
+
+Raw and intermediate calibration and projection simulation files.
+
+Many files in this directory are large and are **not included in the repository**. 
+They can be regenerated using the full analysis workflow.
+
+### `data_processed/`
+
+Compact processed datasets required to reproduce manuscript figures without 
+rerunning the model simulations.
+
+Repository files include:
+
+- Figure2_plot_data.Rdata (processed trajectory and outcome data for manuscript 
+  Figure 2.)
+- primary_calibration_figure_data.Rdata (processed data for supplementary 
+  Figures S2–S4.)
+- stage1_stability_repo_data.Rdata (processed data for the Stage 1 LHS stability 
+  and independent-design figures.)
+- stage2_stability_repo_data.Rdata (processed data for the Stage 2 LHS stability, 
+  independent-design, parameter-dependence, identifiability, and calibration-
+  sensitivity figures.)
+- primary_tables_repo_data.Rdata (processed summary data for the supplementary 
+  calibration tables.)
+- processed retained-parameter/outcome files used in downstream sensitivity and 
+  scenario analyses.
+
+### `stability_data/`
+
+Compact numerical summaries from the LHS stability, practical-identifiability 
+and calibration sensitivity analyses.
+
+### `tables/`
+
+Compact summary-statistic objects used to construct supplementary tables.
+
+### `figures/`
+
+Manuscript and supplementary figures generated from the processed repository data.
+
+### `stability_figures/`
+
+LHS stability, identifiability and calibration sensitivity figures.
+
+## Interpretation of retained distributions
+
+The calibration procedure retains parameter combinations satisfying specified 
+biological and epidemiological criteria. The resulting distributions are 
+therefore referred to as **retained parameter distributions**.
+
+They are not Bayesian posterior distributions.
+
+Similarly, reported 2.5th–97.5th percentile intervals describe the distributions 
+of retained parameter values or model outcomes and should not be interpreted as 
+Bayesian credible intervals.
