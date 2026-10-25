@@ -13,7 +13,7 @@ source("Single_scenario.R")
 # SCENARIO parameters
 MDAi<-1 # I: MDAi=1, M: MDAi=0
 Dburnin<-300 # duration of burnin
-ABRall<-c(4600) # annual biting rates
+ABRall<-c(2500) # annual biting rates
 MDAfall<-c(1) # time between MDA rounds (years)
 MDAnall<-c(20) # total number of MDA rounds
 ABR<-ABRall[1]
@@ -26,7 +26,7 @@ my_CGR_SG<-0.729
 my_dom_c_SS<-11.546
 my_dom_c_SG<-14.763
 my_ratio<-6.138 # relative rate of loss of embryostatic effect ivermectin in SOR compared to GR worms
-my_r<-0.4 
+my_r<-0.814 
 my_zeta<-0.3 # set cumulative effect of ivermectin on GR worm fertility here
 
 PostParms<-matrix(c(my_CGR_GG, my_CGR_SS, my_CGR_SG,
@@ -47,9 +47,9 @@ source("../fitting/equations.R")
 tt <- yout[,1]
 RecSOR_proportion_worms <- 1 - (yout[,3]+yout[,4])/(yout[,3]+yout[,4]+yout[,7]+yout[,8])
 RecSOR_proportion_mf <- 1 - (yout[,5])/(yout[,5]+yout[,9])
-RecPrevalenceGR <- prevalence(yout[,5],my_k0,my_k1)
-RecPrevalenceSOR <- prevalence(yout[,9],my_k0,my_k1)
-RecPrevalence <- prevalence(yout[,9]+yout[,5],my_k0,my_k1)
+RecPrevalenceGR <- 100*prevalence(yout[,5],my_k0,my_k1)
+RecPrevalenceSOR <- 100*prevalence(yout[,9],my_k0,my_k1)
+RecPrevalence <- 100*prevalence(yout[,9]+yout[,5],my_k0,my_k1)
 wormsS <- yout[,8]+yout[,7]
 wormsG <- yout[,3]+yout[,4]
 
