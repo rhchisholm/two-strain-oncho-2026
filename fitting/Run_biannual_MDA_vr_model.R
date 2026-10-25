@@ -1,7 +1,7 @@
 # This script will:
 # First re-run annual MDA from burnin for accepted LHS samples and save 
 # (needed for plotting), then run biannual MDA and save again (needed for 
-# plotting). Repeat for sensitivity analysis.
+# plotting). Repeat for sensitivity analyses.
 
 library(foreach)
 library(doParallel)
@@ -22,8 +22,15 @@ source("fixed-parameters.R")
 # load burnin that satisfy burnin criteria 1 and c_gg > c0sg > c0_ss
 load("data_files/burnin_157_ABR_65000_UU.Rdata")
 
-# For original model and then the sensitivity analysis, run the MDAs:
-for(sa in 1:2){
+# Run annual and subsequent biannual MDAi simulations for:
+#   sa = 1: Primary calibration
+#   sa = 2: Moderate-increase sensitivity analysis
+#   sa = 3: Weak-increase sensitivity analysis
+#   sa = 4: Wider-prevalence sensitivity analysis
+#   sa = 6: No offspring-phenotype selection sensitivity analysis
+
+
+for(sa in c(1, 2, 3, 4, 6)){
   
   #Intervention parameters
   MDAon<-0 # 0:no MDA, 1: MDA (starts off at zero for the burnin)
@@ -39,13 +46,29 @@ for(sa in 1:2){
   
   # load accepted posterior samples that satisfy criteria 2
   if(sa==1){
-    load("data_files/posteriors_ABR_65000_UU_cumu.Rdata")
-    filename1<-"data_files/Final_posterior_burnins.Rdata"
-    filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumu.Rdata"
-  }else{
-    load("data_files/posteriors_ABR_65000_UU_cumuSA.Rdata")
-    filename1<-"data_files/Final_posterior_burninsSA.Rdata"
-    filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA.Rdata"
+    load("data_files/posteriors_ABR_65000_UU_cumu_100.Rdata")
+    filename1<-"data_files/Final_posterior_burnins_100.Rdata"
+    filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumu_100.Rdata"
+  }
+  if(sa==2){
+    load("data_files/posteriors_ABR_65000_UU_cumuSA_100.Rdata")
+    filename1<-"data_files/Final_posterior_burninsSA_100.Rdata"
+    filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA_100.Rdata"
+  }
+  if(sa==3){
+    load("data_files/posteriors_ABR_65000_UU_cumuSA2_100.Rdata")
+    filename1<-"data_files/Final_posterior_burninsSA2_100.Rdata"
+    filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA2_100.Rdata"
+  }
+  if(sa==4){
+    load("data_files/posteriors_ABR_65000_UU_cumuSA3_100.Rdata")
+    filename1<-"data_files/Final_posterior_burninsSA3_100.Rdata"
+    filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA3_100.Rdata"
+  }
+  if(sa==6){
+    load("data_files/posteriors_ABR_65000_UU_cumuSA5_100.Rdata")
+    filename1<-"data_files/Final_posterior_burninsSA5_100.Rdata"
+    filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA5_100.Rdata"
   }
 
   posteriors <- posteriors[posteriors[,3]<0.5 & posteriors[,4]>0.5,]
@@ -224,7 +247,7 @@ for(sa in 1:2){
       tempOutputM
         
     }
-    save(OutputM, file = "filename1")
+    save(OutputM, file = filename1)
   }
   
   # Now run biannual MDA for each posterior sample
