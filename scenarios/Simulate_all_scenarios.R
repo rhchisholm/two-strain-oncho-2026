@@ -30,52 +30,50 @@ PostParms<-data[,2:8]
 num_samples<-length(PostParms[,1])
 MDAi<-1 # I: MDAi=1, M: MDAi=0
 
-# for(ii in 1:3){
-#   ABR<-ABRall[ii]
-#   for(k in 1:2){
-#     ind<-(k-1)*3+ii
-#     MDAf <-MDAfall[k]
-#     NumberMDAs <- MDAnall[k]
-#     filename<-filenames[[ind]]
-#     single_VR(PostParms,num_samples,filename,MDAf,NumberMDAs,ABR,MDAi,Dburnin,my_zetaX)
-#   }
-# }
-# 
-# # Original model scenarios, with MDAm
-# filenames<-c(list("output/MDAm_Low_B.Rdata", "output/MDAm_Med_B.Rdata","output/MDAm_Hig_B.Rdata"),
-#              list("output/MDAm_Low_A.Rdata", "output/MDAm_Med_A.Rdata", "output/MDAm_Hig_A.Rdata"))
-# 
-# MDAi<-0 # I: MDAi=1, M: MDAi=0
-# 
-# for(ii in 1:3){
-#   ABR<-ABRall[ii]
-#   for(k in 1:2){
-#     ind<-(k-1)*3+ii
-#     MDAf <-MDAfall[k]
-#     NumberMDAs <- MDAnall[k]
-#     filename<-filenames[[ind]]
-#     single_VR(PostParms,num_samples,filename,MDAf,NumberMDAs,ABR,MDAi,Dburnin,my_zetaX)
-#   }
-# }
-# 
-# # Original model with GR only, with MDAi
-# filenames<-c(list("output/MDAi_Low_B_GR.Rdata", "output/MDAi_Med_B_GR.Rdata","output/MDAi_Hig_B_GR.Rdata"),
-#              list("output/MDAi_Low_A_GR.Rdata", "output/MDAi_Med_A_GR.Rdata", "output/MDAi_Hig_A_GR.Rdata"))
-# 
-# MDAi<-1 # I: MDAi=1, M: MDAi=0
-# 
-# for(ii in 1:3){
-#   ABR<-ABRall[ii]
-#   for(k in 1:2){
-#     ind<-(k-1)*3+ii
-#     MDAf <-MDAfall[k]
-#     NumberMDAs <- MDAnall[k]
-#     filename<-filenames[[ind]]
-#     single_GR(PostParms,num_samples,filename,MDAf,NumberMDAs,ABR,MDAi,Dburnin)
-#   }
-# }
+for(ii in 1:3){
+  ABR<-ABRall[ii]
+  for(k in 1:2){
+    ind<-(k-1)*3+ii
+    MDAf <-MDAfall[k]
+    NumberMDAs <- MDAnall[k]
+    filename<-filenames[[ind]]
+    single_VR(PostParms,num_samples,filename,MDAf,NumberMDAs,ABR,MDAi,Dburnin,my_zetaX)
+  }
+}
 
-### From here:
+# Original model scenarios, with MDAm
+filenames<-c(list("output/MDAm_Low_B.Rdata", "output/MDAm_Med_B.Rdata","output/MDAm_Hig_B.Rdata"),
+             list("output/MDAm_Low_A.Rdata", "output/MDAm_Med_A.Rdata", "output/MDAm_Hig_A.Rdata"))
+
+MDAi<-0 # I: MDAi=1, M: MDAi=0
+
+for(ii in 1:3){
+  ABR<-ABRall[ii]
+  for(k in 1:2){
+    ind<-(k-1)*3+ii
+    MDAf <-MDAfall[k]
+    NumberMDAs <- MDAnall[k]
+    filename<-filenames[[ind]]
+    single_VR(PostParms,num_samples,filename,MDAf,NumberMDAs,ABR,MDAi,Dburnin,my_zetaX)
+  }
+}
+
+# Original model with GR only, with MDAi
+filenames<-c(list("output/MDAi_Low_B_GR.Rdata", "output/MDAi_Med_B_GR.Rdata","output/MDAi_Hig_B_GR.Rdata"),
+             list("output/MDAi_Low_A_GR.Rdata", "output/MDAi_Med_A_GR.Rdata", "output/MDAi_Hig_A_GR.Rdata"))
+
+MDAi<-1 # I: MDAi=1, M: MDAi=0
+
+for(ii in 1:3){
+  ABR<-ABRall[ii]
+  for(k in 1:2){
+    ind<-(k-1)*3+ii
+    MDAf <-MDAfall[k]
+    NumberMDAs <- MDAnall[k]
+    filename<-filenames[[ind]]
+    single_GR(PostParms,num_samples,filename,MDAf,NumberMDAs,ABR,MDAi,Dburnin)
+  }
+}
 
 # Original model with GR only, with MDAm
 filenames<-c(list("output/MDAm_Low_B_GR.Rdata", "output/MDAm_Med_B_GR.Rdata","output/MDAm_Hig_B_GR.Rdata"),
@@ -98,7 +96,6 @@ for(ii in 1:3){
 ## SENSITIVITY ANALYSIS SCENARIOS
 ##
 ## Run the 70% baseline-prevalence scenario under ivermectin MDA for:
-##
 ##   - annual MDAi for 20 years; and
 ##   - biannual MDAi for 20 years (40 rounds).
 ##
@@ -116,7 +113,6 @@ for(ii in 1:3){
 ## alternative GR-only models because these calibration assumptions concern
 ## SOR phenotype dynamics, which are absent from the GR-only model.
 ###############################################################################
-
 
 ## ---------------------------------------------------------------------------
 ## Common scenario settings
@@ -170,7 +166,6 @@ VR_labels <- c(
   Wider_prevalence = "WiderPrev"
 )
 
-
 for (analysis_name in names(VR_sensitivity_files)) {
   
   cat(
@@ -192,7 +187,6 @@ for (analysis_name in names(VR_sensitivity_files)) {
     num_samples,
     "\n"
   )
-  
   
   ## Run annual and biannual MDAi
   for (frequency in names(MDAf_sens)) {
@@ -325,4 +319,3 @@ for (analysis_name in names(GR_calibration_files)) {
     )
   }
 }
-

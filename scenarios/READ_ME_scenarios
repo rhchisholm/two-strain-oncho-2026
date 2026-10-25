@@ -2,33 +2,166 @@ READ ME for folder "scenarios"
 Author: Rebecca Chisholm, La Trobe University, 2026
 
 This folder contains files to run all of the scenarios for figures 3-5 in the 
-manuscript.
+manuscript and the corresponding supplementary sensitivity analyses.
 
-First, run: Simulate_all_scenarios.R
+===============================================================================
+1. RUN MODEL SCENARIOS
+===============================================================================
 
-This will save an RData file in the folder "outputs" for each scenario 
-considered, with specific
-- Annual biting rate (3 values)
-- Ivermectin vs Moxidectin
-- Annual vs biannual MDA
-- Using the original model parameterisation or the sensitivity analysis
+First, run:
+    Simulate_all_scenarios.R
 
-Next, run: process_output.R
+This script uses the functions defined in:
+    Single_scenario.R
 
-This will load each of the files and create two data frames (one for the 
-original model parameterisation, df, and the other for the sensitivity analysis,
-dfSA), and save them in the file "processed_outputs.RData"
+and saves the simulated trajectories as RData files in the folder:
+    output/
 
-Then, run: create_figures.R
 
-This will load "processed_outputs.RData" and create figures 3-5 and their 
-corresponding versions from the sensitivity analysis, and save them in the 
-folder "figures"
+PRIMARY SCENARIO ANALYSES
 
-Then, run: create_tables.R
+The primary scenario analyses consider combinations of:
+    - Baseline endemic mf prevalence:
+        approximately 30%, 50%, and 70%
+    - Drug:
+        ivermectin or moxidectin
+    - MDA frequency:
+        annual or biannual
+    - Model:
+        variable-response (VR) or GR-only
 
-This will load "processed_outputs.RData" and create tables for the supp, and 
-save them in the folder "tables"
+The VR simulations use parameter combinations retained under the primary
+calibration.
 
-There is an additional script to run a single realisation of the model for a given 
-parameterisation, and produce some plots of the output.  This is: run_once.R
+CALIBRATION SENSITIVITY ANALYSES
+
+Additional scenario simulations are performed to assess whether the main
+scenario results are sensitive to assumptions made during model calibration.
+
+These analyses are restricted to:
+    - approximately 70% baseline endemic mf prevalence
+    - ivermectin MDA
+    - annual and biannual MDA
+    - VR and GR-only models
+
+Results are generated for the primary calibration and four sensitivity
+analyses:
+    1. Moderate SOR increase:
+       SOR worm proportion increases by 0.05-0.10 during the calibration
+       period.
+    2. Weak SOR increase:
+       SOR worm proportion increases by 0-0.05 during the calibration period.
+    3. No offspring-phenotype selection:
+       s_SOR,SOR = s_SOR,GR = 0.
+    4. Wider prevalence calibration:
+       final mf prevalence of 8-14%, compared with 10-12% in the primary
+       calibration.
+
+For the GR-only scenarios, the y values from the corresponding retained VR
+calibration parameter combinations are used.
+
+===============================================================================
+2. PROCESS MODEL OUTPUTS
+===============================================================================
+
+Next, run:
+    process_all_scenario_outputs.R
+
+This script loads the scenario RData files generated above and calculates
+summary outcomes for each retained parameter combination.
+
+These include:
+    - initial SOR worm proportion
+    - final SOR worm proportion
+    - final mf prevalence
+    - phenotype-specific mf prevalence
+    - time to reach pOTTIS
+
+The initial SOR worm proportion is evaluated at time zero, immediately before
+the effect of the first MDA round.
+
+If a trajectory does not reach pOTTIS during the simulated programme, its
+time to pOTTIS is recorded as NA.
+
+The script combines all available scenarios into a single long-format data
+frame:
+    processed_all
+
+and saves:
+    processed_all_scenarios.RData
+    processed_all_scenarios.csv
+
+The RData file also contains:
+    scenario_manifest
+
+which records the model, drug, treatment frequency, calibration analysis,
+baseline transmission setting, and source file associated with each scenario.
+
+===============================================================================
+3. CREATE FIGURES
+===============================================================================
+
+Next, run:
+    create_figures_revised.R
+
+This script loads:
+    processed_all_scenarios.RData
+
+and generates versions of the primary scenario figures comparing
+outcomes across the three baseline endemic prevalence settings.
+
+It also generates figures comparing results across the primary calibration
+and all four calibration sensitivity analyses at approximately 70% baseline
+prevalence.
+
+Figures are saved in:
+    figures/
+
+===============================================================================
+4. CREATE TABLES
+===============================================================================
+
+Next, run:
+    create_tables_revised.R
+
+This script loads:
+    processed_all_scenarios.RData
+
+and generates summary tables for the scenario analyses.
+
+For the primary analyses, tables summarise results across the three baseline
+endemic prevalence settings.
+
+For the sensitivity analyses, comparative tables summarise the primary and
+four sensitivity calibrations at approximately 70% baseline prevalence.
+
+Summary statistics include the median and 2.5th-97.5th percentiles.
+
+For time to pOTTIS, the sensitivity tables additionally report the number and
+proportion of trajectories that reach pOTTIS, so trajectories that do not
+reach the threshold are explicitly represented.
+
+Tables are saved in:
+    tables/
+
+===============================================================================
+ADDITIONAL SCRIPTS
+===============================================================================
+
+Single_scenario.R
+    Contains the functions used by Simulate_all_scenarios.R to simulate the
+    VR and GR-only models for a specified parameter set, baseline transmission
+    setting, drug, and MDA frequency.
+
+run_once.R
+    Runs a single realisation of the model for a specified parameterisation
+    and produces plots of the resulting trajectory.
+
+===============================================================================
+ORDER IN WHICH TO RUN THE MAIN SCRIPTS
+===============================================================================
+
+    1. Simulate_all_scenarios.R
+    2. process_all_scenario_outputs.R
+    3. create_figures_revised.R
+    4. create_tables_revised.R
