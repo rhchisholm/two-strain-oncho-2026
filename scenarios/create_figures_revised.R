@@ -192,7 +192,7 @@ make_pottis_panel <- function(dat, drug_name, show_legend = TRUE) {
       data = missing_groups,
       aes(
         x = x_plot,
-        y = 5,
+        y = 15.5,
         colour = Treatment_frequency
       ),
       inherit.aes = FALSE,
