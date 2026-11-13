@@ -286,6 +286,18 @@ if(SA==5){
   }
 }
 
-# Save annual MDA data for simulations satisfying criteria 1 and 2
-posteriors<-matrix(c(BIsamplen,FinalParams,FinalPrev,FinaldSOR,FinalSOR),ncol=11)
-save(posteriors, file = filename) 
+# Save annual MDA data for simulations satisfying calibration criteria
+if (length(BIsamplen) == 0) {
+  warning(
+    "No parameter combinations satisfied the Stage 2 calibration criteria ",
+    "for SA = ", SA,
+    "; output file = ", filename
+  )
+  # Create an empty object with the expected structure
+  posteriors <- matrix(numeric(0),nrow = 0,ncol = 11)
+  
+} else {
+  posteriors<-matrix(c(BIsamplen,FinalParams,FinalPrev,FinaldSOR,FinalSOR),ncol=11)
+}
+
+save(posteriors, file = filename)

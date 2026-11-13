@@ -190,7 +190,7 @@ if (file.exists(filename)==FALSE){
 # set.seed(20261013) # seed for 100
 # with cumulative effect
 my_zetaX<-0.3
-filename<-"data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_cumu_100.Rdata"
+filename<-"data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_cumu_100_eligible.Rdata"
 if (file.exists(filename)==FALSE){
   source("r_files/Fitting_SOR_response_parameters_from_posterior_burnins.R")
 } else {
@@ -200,7 +200,7 @@ if (file.exists(filename)==FALSE){
 # process output, determine samples that satisfy criteria 2: change in SOR worm 
 # proportion x,  so that x > 0.1
 SA<-0
-filename<-"data_files/posteriors_ABR_65000_UU_cumu_100.Rdata"
+filename<-"data_files/posteriors_ABR_65000_UU_cumu_100_eligible.Rdata"
 if (file.exists(filename)==FALSE){
   source("r_files/Process_output.R")
 } else {
@@ -210,7 +210,7 @@ if (file.exists(filename)==FALSE){
 # process output for sensitivity analysis with different criteria 2: change in 
 # SOR worm proportion x, so that 0.05 < x < 0.1 
 SA<-1
-filename<-"data_files/posteriors_ABR_65000_UU_cumuSA_100.Rdata"
+filename<-"data_files/posteriors_ABR_65000_UU_cumuSA_100_eligible.Rdata"
 if (file.exists(filename)==FALSE){
   source("r_files/Process_output.R")
 } else {
@@ -220,7 +220,7 @@ if (file.exists(filename)==FALSE){
 # process output for sensitivity analysis with different criteria 2: change in 
 # SOR worm proportion x, so that x < 0.05 
 SA<-2
-filename<-"data_files/posteriors_ABR_65000_UU_cumuSA2_100.Rdata"
+filename<-"data_files/posteriors_ABR_65000_UU_cumuSA2_100_eligible.Rdata"
 if (file.exists(filename)==FALSE){
   source("r_files/Process_output.R")
 } else {
@@ -230,7 +230,7 @@ if (file.exists(filename)==FALSE){
 # process output for sensitivity analysis with different criteria 3: final prev
 # is between 0.08 and 0.14
 SA<-3
-filename<-"data_files/posteriors_ABR_65000_UU_cumuSA3_100.Rdata"
+filename<-"data_files/posteriors_ABR_65000_UU_cumuSA3_100_eligible.Rdata"
 if (file.exists(filename)==FALSE){
   source("r_files/Process_output.R")
 } else {
@@ -239,17 +239,17 @@ if (file.exists(filename)==FALSE){
 
 # SA when selection coefficients are set to 0, with cumulative effect
 my_zetaX<-0.3
-filename<-"data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_cumu_100_s0.Rdata"
+filename<-"data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_cumu_100_s0_eligible.Rdata"
 if (file.exists(filename)==FALSE){
   source("r_files/Fitting_2SOR_response_parameters_from_posterior_burnins.R")
 } else {
   load(filename)
 }
 
-# Then process output, determine samples with not constraint on SOR  
+# Then process output, determine samples with no constraint on SOR  
 # worm proportion x
 SA<-5
-filename<-"data_files/posteriors_ABR_65000_UU_cumuSA5_100.Rdata"
+filename<-"data_files/posteriors_ABR_65000_UU_cumuSA5_100_eligible.Rdata"
 if (file.exists(filename)==FALSE){
   source("r_files/Process_output.R")
 } else {
@@ -259,7 +259,7 @@ if (file.exists(filename)==FALSE){
 # without cumulative effect
 # set.seed(20261013) # seed for 100
 my_zetaX<-0
-filename<-"data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_no_cumu_100.Rdata"
+filename<-"data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_no_cumu_100_eligible.Rdata"
 if (file.exists(filename)==FALSE){
   source("r_files/Fitting_SOR_response_parameters_from_posterior_burnins.R")
 } else {
@@ -269,7 +269,7 @@ if (file.exists(filename)==FALSE){
 # process output, determine samples that satisfy criteria 2: change in SOR worm 
 # proportion x,  so that x > 0.1
 SA<-0
-filename<-"data_files/posteriors_ABR_65000_UU_no_cumu_100.Rdata"
+filename<-"data_files/posteriors_ABR_65000_UU_no_cumu_100_eligible.Rdata"
 if (file.exists(filename)==FALSE){
   source("r_files/Process_output.R")
 } else {
@@ -279,7 +279,7 @@ if (file.exists(filename)==FALSE){
 # process output for sensitivity analysis with different criteria 2: change in 
 # SOR worm proportion x, so that 0.05 < x < 0.1 
 SA<-1
-filename<-"data_files/posteriors_ABR_65000_UU_no_cumuSA_100.Rdata"
+filename<-"data_files/posteriors_ABR_65000_UU_no_cumuSA_100_eligible.Rdata"
 if (file.exists(filename)==FALSE){
   source("r_files/Process_output.R")
 } else {
@@ -289,7 +289,7 @@ if (file.exists(filename)==FALSE){
 # process output for sensitivity analysis with different criteria 2: change in 
 # SOR worm proportion x, so that  x < 0.05 
 SA<-2
-filename<-"data_files/posteriors_ABR_65000_UU_no_cumuSA2_100.Rdata"
+filename<-"data_files/posteriors_ABR_65000_UU_no_cumuSA2_100_eligible.Rdata"
 if (file.exists(filename)==FALSE){
   source("r_files/Process_output.R")
 } else {
@@ -299,7 +299,7 @@ if (file.exists(filename)==FALSE){
 # process output for sensitivity analysis with different criteria 2: change in 
 # SOR worm proportion x, so that  x < 0.05 
 SA<-3
-filename<-"data_files/posteriors_ABR_65000_UU_no_cumuSA3_100.Rdata"
+filename<-"data_files/posteriors_ABR_65000_UU_no_cumuSA3_100_eligible.Rdata"
 if (file.exists(filename)==FALSE){
   source("r_files/Process_output.R")
 } else {
@@ -307,17 +307,17 @@ if (file.exists(filename)==FALSE){
 }
 
 # SA when selection coefficients are set to 0, with no cumulative effect
-filename<-"data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_no_cumu_100_s0.Rdata"
+filename<-"data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_no_cumu_100_s0_eligible.Rdata"
 if (file.exists(filename)==FALSE){
   source("r_files/Fitting_2SOR_response_parameters_from_posterior_burnins.R")
 } else {
   load(filename)
 }
 
-# Then process output, determine samples with not constraint on SOR  
+# Then process output, determine samples with no constraint on SOR  
 # worm proportion x
 SA<-5
-filename<-"data_files/posteriors_ABR_65000_UU_no_cumuSA5_100.Rdata"
+filename<-"data_files/posteriors_ABR_65000_UU_no_cumuSA5_100_eligible.Rdata"
 if (file.exists(filename)==FALSE){
   source("r_files/Process_output.R")
 } else {
