@@ -29,6 +29,23 @@ load("data_files/burnin_157_ABR_65000_UU.Rdata")
 #   sa = 4: Wider-prevalence sensitivity analysis
 #   sa = 6: No offspring-phenotype selection sensitivity analysis
 
+#setup parallel backend to use many processors
+parallel::detectCores()
+n.cores <- parallel::detectCores() - 1
+#create the cluster
+my.cluster <- parallel::makeCluster(
+  n.cores, 
+  type = "FORK" # Alternative is "PSOCK". FORK works for a Mac
+)
+
+#check cluster definition (optional)
+print(my.cluster)
+#register it to be used by %dopar%
+doParallel::registerDoParallel(cl = my.cluster)
+#check if it is registered (optional)
+foreach::getDoParRegistered()
+#how many workers are available? (optional)
+foreach::getDoParWorkers()
 
 #for(sa in c(1, 2, 3, 4, 6)){
 for(sa in c(3, 4, 6)){
@@ -85,23 +102,7 @@ for(sa in c(3, 4, 6)){
     load(filename1)
   }else{
     
-    #setup parallel backend to use many processors
-    parallel::detectCores()
-    n.cores <- parallel::detectCores() - 1
-    #create the cluster
-    my.cluster <- parallel::makeCluster(
-      n.cores, 
-      type = "FORK" # Alternative is "PSOCK". FORK works for a Mac
-    )
-    
-    #check cluster definition (optional)
-    print(my.cluster)
-    #register it to be used by %dopar%
-    doParallel::registerDoParallel(cl = my.cluster)
-    #check if it is registered (optional)
-    foreach::getDoParRegistered()
-    #how many workers are available? (optional)
-    foreach::getDoParWorkers()
+   
     
     # Load burnin, run annual MDA 
     OutputM <- foreach(
@@ -452,3 +453,5 @@ for(sa in c(3, 4, 6)){
     save(OutputMM, file = filename2)
   }
 }
+
+parallel::stopCluster(my.cluster)
