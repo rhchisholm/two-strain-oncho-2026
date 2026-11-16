@@ -47,8 +47,8 @@ foreach::getDoParRegistered()
 #how many workers are available? (optional)
 foreach::getDoParWorkers()
 
-#for(sa in c(1, 2, 3, 4, 6)){
-for(sa in c(3, 4, 6)){
+for(sa in c(1, 2, 3, 4, 6)){
+#for(sa in c(3, 4, 6)){
   
   #Intervention parameters
   MDAon<-0 # 0:no MDA, 1: MDA (starts off at zero for the burnin)
@@ -251,7 +251,13 @@ for(sa in c(3, 4, 6)){
         yout<-combineDFs(yout,yout2)
       }
       
-      tempOutputM <- yout
+      # Trim trajectory before saving.
+      # Retain output at 0.1-year intervals.
+      keep <- abs(
+        yout[, 1] * 10 - round(yout[, 1] * 10)
+      ) < 1e-6
+      
+      tempOutputM <- yout[keep, , drop = FALSE]
       tempOutputM
         
     }
@@ -421,7 +427,7 @@ for(sa in c(3, 4, 6)){
                    c*tailyALL[,10:(7+2*i)] + (1-c)*tailyALL[,12:(9+2*i)],
                    c*tailyALL[,(8+2*i):(9+2*i)] + (1-c)*0)
         
-        times <- seq(0, MDAf, by = 0.1)
+        times <- seq(0, MDAf, by = 0.01)
         
         ## Calculate lags
         # find time points for last two years
@@ -445,7 +451,11 @@ for(sa in c(3, 4, 6)){
         yout<-combineDFs(yout,yout2)
       }
       # trim trajectories to save:
-      yout<-yout[abs(yout[,1] %% 0.05) < 1e-9, ]
+      #yout<-yout[abs(yout[,1] %% 0.05) < 1e-9, ]
+      # Trim trajectories to approximately 0.1-year intervals
+      keep <- abs(yout[, 1] * 10 - round(yout[, 1] * 10)) < 1e-6
+      yout <- yout[keep, , drop = FALSE]
+      
       OutputMM<-yout
       OutputMM
     }
