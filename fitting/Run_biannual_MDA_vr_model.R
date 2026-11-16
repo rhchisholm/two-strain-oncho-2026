@@ -30,7 +30,8 @@ load("data_files/burnin_157_ABR_65000_UU.Rdata")
 #   sa = 6: No offspring-phenotype selection sensitivity analysis
 
 
-for(sa in c(1, 2, 3, 4, 6)){
+#for(sa in c(1, 2, 3, 4, 6)){
+for(sa in c(3, 4, 6)){
   
   #Intervention parameters
   MDAon<-0 # 0:no MDA, 1: MDA (starts off at zero for the burnin)
