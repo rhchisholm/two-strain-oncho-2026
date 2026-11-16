@@ -39,36 +39,42 @@ for(sa in c(1, 2, 3, 4, 6)){
   Dburnin<-300
   
   # Coverage
+  #my_coverage<-c(65,65,65,65,65,
+  #              65,65,65,65,65,
+  #               65,81.7,80.1,80,84.10,
+  #              84.10,74.70,79.40,87.10,86.20)/100
+  
   my_coverage<-c(65,65,65,65,65,
                  65,65,65,65,65,
-                 65,81.7,80.1,80,84.10,
-                 84.10,74.70,79.40,87.10,86.20)/100
+                 65,
+                 0.8*c(81.7,80.1,80,84.10,
+                       84.10,74.70,79.40,87.10,86.20))/100
   
   # load accepted posterior samples that satisfy criteria 2
   if(sa==1){
-    load("data_files/posteriors_ABR_65000_UU_cumu_100.Rdata")
-    filename1<-"data_files/Final_posterior_burnins_100.Rdata"
-    filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumu_100.Rdata"
+    load("data_files/posteriors_ABR_65000_UU_cumu_100_eligible.Rdata")
+    filename1<-"data_files/Final_posterior_burnins_100_eligible.Rdata"
+    filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumu_100_eligible.Rdata"
   }
   if(sa==2){
-    load("data_files/posteriors_ABR_65000_UU_cumuSA_100.Rdata")
-    filename1<-"data_files/Final_posterior_burninsSA_100.Rdata"
-    filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA_100.Rdata"
+    load("data_files/posteriors_ABR_65000_UU_cumuSA_100_eligible.Rdata")
+    filename1<-"data_files/Final_posterior_burninsSA_100_eligible.Rdata"
+    filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA_100_eligible.Rdata"
   }
   if(sa==3){
-    load("data_files/posteriors_ABR_65000_UU_cumuSA2_100.Rdata")
-    filename1<-"data_files/Final_posterior_burninsSA2_100.Rdata"
-    filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA2_100.Rdata"
+    load("data_files/posteriors_ABR_65000_UU_cumuSA2_100_eligible.Rdata")
+    filename1<-"data_files/Final_posterior_burninsSA2_100_eligible.Rdata"
+    filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA2_100_eligible.Rdata"
   }
   if(sa==4){
-    load("data_files/posteriors_ABR_65000_UU_cumuSA3_100.Rdata")
-    filename1<-"data_files/Final_posterior_burninsSA3_100.Rdata"
-    filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA3_100.Rdata"
+    load("data_files/posteriors_ABR_65000_UU_cumuSA3_100_eligible.Rdata")
+    filename1<-"data_files/Final_posterior_burninsSA3_100_eligible.Rdata"
+    filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA3_100_eligible.Rdata"
   }
   if(sa==6){
-    load("data_files/posteriors_ABR_65000_UU_cumuSA5_100.Rdata")
-    filename1<-"data_files/Final_posterior_burninsSA5_100.Rdata"
-    filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA5_100.Rdata"
+    load("data_files/posteriors_ABR_65000_UU_cumuSA5_100_eligible.Rdata")
+    filename1<-"data_files/Final_posterior_burninsSA5_100_eligible.Rdata"
+    filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA5_100_eligible.Rdata"
   }
 
   posteriors <- posteriors[posteriors[,3]<0.5 & posteriors[,4]>0.5,]
@@ -258,7 +264,7 @@ for(sa in c(1, 2, 3, 4, 6)){
   NumberMDAsBiAnnual <- 34
   
   # Coverage (yearly)
-  my_coverageALL<-c(92.00,92.00,87.30,88.00,0.00,74.20,
+  my_coverageALL<-0.8*c(92.00,92.00,87.30,88.00,0.00,74.20,
                     50.60,79.60,81.90,78.30,83.00,
                     79.50,82.10,78.70,73.10,77.50,
                     77.10,84.30)/100
