@@ -191,7 +191,7 @@ if (file.exists(filename)==FALSE){
 set.seed(20261113) # seed for 200
 # with cumulative effect
 my_zetaX<-0.3
-filename<-"data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_cumu_200_eligible.Rdata"
+filename<-"data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_cumu_400_eligible.Rdata"
 if (file.exists(filename)==FALSE){
   source("r_files/Fitting_SOR_response_parameters_from_posterior_burnins.R")
 } else {
