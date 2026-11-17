@@ -47,8 +47,8 @@ foreach::getDoParRegistered()
 #how many workers are available? (optional)
 foreach::getDoParWorkers()
 
-for(sa in c(1, 2, 3, 4, 6)){
-#for(sa in c(3, 4, 6)){
+#for(sa in c(1, 2, 3, 4, 6)){
+for(sa in c(1)){
   
   #Intervention parameters
   MDAon<-0 # 0:no MDA, 1: MDA (starts off at zero for the burnin)
@@ -70,9 +70,9 @@ for(sa in c(1, 2, 3, 4, 6)){
   
   # load accepted posterior samples that satisfy criteria 2
   if(sa==1){
-    load("data_files/posteriors_ABR_65000_UU_cumu_100_eligible.Rdata")
-    filename1<-"data_files/Final_posterior_burnins_100_eligible.Rdata"
-    filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumu_100_eligible.Rdata"
+    load("data_files/posteriors_ABR_65000_UU_cumu_200_eligible.Rdata")
+    filename1<-"data_files/Final_posterior_burnins_200_eligible.Rdata"
+    filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumu_200_eligible.Rdata"
   }
   if(sa==2){
     load("data_files/posteriors_ABR_65000_UU_cumuSA_100_eligible.Rdata")
