@@ -188,7 +188,8 @@ if (file.exists(filename)==FALSE){
 # run 20 year MDAi program from burnin for each of these LHS samples, for 
 # each of the accepted LHS samples from step 1. 
 # set.seed(20261013) # seed for 100
-set.seed(20261113) # seed for 200
+#set.seed(20261113) # seed for 200
+set.seed(20261118) # seed for 400
 # with cumulative effect
 my_zetaX<-0.3
 filename<-"data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_cumu_400_eligible.Rdata"
