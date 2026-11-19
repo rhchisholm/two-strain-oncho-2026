@@ -47,21 +47,14 @@ foreach::getDoParRegistered()
 #how many workers are available? (optional)
 foreach::getDoParWorkers()
 
-#for(sa in c(1, 2, 3, 4, 6)){
-for(sa in c(1)){
+for(sa in c(1, 2, 3, 4, 6)){
   
   #Intervention parameters
   MDAon<-0 # 0:no MDA, 1: MDA (starts off at zero for the burnin)
   MDAf <-1 #Time between MDAs (years)
   NumberMDAs <- 20
   Dburnin<-300
-  
-  # Coverage
-  #my_coverage<-c(65,65,65,65,65,
-  #              65,65,65,65,65,
-  #               65,81.7,80.1,80,84.10,
-  #              84.10,74.70,79.40,87.10,86.20)/100
-  
+
   my_coverage<-c(65,65,65,65,65,
                  65,65,65,65,65,
                  65,
@@ -70,9 +63,9 @@ for(sa in c(1)){
   
   # load accepted posterior samples that satisfy criteria 2
   if(sa==1){
-    load("data_files/posteriors_ABR_65000_UU_cumu_200_eligible.Rdata")
-    filename1<-"data_files/Final_posterior_burnins_200_eligible.Rdata"
-    filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumu_200_eligible.Rdata"
+    load("data_files/posteriors_ABR_65000_UU_cumu_400_eligible.Rdata")
+    filename1<-"data_files/Final_posterior_burnins_400_eligible.Rdata"
+    filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_cumu_400_eligible.Rdata"
   }
   if(sa==2){
     load("data_files/posteriors_ABR_65000_UU_cumuSA_100_eligible.Rdata")
@@ -99,11 +92,9 @@ for(sa in c(1)){
   num_sims<-length(posteriors[,1])
   
   if (file.exists(filename1)==TRUE) {
-    load(filename1)
+   load(filename1)
   }else{
-    
-   
-    
+  
     # Load burnin, run annual MDA 
     OutputM <- foreach(
       nn=1:num_sims 
@@ -284,9 +275,9 @@ for(sa in c(1)){
   my_coverage3<-c(my_coverage2,my_coverage3) # coverage in all rounds
   
   if (file.exists(filename2)==TRUE) {
-    load(filename2)
+   load(filename2)
   }else{
-  
+
     OutputMM <- foreach(
       nn=1:num_sims 
       #.combine=cbind

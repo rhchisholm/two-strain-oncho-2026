@@ -424,7 +424,7 @@ Instead, the repository includes compact processed datasets and corresponding
 lightweight plotting scripts.
 
 Using the processed data supplied in the repository:
-1. Run `Figure2_repo.R` to reproduce manuscript Figure 2.
+1. Run `Figure2.R` to reproduce manuscript Figure 2.
 2. Run `create_primary_calibration_figures.R` to reproduce supplementary 
     Figures S2–S4.
 3. Run `stage1_lhs_stability_repo.R` to reproduce the Stage 1 LHS stability and 

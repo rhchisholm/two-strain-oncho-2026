@@ -10,7 +10,7 @@ library(patchwork)
 library(grid)
 
 if (!dir.exists("figures")) dir.create("figures")
-load("data_processed/Figure2_plot_data.Rdata")
+load("data_processed/Figure2_plot_data_eligible.Rdata")
 
 f2a <- ggplot() +
   geom_line(data=Figure2_VR_trajectories,
@@ -45,4 +45,4 @@ f2b <- ggplot(Figure2_panelB_data,
         legend.background=element_rect(fill="white",colour=NA))
 
 p <- f2a+f2b+plot_annotation(tag_levels="A")+plot_layout(widths=c(2,1.25))
-ggsave("figures/F2_100.png",plot=p,width=15,height=6,dpi=300)
+ggsave("figures/F2_400_eligible.png",plot=p,width=15,height=6,dpi=300)

@@ -25,8 +25,9 @@ DpostMDA<-10
 # Coverage annual
 my_coverage<-c(65,65,65,65,65,
                65,65,65,65,65,
-               65,81.7,80.1,80,84.10,
-               84.10,74.70,79.40,87.10,86.20)/100
+               65,
+               0.8*c(81.7,80.1,80,84.10,
+                     84.10,74.70,79.40,87.10,86.20))/100
 
 # Load equations (define functions)
 source("equations.R")
@@ -101,7 +102,7 @@ cat(
   "cores\n"
 )
 
-for(ce in 2:2){
+for(ce in 1:2){
 
   my_zeta <- Cumulative_effect[ce]
   
@@ -318,9 +319,9 @@ for(ce in 2:2){
   l[[3]]<-y
 
   if(my_zeta!=0){
-    save(l, file = "data_files/GR_only_model_LHS_simulations_annual_cumu_2000.Rdata")
+    save(l, file = "data_files/GR_only_model_LHS_simulations_annual_cumu_2000_eligible.Rdata")
   }else{
-    save(l, file = "data_files/GR_only_model_LHS_simulations_annual_no_cumu_2000.Rdata")
+    save(l, file = "data_files/GR_only_model_LHS_simulations_annual_no_cumu_2000_eligible.Rdata")
   }
 }
 
@@ -329,7 +330,7 @@ parallel::stopCluster(my.cluster)
 ###############################################################################
 ## GR-only model: LHS sampling adequacy
 ##
-## Assesses whether 1000 LHS samples of y are sufficient to characterise
+## Assesses whether 2000 LHS samples of y are sufficient to characterise
 ## the GR-only calibration by examining:
 ##
 ##   A. cumulative acceptance proportion; and
@@ -342,7 +343,7 @@ parallel::stopCluster(my.cluster)
 
 ## Load GR-only LHS results WITH cumulative ivermectin effect
 load(
-  "data_files/GR_only_model_LHS_simulations_annual_cumu_2000.Rdata"
+  "data_files/GR_only_model_LHS_simulations_annual_cumu_2000_eligible.Rdata"
 )
 
 ## Saved object:
@@ -418,7 +419,6 @@ summarise_LHS <- function(accepted, criterion_name) {
   )
 }
 
-
 primary_summary <- summarise_LHS(
   accepted_primary,
   "Primary (10-12%)"
@@ -435,7 +435,6 @@ GR_LHS_summary <- rbind(
 )
 
 print(GR_LHS_summary)
-
 
 ###############################################################################
 ## Save numerical results
@@ -460,11 +459,10 @@ write.csv(
   GR_LHS_summary,
   file.path(
     data_dir,
-    "GR_only_LHS_stability.csv"
+    "GR_only_LHS_stability_eligible.csv"
   ),
   row.names = FALSE
 )
-
 
 ###############################################################################
 ## Three-panel figure
@@ -480,7 +478,7 @@ panel_cex  <- 1.5
 png(
   file.path(
     figure_dir,
-    "GR_only_LHS_stability.png"
+    "GR_only_LHS_stability_eligible.png"
   ),
   width = 4200,
   height = 1600,
@@ -495,7 +493,6 @@ layout(
 
 ## Slightly larger margins for larger text
 par(mar = c(5.5, 6.2, 4, 1.5))
-
 
 ###############################################################################
 ## Panel A: cumulative acceptance proportion
@@ -553,7 +550,6 @@ mtext(
   cex = panel_cex
 )
 
-
 ###############################################################################
 ## Panel B: retained y - primary calibration
 ###############################################################################
@@ -571,7 +567,7 @@ plot(
   pch = 16,
   lty = 1,
   xlim = range(Ns),
-  ylim = yrange_B,
+  ylim = c(0,1),
   xlab = "Number of LHS samples",
   ylab = expression(y),
   cex.axis = axis_cex,
@@ -612,7 +608,6 @@ mtext(
   cex = panel_cex
 )
 
-
 ###############################################################################
 ## Panel C: retained y - wider prevalence sensitivity analysis
 ###############################################################################
@@ -630,7 +625,7 @@ plot(
   pch = 16,
   lty = 1,
   xlim = range(Ns),
-  ylim = yrange_C,
+  ylim = c(0,1),
   xlab = "Number of LHS samples",
   ylab = expression(y),
   cex.axis = axis_cex,
@@ -684,7 +679,6 @@ legend(
   bty = "n",
   cex = legend_cex
 )
-
 
 ###############################################################################
 ## Finish

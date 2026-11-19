@@ -19,17 +19,19 @@ MDAf <-1 #Time between MDAs (years)
 NumberMDAs <- 20
 Dburnin<-300
 DpostMDA<-10
+
 # Coverage
 my_coverage<-c(65,65,65,65,65,
                65,65,65,65,65,
-               65,81.7,80.1,80,84.10,
-               84.10,74.70,79.40,87.10,86.20)/100
+               65,
+               0.8*c(81.7,80.1,80,84.10,
+                     84.10,74.70,79.40,87.10,86.20))/100
 
 # load fixed parameters
 source("fixed-parameters.R")
 
-filename1<-"data_files/Final_posterior_burnins_GR_2000.Rdata"
-filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_GR_cumu_2000.Rdata"
+filename1<-"data_files/Final_posterior_burnins_GR_2000_eligible.Rdata"
+filename2<-"data_files/Final_posterior_burnins_plusbiannualMDAs_GR_cumu_2000_eligible.Rdata"
 
 # Specify inheritance parameter values for GR only model
 my_CGR_GG<-1
@@ -42,7 +44,7 @@ my_psiSOR<-my_psiGR*0
 
 
 # Specify unknown ivermectin effect parameter
-load("data_files/GR_only_model_LHS_simulations_annual_cumu_2000.Rdata")
+load("data_files/GR_only_model_LHS_simulations_annual_cumu_2000_eligible.Rdata")
 my_zeta<-0.3
 PrevFinalc<-l[[2]]
 y<-l[[3]]
@@ -270,7 +272,7 @@ OutputMM <- foreach(
   NumberMDAsBiAnnual <- 34
   
   # Coverage (yearly)
-  my_coverageALL<-c(92.00,92.00,87.30,88.00,0.00,74.20,
+  my_coverageALL<-0.8*c(92.00,92.00,87.30,88.00,0.00,74.20,
                     50.60,79.60,81.90,78.30,83.00,
                     79.50,82.10,78.70,73.10,77.50,
                     77.10,84.30)/100

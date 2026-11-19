@@ -19,12 +19,12 @@
 ## ANALYSES
 ##
 ## 1. Primary Stage 2 LHS sampling adequacy
-##    - Evaluates cumulative LHS sample sizes N = 20, 40, 60, 80 and 100.
+##    - Evaluates cumulative LHS sample sizes N = 80, 160, 240, 320 and 400
 ##    - Examines stability of:
 ##        * calibration acceptance proportions;
 ##        * final retention proportions;
 ##        * medians and 2.5th-97.5th percentiles of retained parameters.
-##    - Compares parameter space represented by the first 80 and final 20
+##    - Compares parameter space represented by the first 320 and final 80
 ##      MDA-effect LHS points.
 ##
 ## 2. Parameter dependence and practical identifiability
@@ -34,8 +34,8 @@
 ##      with its prior range as a diagnostic of practical identifiability.
 ##
 ## 3. Independent Stage 2 LHS design comparison
-##    - Compares the primary 100-point MDA-effect LHS design with the
-##      independently generated 50-point LHS design.
+##    - Compares the primary 400-point MDA-effect LHS design with the
+##      independently generated 200-point LHS design.
 ##    - Compares acceptance proportions, retained parameter distributions,
 ##      and pairwise parameter space.
 ##
@@ -71,29 +71,29 @@
 ##   stability_figures/
 ##
 ## Main figure outputs:
-##   Stage2_acceptance_stability_primary.png
+##   Stage2_acceptance_stability_primary_eligible.png
 ##     Primary Stage 2 acceptance-rate stability.
 ##
-##   Stage2_parameter_stability_100_all_parameters.png
+##   Stage2_parameter_stability_400_all_parameters_eligible.png
 ##     Stability of medians and 2.5th-97.5th percentiles of all seven
 ##     retained parameters as the number of MDA-effect LHS samples increases.
 ##
-##   Stage2_pairwise_stability_100.png
+##   Stage2_pairwise_stability_400_eligible.png
 ##     Pairwise comparison of retained MDA-effect parameters arising from
-##     the first 80 versus final 20 LHS points.
+##     the first 320 versus final 80 LHS points.
 ##
-##   Stage2_independent_LHS_parameter_stability.png
+##   Stage2_independent_LHS_parameter_stability_eligible.png
 ##     Comparison of retained parameter distributions between the independent
-##     50-point and primary 100-point Stage 2 LHS designs.
+##     200-point and primary 400-point Stage 2 LHS designs.
 ##
-##   Stage2_independent_LHS_pairwise.png
-##     Pairwise parameter-space comparison of the independent 50- and
-##     100-point Stage 2 LHS designs.
+##   Stage2_independent_LHS_pairwise_eligible.png
+##     Pairwise parameter-space comparison of the independent 200- and
+##     400-point Stage 2 LHS designs.
 ##
-##   Stage2_acceptance_stability_sensitivity_analyses.png
+##   Stage2_acceptance_stability_sensitivity_analyses_eligible.png
 ##     Acceptance-rate stability for the four sensitivity calibrations.
 ##
-##   Stage2_sensitivity_parameter_distributions.png
+##   Stage2_sensitivity_parameter_distributions_eligible.png
 ##     Comparison of retained parameter distributions across the primary
 ##     calibration and four sensitivity analyses.
 ##
@@ -101,13 +101,13 @@
 ##   stability_data/
 ##
 ## Main data outputs:
-##   Stage2_acceptance_stability_100.csv
-##   Stage2_parameter_stability_100.csv
-##   Stage2_parameter_Spearman_correlations.csv
-##   Stage2_parameter_identifiability_summary.csv
-##   Stage2_independent_LHS_parameter_summary.csv
-##   Stage2_sensitivity_parameter_summary.csv
-##   Stage2_sensitivity_acceptance_summary.csv
+##   Stage2_acceptance_stability_400_eligible.csv
+##   Stage2_parameter_stability_400_eligible.csv
+##   Stage2_parameter_Spearman_correlations_eligible.csv
+##   Stage2_parameter_identifiability_summary_eligible.csv
+##   Stage2_independent_LHS_parameter_summary_eligible.csv
+##   Stage2_sensitivity_parameter_summary_eligible.csv
+##   Stage2_sensitivity_acceptance_summary_eligible.csv
 ##
 ## INTERPRETATION
 ##
@@ -135,9 +135,9 @@ load("data_files/fitting_burnin_65000_UU.Rdata")
 
 indv2 <- which(
   l[[2]][,1] - l[[2]][,3] > 0 &
-  l[[2]][,3] - l[[2]][,2] > 0 &
-  l[[1]][,1] > 0.05 &
-  l[[1]][,1] < 0.15
+    l[[2]][,3] - l[[2]][,2] > 0 &
+    l[[1]][,1] > 0.05 &
+    l[[1]][,1] < 0.15
 )
 num_samples <- length(indv2)
 message("Stage 1 inheritance sets: ", num_samples)
@@ -154,7 +154,7 @@ for (n in 1:num_samples) {
   samp <- indv2[n]
   sor <- 1 - (yout[,3] + yout[,4]) /
     (yout[,3] + yout[,4] + yout[,7] + yout[,8])
-
+  
   preMDA[[n]] <- c(
     tail(sor, 1), NA, NA, NA, NA,
     l[[2]][samp,1], l[[2]][samp,2], l[[2]][samp,3]
@@ -162,35 +162,35 @@ for (n in 1:num_samples) {
 }
 
 # ---- Load Stage 2 cumulative-effect simulations ----
-load("data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_cumu_100.Rdata")
+load("data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_cumu_400_eligible.Rdata")
 postMDA <- ll
 
 # Number of unique Stage 2 MDA-effect LHS points examined
-Ns <- c(20, 40, 60, 80, 100)
+Ns <- c(80, 160, 240, 320, 400)
 
 stage2_summary <- function(N) {
   z <- vector("list", num_samples * N)
   k <- 1
-
+  
   for (n in 1:num_samples) {
     initial_SOR <- preMDA[[n]][1]
     c_GRGR <- preMDA[[n]][6]
     c0_SORSOR <- preMDA[[n]][7]
     c0_GRSOR <- preMDA[[n]][8]
-
+    
     for (i in 1:N) {
       final_SOR <- postMDA[[n]][i,1]
       final_prev <- postMDA[[n]][i,5]
       delta_SOR <- final_SOR - initial_SOR
-
+      
       belief23 <- final_prev > 0.10 &
         final_prev < 0.12 &
         delta_SOR > 0.10
-        #delta_SOR > 0.05 & delta_SOR < 0.10
-        #delta_SOR < 0.05
-
+      #delta_SOR > 0.05 & delta_SOR < 0.10
+      #delta_SOR < 0.05
+      
       constraints <- c0_SORSOR < 0.5 & c0_GRSOR > 0.5
-
+      
       z[[k]] <- data.frame(
         lhs_sample = i,
         inheritance_sample = n,
@@ -209,12 +209,12 @@ stage2_summary <- function(N) {
       k <- k + 1
     }
   }
-
+  
   d <- do.call(rbind, z)
   acc <- d[d$retained, , drop = FALSE]
   pars <- c("c_GRGR","c0_SORSOR","c0_GRSOR",
             "s_SORSOR","s_SORGR","f","y")
-
+  
   q <- if (nrow(acc) > 0) {
     sapply(acc[,pars,drop=FALSE], quantile,
            probs=c(0.025,0.5,0.975), na.rm=TRUE)
@@ -222,7 +222,7 @@ stage2_summary <- function(N) {
     matrix(NA, 3, length(pars),
            dimnames=list(c("2.5%","50%","97.5%"), pars))
   }
-
+  
   list(
     N=N,
     n_evaluated=nrow(d),
@@ -250,23 +250,17 @@ acceptance_summary <- do.call(rbind, lapply(results, function(x) {
 }))
 print(acceptance_summary)
 
-# At N = 100 this should reproduce:
-# 15700 combinations evaluated
-# 962 satisfying Beliefs 2 and 3
-# 724 finally retained
-
-write.csv(acceptance_summary, file.path(data_dir, "Stage2_acceptance_stability_100.csv"),
+write.csv(acceptance_summary, file.path(data_dir, "Stage2_acceptance_stability_400_eligible.csv"),
           row.names=FALSE)
 
 # ---- Acceptance stability plot ----
-png(file.path(figure_dir, "Stage2_acceptance_stability_100.png"),
+png(file.path(figure_dir, "Stage2_acceptance_stability_400_eligible.png"),
     width=1800, height=1500, res=300)
 
 plot(acceptance_summary$N_MDA_LHS,
      acceptance_summary$acceptance_Beliefs_2_3,
      type="b",
-     ylim=range(c(acceptance_summary$acceptance_Beliefs_2_3,
-                  acceptance_summary$final_retention_proportion)),
+     ylim=c(0,0.005),
      xlab="Number of MDA-effect LHS samples",
      ylab="Proportion of parameter combinations",
      cex.axis=1.3, cex.lab=1.4)
@@ -301,10 +295,18 @@ for (j in seq_along(results)) {
   }
 }
 print(parameter_stability)
-write.csv(parameter_stability, file.path(data_dir, "Stage2_parameter_stability_100.csv"),
+write.csv(parameter_stability, file.path(data_dir, "Stage2_parameter_stability_400_eligible.csv"),
           row.names=FALSE)
 
-
+prior_limits <- list(
+  c_GRGR    = c(0.9, 1),
+  c0_SORSOR = c(0.01, 1),
+  c0_GRSOR  = c(0.01, 1),
+  s_SORSOR  = c(0, 20),
+  s_SORGR   = c(0, 20),
+  f         = c(1, 10),
+  y         = c(0, 1)
+)
 
 plot_stage2_convergence <- function(parameter, label, ylim) {
   
@@ -316,6 +318,7 @@ plot_stage2_convergence <- function(parameter, label, ylim) {
     x$N,
     x$median,
     type = "b",
+    xlim = range(Ns),
     ylim = ylim,
     xlab = "Number of MDA-effect LHS samples",
     ylab = label,
@@ -343,7 +346,7 @@ plot_stage2_convergence <- function(parameter, label, ylim) {
 ############################################################
 
 png(
-  file.path(figure_dir, "Stage2_parameter_stability_100_all_parameters.png"),
+  file.path(figure_dir, "Stage2_parameter_stability_400_all_parameters_eligible.png"),
   width = 3600,
   height = 2200,
   res = 300
@@ -453,13 +456,13 @@ par(
   mar = c(5.1, 4.1, 4.1, 2.1)
 )
 
-# ---- Pairwise stability: first 80 vs final 20 unique LHS points ----
-acc100_stability <- results[[which(Ns==100)]]$accepted
-early <- acc100_stability$lhs_sample <= 80
-late <- acc100_stability$lhs_sample > 80
+# ---- Pairwise stability: first 320 vs final 80 unique LHS points ----
+acc400_stability <- results[[which(Ns==400)]]$accepted
+early <- acc400_stability$lhs_sample <= 320
+late <- acc400_stability$lhs_sample > 320
 
-message("Retained combinations from first 80 LHS points: ", sum(early))
-message("Retained combinations from final 20 LHS points: ", sum(late))
+message("Retained combinations from first 320 LHS points: ", sum(early))
+message("Retained combinations from final 80 LHS points: ", sum(late))
 
 pairs_to_plot <- list(
   c("s_SORSOR","s_SORGR"),
@@ -477,7 +480,7 @@ labs <- list(
   y=expression(y)
 )
 
-png(file.path(figure_dir, "Stage2_pairwise_stability_100.png"),
+png(file.path(figure_dir, "Stage2_pairwise_stability_400_eligible.png"),
     width=3600, height=2000, res=300)
 
 layout(matrix(c(1, 2, 3, 7,
@@ -488,20 +491,20 @@ par(mar=c(4.5,4.5,2,1))
 for (z in pairs_to_plot) {
   xv <- z[1]
   yv <- z[2]
-
-  plot(acc100_stability[[xv]][early], acc100_stability[[yv]][early],
+  
+  plot(acc400_stability[[xv]][early], acc400_stability[[yv]][early],
        pch=1,
-       xlim=range(acc100_stability[[xv]],na.rm=TRUE),
-       ylim=range(acc100_stability[[yv]],na.rm=TRUE),
+       xlim = prior_limits[[xv]],
+       ylim = prior_limits[[yv]],
        xlab=labs[[xv]], ylab=labs[[yv]],
        cex.axis=1.2, cex.lab=1.3)
-
-  points(acc100_stability[[xv]][late], acc100_stability[[yv]][late], pch=16)
+  
+  points(acc400_stability[[xv]][late], acc400_stability[[yv]][late], pch=16)
 }
 
 par(mar=c(0,0,0,0))
 plot.new()
-legend("center", legend=c("First 80","Final 20"),
+legend("center", legend=c("First 320","Final 80"),
        pch=c(1,16), bty="n", cex=1.2)
 plot.new()
 dev.off()
@@ -516,11 +519,11 @@ par(mar=c(5.1,4.1,4.1,2.1))
 ############################################################
 
 ## Final retained parameter combinations from the complete
-## 100-point Stage 2 LHS design
-acc100 <- results[[which(Ns == 100)]]$accepted
+## 400-point Stage 2 LHS design
+acc400 <- results[[which(Ns == 400)]]$accepted
 
 ## Extract the seven calibrated parameters
-param_data <- acc100[, c(
+param_data <- acc400[, c(
   "c_GRGR",
   "c0_SORSOR",
   "c0_GRSOR",
@@ -544,7 +547,7 @@ print(round(spearman_cor, 2))
 
 write.csv(
   round(spearman_cor, 3),
-  file.path(data_dir, "Stage2_parameter_Spearman_correlations.csv")
+  file.path(data_dir, "Stage2_parameter_Spearman_correlations_eligible.csv")
 )
 
 ############################################################
@@ -584,7 +587,6 @@ prior_ranges <- data.frame(
   )
 )
 
-
 ############################################################
 ## Calculate retained parameter distributions
 ############################################################
@@ -615,7 +617,6 @@ identifiability_summary <- data.frame(
   row.names = NULL
 )
 
-
 ############################################################
 ## Add prior ranges
 ############################################################
@@ -644,7 +645,6 @@ identifiability_summary$prior_min <-
 identifiability_summary$prior_max <-
   prior_ranges$prior_max[ii]
 
-
 ############################################################
 ## Compare retained and prior widths
 ############################################################
@@ -668,7 +668,6 @@ identifiability_summary$relative_width <-
 identifiability_summary$relative_width_percent <-
   100 * identifiability_summary$relative_width
 
-
 ############################################################
 ## Display and save
 ############################################################
@@ -677,36 +676,35 @@ print(identifiability_summary)
 
 write.csv(
   identifiability_summary,
-  file.path(data_dir, "Stage2_parameter_identifiability_summary.csv"),
+  file.path(data_dir, "Stage2_parameter_identifiability_summary_eligible.csv"),
   row.names = FALSE
 )
 
 ############################################################
 ## Compare retained parameter distributions between the
-## independent 50-point and 100-point Stage 2 LHS designs
+## independent 200-point and 400-point Stage 2 LHS designs
 ############################################################
 
 
 ############################################################
-## Primary 100-point retained set is already stored in acc100
+## Primary 400-point retained set is already stored in acc400
 ############################################################
 
 ############################################################
-## 2. Load original independent 50-point Stage 2 design
+## 2. Load independent 200-point Stage 2 design
 ############################################################
 
 load(
-  "data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_cumu.Rdata"
+  "data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_cumu_200_eligible.Rdata"
 )
 
-postMDA50 <- ll
-
+postMDA200 <- ll
 
 ############################################################
-## 3. Process the 50-point design using the same criteria
+## 3. Process the 200-point design using the same criteria
 ############################################################
 
-results50 <- NULL
+results200 <- NULL
 
 for (n in 1:num_samples) {
   
@@ -718,11 +716,11 @@ for (n in 1:num_samples) {
   c0_SORSOR <- preMDA[[n]][7]
   c0_GRSOR  <- preMDA[[n]][8]
   
-  for (i in 1:50) {
+  for (i in 1:200) {
     
     ## Model outputs
-    final_SOR  <- postMDA50[[n]][i, 1]
-    final_prev <- postMDA50[[n]][i, 5]
+    final_SOR  <- postMDA200[[n]][i, 1]
+    final_prev <- postMDA200[[n]][i, 5]
     
     ## Change in SOR worm proportion
     delta_SOR <- final_SOR - initial_SOR
@@ -741,29 +739,26 @@ for (n in 1:num_samples) {
     ## Store final retained combinations only
     if (belief23 & constraints) {
       
-      results50 <- rbind(
-        results50,
+      results200 <- rbind(
+        results200,
         data.frame(
           c_GRGR = c_GRGR,
           c0_SORSOR = c0_SORSOR,
           c0_GRSOR = c0_GRSOR,
-          s_SORSOR = postMDA50[[n]][i, 6],
-          s_SORGR  = postMDA50[[n]][i, 7],
-          f         = postMDA50[[n]][i, 8],
-          y         = postMDA50[[n]][i, 9]
+          s_SORSOR = postMDA200[[n]][i, 6],
+          s_SORGR  = postMDA200[[n]][i, 7],
+          f         = postMDA200[[n]][i, 8],
+          y         = postMDA200[[n]][i, 9]
         )
       )
     }
   }
 }
 
-acc50_independent <- results50
+acc200_independent <- results200
 
 ## Check that this reproduces the expected number retained
-nrow(acc50_independent)
-
-## Should be 399
-
+nrow(acc200_independent)
 
 ############################################################
 ## 4. Function to calculate parameter summaries
@@ -814,34 +809,32 @@ summarise_design <- function(x, design) {
   output
 }
 
-
 ############################################################
 ## 5. Calculate summaries for both independent designs
 ############################################################
 
-summary50 <- summarise_design(
-  acc50_independent,
-  "Independent\nN=50"
+summary200 <- summarise_design(
+  acc200_independent,
+  "Independent\nN=200"
 )
 
-summary100 <- summarise_design(
-  acc100,
-  "Primary\nN=100"
+summary400 <- summarise_design(
+  acc400,
+  "Primary\nN=400"
 )
 
 design_comparison <- rbind(
-  summary50,
-  summary100
+  summary200,
+  summary400
 )
 
 print(design_comparison)
 
 write.csv(
   design_comparison,
-  file.path(data_dir, "Stage2_independent_LHS_parameter_summary.csv"),
+  file.path(data_dir, "Stage2_independent_LHS_parameter_summary_eligible.csv"),
   row.names = FALSE
 )
-
 
 ############################################################
 ## Plot comparison of independent Stage 2 LHS designs
@@ -860,8 +853,8 @@ plot_design_comparison <- function(parameter, label,
   ## Put primary design first
   x <- x[
     match(
-      c("Primary\nN=100",
-        "Independent\nN=50"),
+      c("Primary\nN=400",
+        "Independent\nN=200"),
       x$design
     ),
   ]
@@ -899,20 +892,19 @@ plot_design_comparison <- function(parameter, label,
     1,
     at = xpos,
     labels = c(
-      "Primary\nN=100",
-      "Independent\nN=50"
+      "Primary\nN=400",
+      "Independent\nN=200"
     ),
     cex.axis = 1.1
   )
 }
-
 
 ############################################################
 ## Two-row figure
 ############################################################
 
 png(
-  file.path(figure_dir, "Stage2_independent_LHS_parameter_stability.png"),
+  file.path(figure_dir, "Stage2_independent_LHS_parameter_stability_eligible.png"),
   width = 3200,
   height = 2200,
   res = 300
@@ -942,7 +934,6 @@ par(
   mar = c(6, 5, 2, 1)
 )
 
-
 ############################################################
 ## Top row: inheritance parameters
 ############################################################
@@ -964,7 +955,6 @@ plot_design_comparison(
   expression(c[GR*",SOR"]^0),
   ylim = c(0.01, 1)
 )
-
 
 ############################################################
 ## Bottom row: MDA-effect parameters
@@ -994,14 +984,12 @@ plot_design_comparison(
   ylim = c(0, 1)
 )
 
-
 ############################################################
 ## Blank top-right panel
 ############################################################
 
 par(mar = c(0, 0, 0, 0))
 plot.new()
-
 
 ############################################################
 ## Finish figure
@@ -1017,18 +1005,35 @@ par(mar = c(5.1, 4.1, 4.1, 2.1))
 ## calibration criteria
 ############################################################
 
-## Number of MDA-effect LHS samples
-Ns <- c(20, 40, 60, 80, 100)
+## Number of MDA-effect LHS samples for sensitivity analyses
+Nssa <- c(20, 40, 60, 80, 100)
 
 ############################################################
-## Load no-selection Stage 2 simulations
+## Load Stage 2 simulation outputs for sensitivity analyses
 ############################################################
 
+## Primary calibration: N = 400
 load(
-  "data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_cumu_100_s0.Rdata"
+  "data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_cumu_400_eligible.Rdata"
 )
+postMDA_primary <- ll
+rm(ll)
 
+## Moderate, weak SOR increase, wide prev: N = 100
+load(
+  "data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_cumu_100_eligible.Rdata"
+)
+postMDA_moderate <- ll
+postMDA_weak <- ll
+postMDA_wide <- ll
+rm(ll)
+
+## No offspring-phenotype selection: N = 100
+load(
+  "data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_cumu_100_s0_eligible.Rdata"
+)
 postMDA_s0 <- ll
+rm(ll)
 
 ############################################################
 ## Function to calculate acceptance rates for a threshold-
@@ -1036,30 +1041,31 @@ postMDA_s0 <- ll
 ############################################################
 
 stage2_acceptance_scenario <- function(N,
+                                       postMDA_object,
                                        prev_lo,
                                        prev_hi,
                                        sor_lo = NULL,
                                        sor_hi = NULL) {
-
+  
   n_evaluated <- 0
   n_calibration <- 0
   n_retained <- 0
-
+  
   for (n in 1:num_samples) {
-
+    
     initial_SOR <- preMDA[[n]][1]
     c0_SORSOR <- preMDA[[n]][7]
     c0_GRSOR  <- preMDA[[n]][8]
-
+    
     for (i in 1:N) {
-
-      final_SOR  <- postMDA[[n]][i, 1]
-      final_prev <- postMDA[[n]][i, 5]
+      
+      final_SOR  <- postMDA_object[[n]][i, 1]
+      final_prev <- postMDA_object[[n]][i, 5]
       delta_SOR  <- final_SOR - initial_SOR
-
+      
       ## Belief 2
       belief2 <- final_prev > prev_lo & final_prev < prev_hi
-
+      
       ## Belief 3 / sensitivity criterion
       if (!is.null(sor_lo) && !is.null(sor_hi)) {
         belief3 <- delta_SOR > sor_lo & delta_SOR < sor_hi
@@ -1070,16 +1076,16 @@ stage2_acceptance_scenario <- function(N,
       } else {
         belief3 <- TRUE
       }
-
+      
       calibration <- belief2 & belief3
       constraints <- c0_SORSOR < 0.5 & c0_GRSOR > 0.5
-
+      
       n_evaluated  <- n_evaluated + 1
       n_calibration <- n_calibration + calibration
       n_retained   <- n_retained + (calibration & constraints)
     }
   }
-
+  
   data.frame(
     N = N,
     n_evaluated = n_evaluated,
@@ -1087,7 +1093,6 @@ stage2_acceptance_scenario <- function(N,
     final_retention = n_retained / n_evaluated
   )
 }
-
 
 ############################################################
 ## Function for no offspring-phenotype selection scenario
@@ -1098,28 +1103,28 @@ stage2_acceptance_scenario <- function(N,
 stage2_acceptance_no_selection <- function(N,
                                            prev_lo = 0.10,
                                            prev_hi = 0.12) {
-
+  
   n_evaluated <- 0
   n_calibration <- 0
   n_retained <- 0
-
+  
   for (n in 1:num_samples) {
-
+    
     c0_SORSOR <- preMDA[[n]][7]
     c0_GRSOR  <- preMDA[[n]][8]
-
+    
     for (i in 1:N) {
-
+      
       final_prev <- postMDA_s0[[n]][i, 5]
       belief2 <- final_prev > prev_lo & final_prev < prev_hi
       constraints <- c0_SORSOR < 0.5 & c0_GRSOR > 0.5
-
+      
       n_evaluated  <- n_evaluated + 1
       n_calibration <- n_calibration + belief2
       n_retained   <- n_retained + (belief2 & constraints)
     }
   }
-
+  
   data.frame(
     N = N,
     n_evaluated = n_evaluated,
@@ -1127,7 +1132,6 @@ stage2_acceptance_no_selection <- function(N,
     final_retention = n_retained / n_evaluated
   )
 }
-
 
 ############################################################
 ## Run primary and four sensitivity scenarios
@@ -1139,6 +1143,7 @@ primary <- do.call(
   lapply(
     Ns,
     stage2_acceptance_scenario,
+    postMDA_object = postMDA_primary,
     prev_lo = 0.10,
     prev_hi = 0.12,
     sor_lo = 0.10
@@ -1149,8 +1154,9 @@ primary <- do.call(
 moderate <- do.call(
   rbind,
   lapply(
-    Ns,
+    Nssa,
     stage2_acceptance_scenario,
+    postMDA_object = postMDA_moderate,
     prev_lo = 0.10,
     prev_hi = 0.12,
     sor_lo = 0.05,
@@ -1162,8 +1168,9 @@ moderate <- do.call(
 low <- do.call(
   rbind,
   lapply(
-    Ns,
+    Nssa,
     stage2_acceptance_scenario,
+    postMDA_object = postMDA_weak,
     prev_lo = 0.10,
     prev_hi = 0.12,
     sor_hi = 0.05
@@ -1174,8 +1181,9 @@ low <- do.call(
 wide <- do.call(
   rbind,
   lapply(
-    Ns,
+    Nssa,
     stage2_acceptance_scenario,
+    postMDA_object = postMDA_wide,
     prev_lo = 0.08,
     prev_hi = 0.14,
     sor_lo = 0.10
@@ -1186,66 +1194,12 @@ wide <- do.call(
 no_selection <- do.call(
   rbind,
   lapply(
-    Ns,
+    Nssa,
     stage2_acceptance_no_selection,
     prev_lo = 0.10,
     prev_hi = 0.12
   )
 )
-
-
-############################################################
-## Primary acceptance stability as a standalone figure
-############################################################
-
-yr_primary <- range(
-  c(primary$acceptance, primary$final_retention),
-  na.rm = TRUE
-)
-ypad_primary <- 0.05 * diff(yr_primary)
-
-png(
-  file.path(figure_dir, "Stage2_acceptance_stability_primary.png"),
-  width = 1800,
-  height = 1500,
-  res = 300
-)
-
-par(mar = c(5, 5, 2, 1))
-
-plot(
-  primary$N,
-  primary$acceptance,
-  type = "b",
-  ylim = c(0,0.08
-    #max(0, yr_primary[1] - ypad_primary),
-    #yr_primary[2] + ypad_primary
-  ),
-  xlim = range(Ns),
-  xlab = "Number of MDA-effect LHS samples",
-  ylab = "Proportion of parameter combinations",
-  cex.axis = 1.3,
-  cex.lab = 1.4
-)
-
-lines(
-  primary$N,
-  primary$final_retention,
-  type = "b",
-  lty = 2
-)
-
-legend(
-  "topright",
-  legend = c("Satisfy calibration criteria", "Final retained"),
-  lty = c(1, 2),
-  pch = c(1, 1),
-  bty = "n",
-  cex = 1.1
-)
-
-dev.off()
-
 
 ############################################################
 ## Four-panel acceptance stability figure for sensitivity
@@ -1270,8 +1224,8 @@ yr_sensitivity <- range(
 ypad_sensitivity <- 0.05 * diff(yr_sensitivity)
 
 ylim_sensitivity <- c(0,
-  #max(0, yr_sensitivity[1] - ypad_sensitivity),
-  yr_sensitivity[2] + ypad_sensitivity
+                      #max(0, yr_sensitivity[1] - ypad_sensitivity),
+                      yr_sensitivity[2] + ypad_sensitivity
 )
 
 plot_acceptance_sensitivity <- function(x, title) {
@@ -1280,7 +1234,7 @@ plot_acceptance_sensitivity <- function(x, title) {
     x$acceptance,
     type = "b",
     ylim = ylim_sensitivity,
-    xlim = range(Ns),
+    xlim = range(Nssa),
     xlab = "Number of MDA-effect LHS samples",
     ylab = "Proportion of parameter combinations",
     main = title,
@@ -1288,7 +1242,7 @@ plot_acceptance_sensitivity <- function(x, title) {
     cex.lab = 1.3,
     cex.main = 1.2
   )
-
+  
   lines(
     x$N,
     x$final_retention,
@@ -1298,7 +1252,7 @@ plot_acceptance_sensitivity <- function(x, title) {
 }
 
 png(
-  file.path(figure_dir, "Stage2_acceptance_stability_sensitivity_analyses.png"),
+  file.path(figure_dir, "Stage2_acceptance_stability_sensitivity_analyses_eligible.png"),
   width = 2600,
   height = 2200,
   res = 300
@@ -1344,16 +1298,15 @@ par(mfrow = c(1, 1))
 par(mar = c(5.1, 4.1, 4.1, 2.1))
 
 ############################################################
-## Pairwise comparison of independent 100-point and
-## 50-point Stage 2 LHS designs
+## Pairwise comparison of independent 400-point and
+## 200-point Stage 2 LHS designs
 ############################################################
 
-## acc100:
-##   final retained combinations from primary N = 100 design
+## acc400:
+##   final retained combinations from primary N = 400 design
 ##
-## acc50_independent:
-##   final retained combinations from independent N = 50 design
-
+## acc200_independent:
+##   final retained combinations from independent N = 200 design
 
 ############################################################
 ## Parameter pairs to plot
@@ -1368,7 +1321,6 @@ pairs_to_plot <- list(
   c("f", "y")
 )
 
-
 ############################################################
 ## Mathematical labels
 ############################################################
@@ -1379,7 +1331,6 @@ labs <- list(
   f        = expression(f),
   y        = expression(y)
 )
-
 
 ############################################################
 ## Prior ranges
@@ -1395,13 +1346,12 @@ prior_limits <- list(
   y        = c(0, 1)
 )
 
-
 ############################################################
 ## Save figure
 ############################################################
 
 png(
-  file.path(figure_dir, "Stage2_independent_LHS_pairwise.png"),
+  file.path(figure_dir, "Stage2_independent_LHS_pairwise_eligible.png"),
   width = 3600,
   height = 2000,
   res = 300
@@ -1424,7 +1374,6 @@ par(
   mar = c(4.5, 5.5, 2, 1)
 )
 
-
 ############################################################
 ## Draw pairwise plots
 ############################################################
@@ -1434,10 +1383,10 @@ for (z in pairs_to_plot) {
   xv <- z[1]
   yv <- z[2]
   
-  ## Primary 100-point design
+  ## Primary 400-point design
   plot(
-    acc100[[xv]],
-    acc100[[yv]],
+    acc400[[xv]],
+    acc400[[yv]],
     pch = 1,
     xlim = prior_limits[[xv]],
     ylim = prior_limits[[yv]],
@@ -1448,14 +1397,13 @@ for (z in pairs_to_plot) {
     mgp = c(2.8, 0.8, 0)
   )
   
-  ## Independent 50-point design
+  ## Independent 200-point design
   points(
-    acc50_independent[[xv]],
-    acc50_independent[[yv]],
+    acc200_independent[[xv]],
+    acc200_independent[[yv]],
     pch = 16
   )
 }
-
 
 ############################################################
 ## Legend
@@ -1468,21 +1416,19 @@ plot.new()
 legend(
   "center",
   legend = c(
-    "Primary (N=100)",
-    "Independent (N=50)"
+    "Primary (N=400)",
+    "Independent (N=200)"
   ),
   pch = c(1, 16),
   bty = "n",
   cex = 1.2
 )
 
-
 ############################################################
 ## Blank final panel
 ############################################################
 
 plot.new()
-
 
 ############################################################
 ## Finish
@@ -1496,185 +1442,196 @@ par(
   mar = c(5.1, 4.1, 4.1, 2.1)
 )
 
-
 ############################################################
 ## Compare retained parameter distributions across
 ## primary and sensitivity analyses
 ############################################################
 
+
+
 ############################################################
-## 1. Construct the complete Stage 2 parameter/output dataset
+## 2. Construct the complete Stage 2 parameter/output dataset
 ############################################################
 
-all_stage2 <- vector("list", num_samples * 100)
-k <- 1
-
-for (n in 1:num_samples) {
+make_stage2_dataset <- function(postMDA_object, N, preMDA, 
+                                num_samples, no_selection = FALSE) {
   
-  ## Pre-MDA SOR proportion and Stage 1 inheritance parameters
-  initial_SOR <- preMDA[[n]][1]
+  out <- vector("list", num_samples * N)
+  k <- 1
   
-  c_GRGR    <- preMDA[[n]][6]
-  c0_SORSOR <- preMDA[[n]][7]
-  c0_GRSOR  <- preMDA[[n]][8]
-  
-  for (i in 1:100) {
+  for (n in 1:num_samples) {
     
-    ## Stage 2 model outputs
-    final_SOR  <- postMDA[[n]][i, 1]
-    final_prev <- postMDA[[n]][i, 5]
+    initial_SOR <- preMDA[[n]][1]
     
-    ## Change in SOR worm proportion
-    delta_SOR <- final_SOR - initial_SOR
+    c_GRGR    <- preMDA[[n]][6]
+    c0_SORSOR <- preMDA[[n]][7]
+    c0_GRSOR  <- preMDA[[n]][8]
     
-    all_stage2[[k]] <- data.frame(
+    for (i in 1:N) {
       
-      ## Stage 1 parameters
-      c_GRGR    = c_GRGR,
-      c0_SORSOR = c0_SORSOR,
-      c0_GRSOR  = c0_GRSOR,
+      final_SOR  <- postMDA_object[[n]][i, 1]
+      final_prev <- postMDA_object[[n]][i, 5]
+      delta_SOR  <- final_SOR - initial_SOR
       
-      ## Stage 2 parameters
-      s_SORSOR = postMDA[[n]][i, 6],
-      s_SORGR  = postMDA[[n]][i, 7],
-      f        = postMDA[[n]][i, 8],
-      y        = postMDA[[n]][i, 9],
+      if (no_selection) {
+        s_SORSOR <- 0
+        s_SORGR  <- 0
+      } else {
+        s_SORSOR <- postMDA_object[[n]][i, 6]
+        s_SORGR  <- postMDA_object[[n]][i, 7]
+      }
       
-      ## Calibration outputs
-      final_prev = final_prev,
-      delta_SOR  = delta_SOR
-    )
-    
-    k <- k + 1
+      out[[k]] <- data.frame(
+        c_GRGR    = c_GRGR,
+        c0_SORSOR = c0_SORSOR,
+        c0_GRSOR  = c0_GRSOR,
+        s_SORSOR  = s_SORSOR,
+        s_SORGR   = s_SORGR,
+        f         = postMDA_object[[n]][i, 8],
+        y         = postMDA_object[[n]][i, 9],
+        final_prev = final_prev,
+        delta_SOR  = delta_SOR
+      )
+      k <- k + 1
+    }
   }
+  do.call(rbind, out)
 }
 
-all_stage2 <- do.call(rbind, all_stage2)
+all_primary <- make_stage2_dataset(
+  postMDA_primary,
+  N = 400,
+  preMDA = preMDA,
+  num_samples = num_samples
+)
 
+all_moderate <- make_stage2_dataset(
+  postMDA_moderate,
+  N = 100,
+  preMDA = preMDA,
+  num_samples = num_samples
+)
 
-############################################################
-## 2. Common final parameter constraints
-############################################################
+all_weak <- make_stage2_dataset(
+  postMDA_weak,
+  N = 100,
+  preMDA = preMDA,
+  num_samples = num_samples
+)
 
-constraints <-
-  all_stage2$c0_SORSOR < 0.5 &
-  all_stage2$c0_GRSOR > 0.5
+all_wide <- make_stage2_dataset(
+  postMDA_wide,
+  N = 100,
+  preMDA = preMDA,
+  num_samples = num_samples
+)
 
-
-############################################################
-## 3. Load no-selection sensitivity analysis
-############################################################
-
-## In this scenario the two offspring-phenotype selection coefficients
-## are fixed at zero. The saved Stage 2 output retains the same
-## nine-column structure as the primary simulations:
-## columns 6-7 = s_SORSOR, s_SORGR (= 0); columns 8-9 = f, y.
-
-all_stage2_s0 <- vector("list", num_samples * 100)
-k <- 1
-
-for (n in 1:num_samples) {
-  initial_SOR <- preMDA[[n]][1]
-  c_GRGR      <- preMDA[[n]][6]
-  c0_SORSOR   <- preMDA[[n]][7]
-  c0_GRSOR    <- preMDA[[n]][8]
-
-  for (i in 1:100) {
-    final_SOR  <- postMDA_s0[[n]][i, 1]
-    final_prev <- postMDA_s0[[n]][i, 5]
-
-    all_stage2_s0[[k]] <- data.frame(
-      c_GRGR = c_GRGR,
-      c0_SORSOR = c0_SORSOR,
-      c0_GRSOR = c0_GRSOR,
-      s_SORSOR = 0,
-      s_SORGR = 0,
-      f = postMDA_s0[[n]][i, 8],
-      y = postMDA_s0[[n]][i, 9],
-      final_prev = final_prev,
-      delta_SOR = final_SOR - initial_SOR
-    )
-    k <- k + 1
-  }
-}
-
-all_stage2_s0 <- do.call(rbind, all_stage2_s0)
-constraints_s0 <-
-  all_stage2_s0$c0_SORSOR < 0.5 &
-  all_stage2_s0$c0_GRSOR > 0.5
-
-## No Belief 3 threshold is imposed here: selection through the
-## offspring-phenotype functions is removed mechanistically.
-keep_no_selection <-
-  all_stage2_s0$final_prev > 0.10 &
-  all_stage2_s0$final_prev < 0.12 &
-  #all_stage2_s0$delta_SOR >0.1 &
-  constraints_s0
-
-acc_no_selection <- all_stage2_s0[keep_no_selection, , drop = FALSE]
-message("No-selection combinations retained: ", nrow(acc_no_selection))
-
-############################################################
-## 4. Define the four threshold-based calibration scenarios
-############################################################
-
-## Primary:
-## prevalence 10-12%, increase in SOR > 0.10
-keep_primary <-
-  all_stage2$final_prev > 0.10 &
-  all_stage2$final_prev < 0.12 &
-  all_stage2$delta_SOR > 0.10 &
-  constraints
-
-
-## Moderate increase:
-## prevalence 10-12%, increase in SOR 0.05-0.10
-keep_moderate <-
-  all_stage2$final_prev > 0.10 &
-  all_stage2$final_prev < 0.12 &
-  all_stage2$delta_SOR > 0.05 &
-  all_stage2$delta_SOR < 0.10 &
-  constraints
-
-
-## Low increase:
-## prevalence 10-12%, increase in SOR < 0.05
-keep_low <-
-  all_stage2$final_prev > 0.10 &
-  all_stage2$final_prev < 0.12 &
-  all_stage2$delta_SOR < 0.05 &
-  constraints
-
-
-## Wider prevalence:
-## prevalence 8-14%, increase in SOR > 0.10
-keep_wide <-
-  all_stage2$final_prev > 0.08 &
-  all_stage2$final_prev < 0.14 &
-  all_stage2$delta_SOR > 0.10 &
-  constraints
-
-
-############################################################
-## 4. Extract retained parameter combinations
-############################################################
-
-acc_primary  <- all_stage2[keep_primary, , drop = FALSE]
-acc_moderate <- all_stage2[keep_moderate, , drop = FALSE]
-acc_low      <- all_stage2[keep_low, , drop = FALSE]
-acc_wide     <- all_stage2[keep_wide, , drop = FALSE]
-
-## Check numbers retained
-c(
-  Primary = nrow(acc_primary),
-  Moderate = nrow(acc_moderate),
-  Low = nrow(acc_low),
-  No_selection = nrow(acc_no_selection),
-  Wider_prevalence = nrow(acc_wide)
+all_no_selection <- make_stage2_dataset(
+  postMDA_s0,
+  N = 100,
+  preMDA = preMDA,
+  num_samples = num_samples,
+  no_selection = TRUE
 )
 
 ############################################################
-## 5. Summarise retained parameter distributions
+## 3. Apply final inheritance-parameter constraints
+############################################################
+
+constraints_primary <-
+  all_primary$c0_SORSOR < 0.5 &
+  all_primary$c0_GRSOR > 0.5
+
+constraints_moderate <-
+  all_moderate$c0_SORSOR < 0.5 &
+  all_moderate$c0_GRSOR > 0.5
+
+constraints_weak <-
+  all_weak$c0_SORSOR < 0.5 &
+  all_weak$c0_GRSOR > 0.5
+
+constraints_wide <-
+  all_wide$c0_SORSOR < 0.5 &
+  all_wide$c0_GRSOR > 0.5
+
+constraints_no_selection <-
+  all_no_selection$c0_SORSOR < 0.5 &
+  all_no_selection$c0_GRSOR > 0.5
+
+############################################################
+## 4. Retain parameter combinations satisfying each calibration
+############################################################
+
+acc_primary <- all_primary[
+  all_primary$final_prev > 0.10 &
+    all_primary$final_prev < 0.12 &
+    all_primary$delta_SOR > 0.10 &
+    constraints_primary,
+  ,
+  drop = FALSE
+]
+
+acc_moderate <- all_moderate[
+  all_moderate$final_prev > 0.10 &
+    all_moderate$final_prev < 0.12 &
+    all_moderate$delta_SOR > 0.05 &
+    all_moderate$delta_SOR < 0.10 &
+    constraints_moderate,
+  ,
+  drop = FALSE
+]
+
+acc_low <- all_weak[
+  all_weak$final_prev > 0.10 &
+    all_weak$final_prev < 0.12 &
+    all_weak$delta_SOR < 0.05 &
+    constraints_weak,
+  ,
+  drop = FALSE
+]
+
+acc_wide <- all_wide[
+  all_wide$final_prev > 0.08 &
+    all_wide$final_prev < 0.14 &
+    all_wide$delta_SOR > 0.10 &
+    constraints_wide,
+  ,
+  drop = FALSE
+]
+
+## No Belief 3 criterion for this sensitivity analysis
+acc_no_selection <- all_no_selection[
+  all_no_selection$final_prev > 0.10 &
+    all_no_selection$final_prev < 0.12 &
+    constraints_no_selection,
+  ,
+  drop = FALSE
+]
+
+############################################################
+## 5. Check retained counts
+############################################################
+
+cat(
+  "\nStage 2 combinations evaluated:\n",
+  "Primary:      ", nrow(all_primary), "\n",
+  "Moderate:     ", nrow(all_moderate), "\n",
+  "Weak:         ", nrow(all_weak), "\n",
+  "Wider:        ", nrow(all_wide), "\n",
+  "No selection: ", nrow(all_no_selection), "\n"
+)
+
+cat(
+  "\nFinal combinations retained:\n",
+  "Primary:      ", nrow(acc_primary), "\n",
+  "Moderate:     ", nrow(acc_moderate), "\n",
+  "Weak:         ", nrow(acc_low), "\n",
+  "Wider:        ", nrow(acc_wide), "\n",
+  "No selection: ", nrow(acc_no_selection), "\n"
+)
+
+############################################################
+## 6. Summarise retained parameter distributions
 ############################################################
 
 parameters <- c(
@@ -1686,7 +1643,6 @@ parameters <- c(
   "f",
   "y"
 )
-
 
 summarise_scenario <- function(x, scenario) {
   
@@ -1719,7 +1675,6 @@ summarise_scenario <- function(x, scenario) {
   )
 }
 
-
 sensitivity_parameter_summary <- rbind(
   
   summarise_scenario(
@@ -1736,7 +1691,7 @@ sensitivity_parameter_summary <- rbind(
     acc_low,
     "Low"
   ),
-
+  
   summarise_scenario(
     acc_no_selection,
     "No selection"
@@ -1748,17 +1703,16 @@ sensitivity_parameter_summary <- rbind(
   )
 )
 
-
 print(sensitivity_parameter_summary)
 
 write.csv(
   sensitivity_parameter_summary,
-  file.path(data_dir, "Stage2_sensitivity_parameter_summary.csv"),
+  file.path(data_dir, "Stage2_sensitivity_parameter_summary_eligible.csv"),
   row.names = FALSE
 )
 
 ############################################################
-## 6. Plotting function
+## 7. Plotting function
 ############################################################
 
 plot_sensitivity_comparison <- function(parameter,
@@ -1851,11 +1805,11 @@ plot_sensitivity_comparison <- function(parameter,
 }
 
 ############################################################
-## 7. Seven-panel sensitivity comparison
+## 8. Seven-panel sensitivity comparison
 ############################################################
 
 png(
-  file.path(figure_dir, "Stage2_sensitivity_parameter_distributions.png"),
+  file.path(figure_dir, "Stage2_sensitivity_parameter_distributions_eligible.png"),
   width = 3800,
   height = 1800,
   res = 300
@@ -1875,7 +1829,6 @@ layout(
   ),
   widths = c(1, 1, 1, 1)
 )
-
 
 ############################################################
 ## Top row: inheritance parameters
@@ -1901,7 +1854,6 @@ plot_sensitivity_comparison(
   c(0.01, 1)
 )
 
-
 ############################################################
 ## Top-right: explanation of intervals
 ############################################################
@@ -1920,7 +1872,6 @@ legend(
   bty = "n",
   cex = 1.1
 )
-
 
 ############################################################
 ## Bottom row: MDA-effect parameters
@@ -1956,7 +1907,6 @@ plot_sensitivity_comparison(
   show_xlab = TRUE
 )
 
-
 ############################################################
 ## Finish
 ############################################################
@@ -1970,53 +1920,79 @@ par(
 )
 
 ############################################################
-## Acceptance proportions for sensitivity analyses
+## Acceptance proportions for primary and sensitivity analyses
 ############################################################
 
-## For the four threshold-based analyses, counts come from the
-## common 100-point Stage 2 design. For the no-selection analysis,
-## Belief 3 is not imposed; acceptance is based on Belief 2 and the
-## common inheritance-parameter constraints.
+## Extract the final LHS-size result from each stability analysis.
+## Primary uses N = 400; sensitivity analyses use N = 100.
 
-get_n100 <- function(x, field) x[[field]][x$N == 100]
-
-no_selection_n_eval <- nrow(all_stage2_s0)
-no_selection_n_belief2 <- sum(
-  all_stage2_s0$final_prev > 0.10 &
-  all_stage2_s0$final_prev < 0.12
-)
-no_selection_n_retained <- nrow(acc_no_selection)
+get_at_N <- function(x, field, N) {
+  x[[field]][x$N == N]
+}
 
 sensitivity_acceptance_summary <- data.frame(
+  
   analysis = c(
     "Primary",
     "Moderate increase",
-    "Low increase",
+    "Weak increase",
     "No selection",
     "Wider prevalence"
   ),
+  
+  N_MDA_LHS = c(
+    400,
+    100,
+    100,
+    100,
+    100
+  ),
+  
   combinations_evaluated = c(
-    get_n100(primary, "n_evaluated"),
-    get_n100(moderate, "n_evaluated"),
-    get_n100(low, "n_evaluated"),
-    no_selection_n_eval,
-    get_n100(wide, "n_evaluated")
+    get_at_N(primary,      "n_evaluated", 400),
+    get_at_N(moderate,     "n_evaluated", 100),
+    get_at_N(low,          "n_evaluated", 100),
+    get_at_N(no_selection, "n_evaluated", 100),
+    get_at_N(wide,         "n_evaluated", 100)
   ),
+  
   n_satisfying_calibration = c(
-    round(get_n100(primary, "acceptance") * get_n100(primary, "n_evaluated")),
-    round(get_n100(moderate, "acceptance") * get_n100(moderate, "n_evaluated")),
-    round(get_n100(low, "acceptance") * get_n100(low, "n_evaluated")),
-    no_selection_n_belief2,
-    round(get_n100(wide, "acceptance") * get_n100(wide, "n_evaluated"))
+    round(
+      get_at_N(primary, "acceptance", 400) *
+        get_at_N(primary, "n_evaluated", 400)
+    ),
+    round(
+      get_at_N(moderate, "acceptance", 100) *
+        get_at_N(moderate, "n_evaluated", 100)
+    ),
+    round(
+      get_at_N(low, "acceptance", 100) *
+        get_at_N(low, "n_evaluated", 100)
+    ),
+    round(
+      get_at_N(no_selection, "acceptance", 100) *
+        get_at_N(no_selection, "n_evaluated", 100)
+    ),
+    round(
+      get_at_N(wide, "acceptance", 100) *
+        get_at_N(wide, "n_evaluated", 100)
+    )
   ),
+  
+  ## Use the retained datasets constructed from the actual
+  ## Stage 2 simulation files.
   n_final_retained = c(
-    round(get_n100(primary, "final_retention") * get_n100(primary, "n_evaluated")),
-    round(get_n100(moderate, "final_retention") * get_n100(moderate, "n_evaluated")),
-    round(get_n100(low, "final_retention") * get_n100(low, "n_evaluated")),
-    no_selection_n_retained,
-    round(get_n100(wide, "final_retention") * get_n100(wide, "n_evaluated"))
+    nrow(acc_primary),
+    nrow(acc_moderate),
+    nrow(acc_low),
+    nrow(acc_no_selection),
+    nrow(acc_wide)
   )
 )
+
+############################################################
+## Calculate proportions
+############################################################
 
 sensitivity_acceptance_summary$acceptance_proportion <-
   sensitivity_acceptance_summary$n_satisfying_calibration /
@@ -2032,14 +2008,20 @@ sensitivity_acceptance_summary$acceptance_percent <-
 sensitivity_acceptance_summary$final_retention_percent <-
   100 * sensitivity_acceptance_summary$final_retention_proportion
 
+############################################################
+## Display and save
+############################################################
+
 print(sensitivity_acceptance_summary)
 
 write.csv(
   sensitivity_acceptance_summary,
-  file.path(data_dir, "Stage2_sensitivity_acceptance_summary.csv"),
+  file.path(
+    data_dir,
+    "Stage2_sensitivity_acceptance_summary_eligible.csv"
+  ),
   row.names = FALSE
 )
-
 
 ###############################################################################
 ## REPOSITORY DATA EXPORT
@@ -2047,13 +2029,13 @@ write.csv(
 ###############################################################################
 dir.create("data_processed", showWarnings = FALSE, recursive = TRUE)
 
-## Accepted primary combinations labelled by the part of the 100-point
+## Accepted primary combinations labelled by the part of the 400-point
 ## MDA-effect LHS design from which they arose.
-stage2_primary_pairwise <- acc100_stability
+stage2_primary_pairwise <- acc400_stability
 stage2_primary_pairwise$sampling_block <- ifelse(
-  stage2_primary_pairwise$lhs_sample <= 80,
-  "First 80",
-  "Final 20"
+  stage2_primary_pairwise$lhs_sample <= 320,
+  "First 320",
+  "Final 80"
 )
 
 ## Accepted combinations for the independent-design comparison.
@@ -2072,21 +2054,21 @@ pairwise_parameters <- c(
 stage2_independent_pairwise <- rbind(
   
   data.frame(
-    acc100[
+    acc400[
       ,
       pairwise_parameters,
       drop = FALSE
     ],
-    design = "Primary N=100"
+    design = "Primary N=400"
   ),
   
   data.frame(
-    acc50_independent[
+    acc200_independent[
       ,
       pairwise_parameters,
       drop = FALSE
     ],
-    design = "Independent N=50"
+    design = "Independent N=200"
   )
 )
 
@@ -2109,7 +2091,7 @@ save(
   sensitivity_parameter_summary,
   sensitivity_acceptance_summary,
   stage2_sensitivity_stability,
-  file = "data_processed/stage2_stability_repo_data.Rdata"
+  file = "data_processed/stage2_stability_repo_data_eligible.Rdata"
 )
 
-message("Saved data_processed/stage2_stability_repo_data.Rdata")
+message("Saved data_processed/stage2_stability_repo_data_eligible.Rdata")

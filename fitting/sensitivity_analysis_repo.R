@@ -1,10 +1,10 @@
 ###############################################################################
 ## Asubende calibration sensitivity figure: repository version
-## Requires stability_data/Asubende_sensitivity_summary.csv only.
+## Requires stability_data/Asubende_sensitivity_summary_eligible.csv only.
 ###############################################################################
 figure_dir <- "stability_figures"
 dir.create(figure_dir,showWarnings=FALSE,recursive=TRUE)
-asubende_summary <- read.csv("stability_data/Asubende_sensitivity_summary.csv",
+asubende_summary <- read.csv("stability_data/Asubende_sensitivity_summary_eligible.csv",
                              stringsAsFactors=FALSE)
 scenario_order <- c("Primary","Moderate","Weak","No selection","Wider prevalence")
 
@@ -22,7 +22,7 @@ plot_asubende_outcome <- function(outcome,label,ylim=NULL,show_xlab=FALSE){
  text(xpos,label_y,labels=scenario_order,srt=45,adj=1,xpd=TRUE,cex=.85)
  if(show_xlab)mtext("Calibration analysis",side=1,line=5.3,cex=1.2)
 }
-png(file.path(figure_dir,"Asubende_sensitivity_outcomes.png"),3300,2200,res=300)
+png(file.path(figure_dir,"Asubende_sensitivity_outcomes_eligible.png"),3300,2200,res=300)
 layout(matrix(1:6,nrow=2,byrow=TRUE));par(mar=c(7.5,6,2.5,1))
 plot_asubende_outcome("final_prev_annual","Final mf prevalence",c(0,.15));mtext("A.  End of annual MDAi calibration",3,.5,cex=1.1)
 plot_asubende_outcome("increase_sor_annual","Increase in SOR worm proportion");mtext("B.  End of annual MDAi calibration",3,.5,cex=1.1)

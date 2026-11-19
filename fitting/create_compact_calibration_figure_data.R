@@ -66,21 +66,20 @@ stage2_dataframe <- function(postMDA, cumulative_effect) {
   do.call(rbind, z)
 }
 
-load("data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_cumu_100.Rdata")
+load("data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_cumu_400_eligible.Rdata")
 dfc <- stage2_dataframe(ll, 1)
-load("data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_no_cumu_100.Rdata")
+load("data_files/fitting_MDA_ABR_65000_UU_from_posterior_samples_no_cumu_100_eligible.Rdata")
 dfnoc <- stage2_dataframe(ll, 0)
 S2_VR_data <- subset(rbind(dfc, dfnoc), c0_SORSOR < 0.5 & c0_GRSOR > 0.5)
 
-## GR-only S2 data. Update filenames here if the final archived files use a
-## different LHS size/name.
-load("data_files/GR_only_model_LHS_simulations_annual_cumu_2000.Rdata")
+## GR-only S2 data. 
+load("data_files/GR_only_model_LHS_simulations_annual_cumu_2000_eligible.Rdata")
 S2_GR_cumu <- data.frame(
   y = as.numeric(l[[3]]),
   Final_mf_prevalence = as.numeric(l[[2]]) * 100,
   Cumulative_effect = factor(1, levels = c(0,1))
 )
-load("data_files/GR_only_model_LHS_simulations_annual_no_cumu_2000.Rdata")
+load("data_files/GR_only_model_LHS_simulations_annual_no_cumu_2000_eligible.Rdata")
 S2_GR_nocumu <- data.frame(
   y = as.numeric(l[[3]]),
   Final_mf_prevalence = as.numeric(l[[2]]) * 100,
@@ -89,12 +88,12 @@ S2_GR_nocumu <- data.frame(
 S2_GR_data <- rbind(S2_GR_cumu, S2_GR_nocumu)
 
 ## S3/S4: use the already processed primary retained parameter/outcome file.
-load("data_files/primary_retained_parameter_outcomes_100.Rdata")
+load("data_files/primary_retained_parameter_outcomes_400_eligible.Rdata")
 S34_primary_data <- data
 
 save(
   S2_VR_data, S2_GR_data, S34_primary_data,
-  file = "data_processed/primary_calibration_figure_data.Rdata",
+  file = "data_processed/primary_calibration_figure_data_eligible.Rdata",
   compress = "xz"
 )
 
@@ -103,15 +102,15 @@ save(
 ###############################################################################
 
 ## VR trajectories and primary retained outcomes
-load("data_files/Final_posterior_burnins_plusbiannualMDAs_cumu_100.Rdata")
+load("data_files/Final_posterior_burnins_plusbiannualMDAs_cumu_400_eligible.Rdata")
 OutputMM_VR <- OutputMM
-load("data_files/primary_retained_parameter_outcomes_100.Rdata")
+load("data_files/primary_retained_parameter_outcomes_400_eligible.Rdata")
 VR_primary <- data
 
 ## GR trajectories saved under wider 8-14% criterion
-load("data_files/Final_posterior_burnins_GR_2000.Rdata")
+load("data_files/Final_posterior_burnins_GR_2000_eligible.Rdata")
 OutputM_GR_all <- OutputM
-load("data_files/Final_posterior_burnins_plusbiannualMDAs_GR_cumu_2000.Rdata")
+load("data_files/Final_posterior_burnins_plusbiannualMDAs_GR_cumu_2000_eligible.Rdata")
 OutputMM_GR_all <- OutputMM
 
 GR_prev_annual_all <- vapply(
@@ -180,7 +179,7 @@ save(
   Figure2_VR_trajectories,
   Figure2_GR_trajectories,
   Figure2_panelB_data,
-  file="data_processed/Figure2_plot_data.Rdata",
+  file="data_processed/Figure2_plot_data_eligible.Rdata",
   compress="xz"
 )
 

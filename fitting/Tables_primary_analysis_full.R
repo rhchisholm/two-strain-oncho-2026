@@ -22,7 +22,7 @@
 ## OUTPUT
 ##
 ## Summary-statistic objects are saved in:
-##   tables/Tables_Asubende_100.Rdata
+##   tables/Tables_Asubende_400_eligible.Rdata
 ##
 ## The saved objects are:
 ##   ParameterStatsO  - quantiles of retained primary parameter values.
@@ -80,8 +80,8 @@ ALLdataAccepted<- data.frame(matrix(nrow=0, ncol=length(columns)))
 names(ALLdataAccepted) <- columns
 
 ## Load primary cumulative-effect calibration and subsequent biannual MDAi output
-load("data_files/Final_posterior_burnins_plusbiannualMDAs_cumu_100.Rdata")
-load("data_files/posteriors_ABR_65000_UU_cumu_100.Rdata")
+load("data_files/Final_posterior_burnins_plusbiannualMDAs_cumu_400_eligible.Rdata")
+load("data_files/posteriors_ABR_65000_UU_cumu_400_eligible.Rdata")
 posteriors <- posteriors[posteriors[,3]<0.5 & posteriors[,4]>0.5,]
 num_sims<-length(posteriors[,1])
 RecFinal <- matrix(0,nrow=num_sims,ncol=6)
@@ -176,7 +176,7 @@ for(i in 1:7){
   }
 }
 
-save(ParameterStatsO,SummaryStatsO,file = "tables/Tables_Asubende_100.Rdata")
+save(ParameterStatsO,SummaryStatsO,file = "tables/Tables_Asubende_400_eligible.Rdata")
 
 
 ###############################################################################
@@ -189,7 +189,7 @@ save(ParameterStatsO,SummaryStatsO,file = "tables/Tables_Asubende_100.Rdata")
 ###############################################################################
 
 ## Load annual-MDAi calibration results
-load("data_files/GR_only_model_LHS_simulations_annual_cumu_2000.Rdata")
+load("data_files/GR_only_model_LHS_simulations_annual_cumu_2000_eligible.Rdata")
 
 ## Expected contents:
 ##   l[[2]] = final mf prevalence after annual MDAi
@@ -267,7 +267,7 @@ GR_SummaryStatsO["Final_mf_prevalence_annual", ] <- quantile(
 ## Load subsequent biannual-MDAi trajectories.
 ## This file contains the trajectories for the wider 8-14% retained set.
 load(
-  "data_files/Final_posterior_burnins_plusbiannualMDAs_GR_cumu_2000.Rdata"
+  "data_files/Final_posterior_burnins_plusbiannualMDAs_GR_cumu_2000_eligible.Rdata"
 )
 
 ## Select the nested primary 10-12% subset.
@@ -303,7 +303,7 @@ save(
   GR_y_primary,
   GR_final_prev_annual_primary,
   GR_final_prev_biannual,
-  file = "tables/Tables_Asubende_GR_primary.Rdata"
+  file = "tables/Tables_Asubende_GR_primary_eligible.Rdata"
 )
 
 cat("\nGR-only retained parameter distribution:\n")
@@ -401,7 +401,7 @@ save(
   GR_y_wider,
   GR_final_prev_annual_wider,
   GR_final_prev_biannual_wider,
-  file = "tables/Tables_Asubende_GR_wider_prevalence.Rdata"
+  file = "tables/Tables_Asubende_GR_wider_prevalence_eligible.Rdata"
 )
 
 cat("\nGR-only wider-prevalence retained parameter distribution:\n")
@@ -445,10 +445,10 @@ save(
   GR_final_prev_annual_wider,
   GR_final_prev_biannual_wider,
 
-  file = "data_processed/primary_tables_repo_data.Rdata"
+  file = "data_processed/primary_tables_repo_data_eligible.Rdata"
 )
 
 message(
   "Saved compact repository table data: ",
-  "data_processed/primary_tables_repo_data.Rdata"
+  "data_processed/primary_tables_repo_data_eligible.Rdata"
 )

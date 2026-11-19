@@ -12,7 +12,7 @@ library(patchwork)
 
 figure_dir <- "figures"
 dir.create(figure_dir, showWarnings=FALSE, recursive=TRUE)
-load("data_processed/primary_calibration_figure_data.Rdata")
+load("data_processed/primary_calibration_figure_data_eligible.Rdata")
 
 median_95 <- function(x) data.frame(
   y=median(x,na.rm=TRUE),
@@ -47,7 +47,7 @@ b6 <- ggplot(S2_GR_data,
   theme_bw() + theme(text=element_text(size=18))
 
 p <- b5+b6+plot_annotation(tag_levels="A")
-ggsave(file.path(figure_dir,"SF2_100.png"),p,width=15,height=6,dpi=300)
+ggsave(file.path(figure_dir,"SF2_400_eligible.png"),p,width=15,height=6,dpi=300)
 
 ## Figure S3
 D <- S34_primary_data
@@ -78,7 +78,7 @@ S3b <- ggplot(S3_B,aes(parameter,value)) +
   theme(text=element_text(size=16),axis.text.x=element_text(size=15),panel.grid.minor=element_blank())
 
 S3 <- S3a+S3b+plot_annotation(tag_levels="A")
-ggsave(file.path(figure_dir,"SF3_100.png"),S3,width=13,height=5.5,dpi=300)
+ggsave(file.path(figure_dir,"SF3_400_eligible.png"),S3,width=13,height=5.5,dpi=300)
 
 ## Figure S4
 S4_A <- data.frame(outcome=rep(c("Final mf prevalence","Increase in SOR"),each=nrow(D)),
@@ -103,4 +103,4 @@ S4b <- ggplot(S4_B,aes(outcome,value)) +
   theme(text=element_text(size=16),axis.text.x=element_text(size=14),panel.grid.minor=element_blank())
 
 S4 <- S4a+S4b+plot_annotation(tag_levels="A")
-ggsave(file.path(figure_dir,"SF4_100.png"),S4,width=13,height=5.5,dpi=300)
+ggsave(file.path(figure_dir,"SF4_400_eligible.png"),S4,width=13,height=5.5,dpi=300)

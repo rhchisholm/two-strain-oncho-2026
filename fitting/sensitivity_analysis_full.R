@@ -162,19 +162,19 @@ scenario_files <- data.frame(
   ),
   
   biannual_file = c(
-    "data_files/Final_posterior_burnins_plusbiannualMDAs_cumu_100.Rdata",
-    "data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA_100.Rdata",
-    "data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA2_100.Rdata",
-    "data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA5_100.Rdata",
-    "data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA3_100.Rdata"
+    "data_files/Final_posterior_burnins_plusbiannualMDAs_cumu_400_eligible.Rdata",
+    "data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA_100_eligible.Rdata",
+    "data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA2_100_eligible.Rdata",
+    "data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA5_100_eligible.Rdata",
+    "data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA3_100_eligible.Rdata"
   ),
   
   posterior_file = c(
-    "data_files/posteriors_ABR_65000_UU_cumu_100.Rdata",
-    "data_files/posteriors_ABR_65000_UU_cumuSA_100.Rdata",
-    "data_files/posteriors_ABR_65000_UU_cumuSA2_100.Rdata",
-    "data_files/posteriors_ABR_65000_UU_cumuSA5_100.Rdata",
-    "data_files/posteriors_ABR_65000_UU_cumuSA3_100.Rdata"
+    "data_files/posteriors_ABR_65000_UU_cumu_400_eligible.Rdata",
+    "data_files/posteriors_ABR_65000_UU_cumuSA_100_eligible.Rdata",
+    "data_files/posteriors_ABR_65000_UU_cumuSA2_100_eligible.Rdata",
+    "data_files/posteriors_ABR_65000_UU_cumuSA5_100_eligible.Rdata",
+    "data_files/posteriors_ABR_65000_UU_cumuSA3_100_eligible.Rdata"
   ),
   
   stringsAsFactors = FALSE
@@ -399,7 +399,7 @@ write.csv(
   asubende_all,
   file.path(
     data_dir,
-    "Asubende_sensitivity_all_outcomes.csv"
+    "Asubende_sensitivity_all_outcomes_eligible.csv"
   ),
   row.names = FALSE
 )
@@ -485,7 +485,7 @@ write.csv(
   asubende_summary,
   file.path(
     data_dir,
-    "Asubende_sensitivity_summary.csv"
+    "Asubende_sensitivity_summary_eligible.csv"
   ),
   row.names = FALSE
 )
@@ -617,7 +617,7 @@ plot_asubende_outcome <- function(outcome,
 png(
   file.path(
     figure_dir,
-    "Asubende_sensitivity_outcomes.png"
+    "Asubende_sensitivity_outcomes_eligible.png"
   ),
   width = 3300,
   height = 2200,

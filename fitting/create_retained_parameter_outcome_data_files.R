@@ -46,61 +46,61 @@ analyses <- list(
   
   Primary = list(
     posterior_file =
-      "data_files/posteriors_ABR_65000_UU_cumu_100.Rdata",
+      "data_files/posteriors_ABR_65000_UU_cumu_400_eligible.Rdata",
     
     trajectory_file =
-      "data_files/Final_posterior_burnins_plusbiannualMDAs_cumu_100.Rdata",
+      "data_files/Final_posterior_burnins_plusbiannualMDAs_cumu_400_eligible.Rdata",
     
     output_file =
-      "data_files/primary_retained_parameter_outcomes_100.Rdata"
+      "data_files/primary_retained_parameter_outcomes_400_eligible.Rdata"
   ),
   
   
   Moderate = list(
     posterior_file =
-      "data_files/posteriors_ABR_65000_UU_cumuSA_100.Rdata",
+      "data_files/posteriors_ABR_65000_UU_cumuSA_100_eligible.Rdata",
     
     trajectory_file =
-      "data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA_100.Rdata",
+      "data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA_100_eligible.Rdata",
     
     output_file =
-      "data_files/primary_retained_parameter_outcomesSA_100.Rdata"
+      "data_files/primary_retained_parameter_outcomesSA_100_eligible.Rdata"
   ),
   
   
   Weak = list(
     posterior_file =
-      "data_files/posteriors_ABR_65000_UU_cumuSA2_100.Rdata",
+      "data_files/posteriors_ABR_65000_UU_cumuSA2_100_eligible.Rdata",
     
     trajectory_file =
-      "data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA2_100.Rdata",
+      "data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA2_100_eligible.Rdata",
     
     output_file =
-      "data_files/primary_retained_parameter_outcomesSA2_100.Rdata"
+      "data_files/primary_retained_parameter_outcomesSA2_100_eligible.Rdata"
   ),
   
   
   No_selection = list(
     posterior_file =
-      "data_files/posteriors_ABR_65000_UU_cumuSA5_100.Rdata",
+      "data_files/posteriors_ABR_65000_UU_cumuSA5_100_eligible.Rdata",
     
     trajectory_file =
-      "data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA5_100.Rdata",
+      "data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA5_100_eligible.Rdata",
     
     output_file =
-      "data_files/primary_retained_parameter_outcomesSA5_100.Rdata"
+      "data_files/primary_retained_parameter_outcomesSA5_100_eligible.Rdata"
   ),
   
   
   Wider_prevalence = list(
     posterior_file =
-      "data_files/posteriors_ABR_65000_UU_cumuSA3_100.Rdata",
+      "data_files/posteriors_ABR_65000_UU_cumuSA3_100_eligible.Rdata",
     
     trajectory_file =
-      "data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA3_100.Rdata",
+      "data_files/Final_posterior_burnins_plusbiannualMDAs_cumuSA3_100_eligible.Rdata",
     
     output_file =
-      "data_files/primary_retained_parameter_outcomesSA3_100.Rdata"
+      "data_files/primary_retained_parameter_outcomesSA3_100_eligible.Rdata"
   )
 )
 
