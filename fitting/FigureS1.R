@@ -22,9 +22,9 @@ library(ggplot2)
 dir.create("figures", showWarnings = FALSE, recursive = TRUE)
 
 coverage <- c(
+  c(65, 65, 65, 65, 65,
   65, 65, 65, 65, 65,
-  65, 65, 65, 65, 65,
-  65, 81.7, 80.1, 80, 84.10,
+  65)/0.8, 81.7, 80.1, 80, 84.10,
   84.10, 74.70, 79.40, 87.10, 86.20,
   92.00, 92, 87.30, 88.00, 0.00, 74.20,
   50.60, 79.60, 81.90, 78.30, 83.00,
@@ -39,7 +39,7 @@ coverage_data <- data.frame(
 
 coverage_data$Data_source <- ifelse(
   coverage_data$Year %in% 1987:1997 |
-    coverage_data$Year == 1998,
+    coverage_data$Year == 2000,
   "Estimated",
   "Measured"
 )
@@ -70,7 +70,7 @@ p <- ggplot(
   ) +
   labs(
     x = "Year",
-    y = "MDAi coverage (proportion)",
+    y = "MDAi coverage (proportion of eligible population)",
     colour = "Data source"
   ) +
   theme_bw() +
