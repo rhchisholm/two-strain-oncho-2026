@@ -19,8 +19,9 @@ DpostMDA<-10
 # Coverage
 my_coverage<-c(65,65,65,65,65,
                65,65,65,65,65,
-               65,81.7,80.1,80,84.10,
-               84.10,74.70,79.40,87.10,86.20)/100
+               65,
+               0.8*c(81.7,80.1,80,84.10,
+                     84.10,74.70,79.40,87.10,86.20))/100
 
 # load fixed parameters (define functions)
 source("fixed-parameters.R")

@@ -193,9 +193,11 @@ FinaldSOR <- c()
 FinalSOR <- c()
 BIsamplen <- c()
 
+num_samples2<-length(dSOR[[1]])
+
 if(SA==0){
   for(n in 1:num_samples){
-    for(i in 1:100){
+    for(i in 1:num_samples2){
       if(dSOR[[n]][i]>0.1){ #original
         if(fPrev[[n]][i]>0.1){
           if(fPrev[[n]][i]<0.12){
@@ -213,7 +215,7 @@ if(SA==0){
 }
 if(SA==1){
   for(n in 1:num_samples){
-    for(i in 1:100){
+    for(i in 1:num_samples2){
       if(dSOR[[n]][i]>0.05){ 
         if(dSOR[[n]][i]<0.1){ 
           if(fPrev[[n]][i]>0.1){
@@ -233,7 +235,7 @@ if(SA==1){
 }
 if(SA==2){
   for(n in 1:num_samples){
-    for(i in 1:100){
+    for(i in 1:num_samples2){
       if(dSOR[[n]][i]<0.05){ 
         if(fPrev[[n]][i]>0.1){
           if(fPrev[[n]][i]<0.12){
@@ -251,7 +253,7 @@ if(SA==2){
 }
 if(SA==3){
   for(n in 1:num_samples){
-    for(i in 1:100){
+    for(i in 1:num_samples2){
       if(dSOR[[n]][i]>0.1){ #original
         if(fPrev[[n]][i]>0.08){
           if(fPrev[[n]][i]<0.14){
@@ -269,7 +271,7 @@ if(SA==3){
 }
 if(SA==5){
   for(n in 1:num_samples){
-    for(i in 1:100){
+    for(i in 1:num_samples2){
       #if(dSOR[[n]][i]>0.1){ #original
         if(fPrev[[n]][i]>0.1){
           if(fPrev[[n]][i]<0.12){
