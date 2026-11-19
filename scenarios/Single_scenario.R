@@ -17,7 +17,7 @@ single_VR <- function(PostParms,num_samples,filename,MDAf,NumberMDAs,ABR,MDAi,Db
   my_dom_c_SG<-3
   my_psiSOR<-my_psiGR*(10^0.5) 
   my_r<-0
-  my_coverage<-rep(0.8, NumberMDAs)
+  my_coverage<-rep(0.8*0.8, NumberMDAs)
   
   #setup parallel backend to use many processors
   parallel::detectCores()
@@ -278,7 +278,7 @@ single_GR <- function(PostParms,num_samples,filename,MDAf,NumberMDAs,ABR,MDAi,Db
   my_dom_c_SG<-3
   my_psiSOR<-my_psiGR*(10^0.5) 
   my_r<-0
-  my_coverage<-rep(0.8, NumberMDAs)
+  my_coverage<-rep(0.8*0.8, NumberMDAs)
   
   #setup parallel backend to use many processors
   parallel::detectCores()
@@ -527,7 +527,7 @@ single_VR_noc <- function(PostParms,num_samples,filename,MDAf,NumberMDAs,ABR,MDA
   my_dom_c_SG<-3
   my_psiSOR<-my_psiGR*(10^0.5) 
   my_r<-0
-  my_coverage<-rep(0.8, NumberMDAs)
+  my_coverage<-rep(0.8*0.8, NumberMDAs)
   
   #setup parallel backend to use many processors
   parallel::detectCores()

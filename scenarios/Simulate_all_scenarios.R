@@ -25,7 +25,7 @@ filenames<-c(list("output/MDAi_Low_B.Rdata", "output/MDAi_Med_B.Rdata","output/M
              list("output/MDAi_Low_A.Rdata", "output/MDAi_Med_A.Rdata", "output/MDAi_Hig_A.Rdata"))
 
 # Load posterior parameter sets
-load("../fitting/data_files/primary_retained_parameter_outcomes_100.Rdata")
+load("../fitting/data_files/primary_retained_parameter_outcomes_400_eligible.Rdata")
 PostParms<-data[,2:8]
 num_samples<-length(PostParms[,1])
 MDAi<-1 # I: MDAi=1, M: MDAi=0
@@ -146,16 +146,16 @@ MDAn_sens <- c(
 VR_sensitivity_files <- c(
   
   Moderate =
-    "../fitting/data_files/primary_retained_parameter_outcomesSA_100.Rdata",
+    "../fitting/data_files/primary_retained_parameter_outcomesSA_100_eligible.Rdata",
   
   Weak =
-    "../fitting/data_files/primary_retained_parameter_outcomesSA2_100.Rdata",
+    "../fitting/data_files/primary_retained_parameter_outcomesSA2_100_eligible.Rdata",
   
   No_selection =
-    "../fitting/data_files/primary_retained_parameter_outcomesSA5_100.Rdata",
+    "../fitting/data_files/primary_retained_parameter_outcomesSA5_100_eligible.Rdata",
   
   Wider_prevalence =
-    "../fitting/data_files/primary_retained_parameter_outcomesSA3_100.Rdata"
+    "../fitting/data_files/primary_retained_parameter_outcomesSA3_100_eligible.Rdata"
 )
 
 ## Short labels used in output filenames
@@ -248,10 +248,10 @@ for (analysis_name in names(VR_sensitivity_files)) {
 GR_calibration_files <- c(
   
   Primary =
-    "../fitting/data_files/primary_retained_parameter_outcomes_100.Rdata",
+    "../fitting/data_files/primary_retained_parameter_outcomes_400_eligible.Rdata",
   
   Wider_prevalence =
-    "../fitting/data_files/primary_retained_parameter_outcomesSA3_100.Rdata"
+    "../fitting/data_files/primary_retained_parameter_outcomesSA3_100_eligible.Rdata"
 )
 
 GR_labels <- c(
