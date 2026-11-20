@@ -104,7 +104,7 @@ make_prev_panel <- function(dat, drug_name, show_legend = TRUE) {
     ) +
     
     coord_cartesian(
-      ylim = c(0.0001, 10)
+      ylim = c(0.001, 10)
     ) +
     
     scale_colour_manual(
@@ -407,7 +407,7 @@ p5a <- ggplot(
   ) +
   
   coord_cartesian(
-    ylim = c(0, 0.3)
+    ylim = c(0, 0.25)
   ) +
   
   labs(
@@ -566,7 +566,7 @@ s_prev <- ggplot(
       "Annual"
     )
   ) +
-  scale_y_log10() +
+  #scale_y_log10() +
   facet_wrap(
     ~Model,
     nrow = 1,
@@ -585,7 +585,7 @@ s_prev <- ggplot(
     colour = "blue"
   ) +
   coord_cartesian(
-    ylim = c(0.01, 10)
+    ylim = c(0, 8)
   ) +
   labs(
     x = NULL,
@@ -661,7 +661,7 @@ s_pottis <- ggplot(
     data = missing_pottis_sens,
     aes(
       x = x_plot,
-      y = 5,
+      y = 10,
       colour = Treatment_frequency
     ),
     inherit.aes = FALSE,
