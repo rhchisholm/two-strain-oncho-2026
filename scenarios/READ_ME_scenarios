@@ -65,7 +65,7 @@ calibration parameter combinations are used.
 ===============================================================================
 
 Next, run:
-    process_all_scenario_outputs.R
+    process_output_revised.R
 
 This script loads the scenario RData files generated above and calculates
 summary outcomes for each retained parameter combination.
