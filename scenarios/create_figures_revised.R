@@ -81,7 +81,10 @@ make_prev_panel <- function(dat, drug_name, show_legend = TRUE) {
       outlier.size = 0.7
     ) +
     
-    scale_y_log10() +
+    scale_y_log10(
+      breaks = c(0.001, 0.01, 0.1, 1, 10),
+      labels = c("0.001", "0.01", "0.1", "1", "10")
+    ) +
     
     facet_wrap(
       ~Model,
@@ -143,6 +146,8 @@ ggsave(
   p3a+p3b+plot_annotation(tag_levels="A"),
   width=10, height=6, dpi=300
 )
+
+
 
 ###############################################################################
 ## F4: Years to pOTTIS - primary scenarios
